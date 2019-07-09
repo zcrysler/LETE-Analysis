@@ -1,0 +1,25 @@
+# Appendix - Site Visits {#AppendixB}
+
+```{r tidyr5, echo = FALSE, message = FALSE, warning = FALSE}
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=50), tidy = TRUE)
+require(pander)
+```
+
+The following table shows the length (mins) of each unique visit:
+```{r parameterTableVisits, echo = FALSE}
+param.table <- dplyr::select(read.csv("./data/visits.csv", stringsAsFactors=FALSE), motusTagID, mfgID, recvDeployName, year, mints, maxts, visitLength, recvLat, recvLon, distFromExxon)
+pander(param.table, split.cell = 50, split.table = Inf) 
+```
+
+The following table shows the total number and mean length (mins) of visits for each tag at each receiver in each year:
+```{r parameterTableVisits.tag, echo = FALSE}
+param.table <- dplyr::select(read.csv("./data/visits_tag.csv", stringsAsFactors=FALSE), 1:6)
+pander(param.table, split.cell = 50, split.table = Inf) 
+```
+
+The following table shows the mean total number of visits, mean length (mins) of visits, and numbe of tags detected at each receiver in each year:
+```{r parameterTableVisits.recv, echo = FALSE}
+param.table <- dplyr::select(read.csv("./data/visits_recv.csv", stringsAsFactors=FALSE), 1:3)
+pander(param.table, split.cell = 50, split.table = Inf) 
+```

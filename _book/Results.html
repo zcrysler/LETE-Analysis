@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Statistical analysis of BTNEP Automated VHF Telemetry Network Project</title>
+  <meta name="description" content="Statistical analysis of BTNEP Automated VHF Telemetry Network Project">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Statistical analysis of BTNEP Automated VHF Telemetry Network Project" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Statistical analysis of BTNEP Automated VHF Telemetry Network Project" />
+  
+  
+  
+
+<meta name="author" content="Zoe Crysler">
+
+
+<meta name="date" content="2019-07-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="DataManipulation.html">
+<link rel="next" href="AppendixA.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">LETE analysis</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>A walk through the use of R for Motus automated radio-telemetry data</a></li>
+<li class="chapter" data-level="1" data-path="DownloadingData.html"><a href="DownloadingData.html"><i class="fa fa-check"></i><b>1</b> Appendix - Downloading and Accessing Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="DownloadingData.html"><a href="DownloadingData.html#loading-packages"><i class="fa fa-check"></i><b>1.1</b> Loading Packages</a></li>
+<li class="chapter" data-level="1.2" data-path="DownloadingData.html"><a href="DownloadingData.html#data-download---project-132"><i class="fa fa-check"></i><b>1.2</b> Data Download - project 132</a></li>
+<li class="chapter" data-level="1.3" data-path="DownloadingData.html"><a href="DownloadingData.html#accessing-data"><i class="fa fa-check"></i><b>1.3</b> Accessing Data</a></li>
+<li class="chapter" data-level="1.4" data-path="DownloadingData.html"><a href="DownloadingData.html#cleaning-data"><i class="fa fa-check"></i><b>1.4</b> Cleaning Data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="DataManipulation.html"><a href="DataManipulation.html"><i class="fa fa-check"></i><b>2</b> Data Manipulation</a><ul>
+<li class="chapter" data-level="2.1" data-path="DataManipulation.html"><a href="DataManipulation.html#importing-data-if-not-already-loaded"><i class="fa fa-check"></i><b>2.1</b> Importing data if not already loaded</a></li>
+<li class="chapter" data-level="2.2" data-path="DataManipulation.html"><a href="DataManipulation.html#importing-nesting-and-tag-retention-data"><i class="fa fa-check"></i><b>2.2</b> Importing Nesting and Tag Retention Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Results.html"><a href="Results.html"><i class="fa fa-check"></i><b>3</b> LETE Results</a><ul>
+<li class="chapter" data-level="3.1" data-path="Results.html"><a href="Results.html#study-area"><i class="fa fa-check"></i><b>3.1</b> Study Area</a></li>
+<li class="chapter" data-level="3.2" data-path="Results.html"><a href="Results.html#detection-overview"><i class="fa fa-check"></i><b>3.2</b> Detection Overview</a></li>
+<li class="chapter" data-level="3.3" data-path="Results.html"><a href="Results.html#foraging-vs-incubating"><i class="fa fa-check"></i><b>3.3</b> Foraging vs Incubating</a></li>
+<li class="chapter" data-level="3.4" data-path="Results.html"><a href="Results.html#heavily-frequented-foraging-areas"><i class="fa fa-check"></i><b>3.4</b> Heavily Frequented Foraging Areas</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="Results.html"><a href="Results.html#simultaneous-detections"><i class="fa fa-check"></i><b>3.4.1</b> Simultaneous Detections</a></li>
+<li class="chapter" data-level="3.4.2" data-path="Results.html"><a href="Results.html#detection-directions"><i class="fa fa-check"></i><b>3.4.2</b> Detection Directions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="Results.html"><a href="Results.html#mean-distances-travelled-for-foraging"><i class="fa fa-check"></i><b>3.5</b> Mean Distances Travelled for Foraging</a></li>
+<li class="chapter" data-level="3.6" data-path="Results.html"><a href="Results.html#time-partitioning-between-foraging-and-nest-site-attendance"><i class="fa fa-check"></i><b>3.6</b> Time Partitioning Between Foraging and Nest Site Attendance</a></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="AppendixA.html"><a href="AppendixA.html"><i class="fa fa-check"></i><b>A</b> Appendix - Distances Between Receivers</a></li>
+<li class="chapter" data-level="B" data-path="AppendixB.html"><a href="AppendixB.html"><i class="fa fa-check"></i><b>B</b> Appendix - Site Visits</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical analysis of BTNEP Automated VHF Telemetry Network Project</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="Results" class="section level1">
+<h1><span class="header-section-number">3</span> LETE Results</h1>
+<div id="study-area" class="section level2">
+<h2><span class="header-section-number">3.1</span> Study Area</h2>
+<p>Stations within the study region are presented below, grey stations had no detections, while red stations had at least one tag detected during the study period from 2017 to 2018. Triangles represent receivers that were active during 2017 <em>and</em> 2018, circles represent stations that were only active in 2017. The blue lines indicate the direction of antennas during the study period. All receivers maintained the same bearings throughout the study period with the exception of Bolivar_Flats, here the solid blue lines are the 2017 bearings, while the dashed blue lines are the 2018 bearings.</p>
+<p>********ADD SCALE BARS TO ALL MAPS*******</p>
+<p><img src="bookdown-demo_files/figure-html/2017StationMap-1.png" width="672" /> All LETE were tagged within close proximity to Exxon Fields, and for the purposes of this report stations considered within proximity to the breeding area are Exxon Fields, East Grand Terre, Grand_Isle, and Wisner. A close up of this area is below</p>
+<p><img src="bookdown-demo_files/figure-html/breedingRegionMap-1.png" width="672" /></p>
+</div>
+<div id="detection-overview" class="section level2">
+<h2><span class="header-section-number">3.2</span> Detection Overview</h2>
+<p>In 2017, only 1 individual (motusTagID 23270) was detected at stations outside the immediate tagging region, all other individuals and the bulk of the detections occurred at Exxon Fields, East Grand Terre, Grand_Isle, and Wisner. The map below shows the detection pattern of all 2017 tagged birds, lines are coloured by tag ID. <img src="bookdown-demo_files/figure-html/2017DetectionMap-1.png" width="672" /></p>
+<p>The plot below is the same 2017 data as mapped above, each plot is one individual’s detections during incubation plotted as time by longitude, points are coloured by detection site. Note that x and y scales vary between plots.</p>
+<p><img src="bookdown-demo_files/figure-html/2017LongitudePlots-1.png" width="672" /></p>
+<p>In 2018, again only one individual was detected outside the immediate tagging region, all other individuals and the bulk of the detections occurred at Exxon Fields, East Grand Terre, Grand_Isle. Note that in 2018 no birds were detected at Wisner, despite close proximity to nesting areas. Based on receiver performance outputs, this is likely due to receiver issues rather than a true lack of detections. The map below shows the detection pattern of all 2018 tagged birds, lines are coloured by tag ID. <img src="bookdown-demo_files/figure-html/2018DetectionMap-1.png" width="672" /></p>
+<p>The plot below is the same 2018 data as mapped above, each plot is one individual’s detections during incubation plotted as time by longitude, points are coloured by detection site. Note that x and y scales vary between plots. <img src="bookdown-demo_files/figure-html/2018LongitudePlots-1.png" width="672" /></p>
+</div>
+<div id="foraging-vs-incubating" class="section level2">
+<h2><span class="header-section-number">3.3</span> Foraging vs Incubating</h2>
+<p><img src="bookdown-demo_files/figure-html/incubatingBirds-1.png" width="672" /></p>
+<p>The above plot is a selection of 4 representative detection patterns of individuals; examining the signal strength it is not always clear when birds are attending the nest site and when they are foraging. For example, tag 23219 shows clear daily signal strength patterns, with low signal strength occuring overnight when the bird is likely incubating. Tag 23218 has a similar but less distinct pattern, some nights the bird is detected while other nights it is not. In other cases the tag is picked up far less consistently as in tag 28593, and in even more extreme cases as in tag 28522. For these final two tags, the bird is rarely if ever detected while at the nest site, and most detections likely occur as the bird is leaving or arriving at the nest site.</p>
+<p>Furthermore, even tags with clear daily detection patterns as in tag 23219, apart from long stretches of detections at the nest overnight, shorter nest site attendance periods during the day are not as obviously picked up. However, based on these detections, the signal strength during incubation is generally much lower than during flight. This is to be expected as tags detection ranges increase substantially when a bird is in the air as compared to on the ground. Therefore, all detections on the Exxon Fields receiver with a signal strength &lt; 80 will be excluded from foraging analysis from this point onwards to exclude likely detections on the nest. While this will invariably also remove detections on Exxon Fields that may occur when the bird is in flight, since the station is in very close proximity to the nesting site, in most cases this will only remove the tail ends of a detection streak as the bird is departing or approaching the nesting site.</p>
+</div>
+<div id="heavily-frequented-foraging-areas" class="section level2">
+<h2><span class="header-section-number">3.4</span> Heavily Frequented Foraging Areas</h2>
+<p>Detections were split into discrete site visits, a site visit was categorized as a set of consecutive detections of a single tag at a single station. To account for short periods of no detections within an otherwise continuous site visit, discrete site visits that were &lt;10 minutes apart were lumped together to form a single site visit.</p>
+<p>To add meaning to detection sites, the distance from Exxon Fields was calculated for each station where tags were detected and are presented below. A full database with distances calculated between all stations can be found in Appendix <a href="AppendixA.html#AppendixA">A</a>.</p>
+<table>
+<colgroup>
+<col width="61%" />
+<col width="38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Site Name</th>
+<th align="left">Distance from Exxon Fields (m)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Exxon Fields</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">Grand_Isle</td>
+<td align="left">3166</td>
+</tr>
+<tr class="odd">
+<td align="left">East Grand Terre</td>
+<td align="left">12631</td>
+</tr>
+<tr class="even">
+<td align="left">Wisner</td>
+<td align="left">23072</td>
+</tr>
+<tr class="odd">
+<td align="left">Rock W</td>
+<td align="left">281671</td>
+</tr>
+<tr class="even">
+<td align="left">Sabine NWR</td>
+<td align="left">339660</td>
+</tr>
+<tr class="odd">
+<td align="left">High_Island</td>
+<td align="left">430034</td>
+</tr>
+<tr class="even">
+<td align="left">Bolivar_Flats</td>
+<td align="left">464126</td>
+</tr>
+<tr class="odd">
+<td align="left">Scenic Galveston</td>
+<td align="left">480286</td>
+</tr>
+<tr class="even">
+<td align="left">Brazoria National Wildlife Refuge</td>
+<td align="left">516442</td>
+</tr>
+<tr class="odd">
+<td align="left">Quintana</td>
+<td align="left">520551</td>
+</tr>
+<tr class="even">
+<td align="left">San Bernard National Wildlife Refuge Headquarters</td>
+<td align="left">546935</td>
+</tr>
+<tr class="odd">
+<td align="left">San Bernard NWR (Big Pond Unit)</td>
+<td align="left">569092</td>
+</tr>
+<tr class="even">
+<td align="left">Rockport Bay Education Center</td>
+<td align="left">704653</td>
+</tr>
+</tbody>
+</table>
+<p>For each station the number total number of visits was calculated, as expected Exxon Fields had by far the highest number of visits as it was at the nesting area. In 2017 and 2018 Grand_Isle had the next highest frequency of detections, this is not surprising as it is the closest station to the nesting area. East Grand Terre and Wisner followed with lower numbers of site visits and are also near the nesting area. Note the lack of detections at Wisner in 2018, this is likely due to receiver malfunction rather than a true lack of detections. All other stations had negligible (&lt;3) visits and are substantially farther away from the nesting grounds. <img src="bookdown-demo_files/figure-html/visitFrequency-1.png" width="672" /></p>
+<p>The length of visits was consistant with the number of visits, that is, birds generally had longer detection periods at Exxon Fields, followed by East Grand Terre, Grand_Isle, and Wisner, only Grand_Isle and Exxon Fields differed significantly in their visit length. The figure below shows the length of time each bird was detected at each site during each site visit, note that the plot has been cut off due to a high number of outliers, Exxon Fields had a maximum visit length of 61 minutes, Grand_Isle 107 minutes, East Grand Terre 19 minutes, Wisner 27 minutes (See Appendix <a href="AppendixB.html#AppendixB">B</a> for complete visit information). <img src="bookdown-demo_files/figure-html/visitLength-1.png" width="672" /></p>
+<p>Of the birds that were detected at Exxon Fields in 2017 and 2018, all were detected on at least 6 different visits. At Grand_Isle, the majority (39/44, 88.6%) of birds were detected on more than 2 separate occasions (&gt;2 discrete visits). In comparison, the remaining stations less than half (10/23, 43.5%) were detected on more than two occasions. Only tags 23261 appeared semi-regularly at wisner but is notable in 12 detections, 28522/28529 to East Grand Terre.</p>
+<p>Thus birds appear to spend the majority of their time in close proximity to Exxon Fields, however this could be a by-product of increased detection due to proximity to nesting sites and therefore a necessity to frequently pass the receiver regardless if foraging is occuring nearby or not. Most birds frequented Grand_Isle regularly which could be due to nearby foraging, or a proximity to the nesting site. See Appendix <a href="#AppendixC"><strong>??</strong></a> for detection plots of all birds detected more than twice on stations outside of Exxon Fields and Grand_Isle.</p>
+<p>*******NEED TO ADD THIS APPENDIX*******</p>
+<div id="simultaneous-detections" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> Simultaneous Detections</h3>
+<p>If stations are within close proximity of one another, it’s possible to get simultaneous detections on both stations at once. During incubation there were 161 pairs of simultaneous detections, 2 of these occurred between East Grand Terre and Exxon Fields, 3 between East Grand Terre and Grand Isle, and the other 156 between Exxon Fields and Grand Isle. Exxon Fields and Grand Isle are the closest two stations at 3.1 km apart, easily within range of each other particularly when birds are in flight (see Appendix <a href="AppendixA.html#AppendixA">A</a>). East Grand Terre is 12.6 km and 15.8 km away from Exxon Fields and Grand Isle respectively, the next closest pairs of stations.</p>
+</div>
+<div id="detection-directions" class="section level3">
+<h3><span class="header-section-number">3.4.2</span> Detection Directions</h3>
+<p>We can narrow down the areas visited beyond which site they were detected at by examining which antenna they were detected on. The figures below show the total number of detections for each antenna bearing at each site for 2017 and 2018. Orange lines are the antenna bearings at each site, the blue bars are coloured by the number of detections on each antenna throughout the incubation period - note that scales differ by site. <img src="bookdown-demo_files/figure-html/detBearingsSum-1.png" width="672" /><img src="bookdown-demo_files/figure-html/detBearingsSum-2.png" width="672" /></p>
+<p>Detection patterns are similar at Exxon Fields, Grand Isle, and East Grand Terre in 2017 and 2018. Detections at Exxon Fields were predominantly to the SW, directly in line with the tagging area, this also indicates that birds likely arrive and depart to/from the nesting location from the SW. Grand Isle detections were overwhealmingly more prevalent to the NE, pointing towards the nearby colony, while this may indicate that birds don’t spend much time foraging to the SW, it could also be due to the sheer proximity of the nesting site. As discussed earlier, nearly all cases of simultaneous detections between two stations occur between Exxon Fields and Grand Isle, suggesting that many of the arrival and departure flights from the colony could be captured by both stations, resulting in the high number of NE detections at Grand Isle being an artifact of colony attendance. East Grand Terre had the most detections by far to the SW, again towards the colony.</p>
+<p>In 2017, birds were picked up in very small numbers outside of the immediate breeding area. It is difficult to make generalized assumptions from such a small number of detections, however it does seem as though a few birds may be using the areas off the coast around Quintana. There are even fewer detections away from the colony during incubation in 2018, but those that do occur are in the same region.</p>
+</div>
+</div>
+<div id="mean-distances-travelled-for-foraging" class="section level2">
+<h2><span class="header-section-number">3.5</span> Mean Distances Travelled for Foraging</h2>
+<p>Based on detection data, in 2017 the mean distance travelled for all detection periods was 2.5km, with a maximum distance travelled to San Bernard NWR (Big Pond Unit) at 569.1 km. In 2018 the mean distance travelled was 0.86 km, with a maximum distance travelled of 464.1 km to Bolivar Flats. However, the vast majority of detections (4,366/4,374 or 99.8%) during foraging trips occurred within 23.1 km from the colony detected at the four closest receiver stations (Exxon Fields, Grand Isle, East Grand Terre, and Wisner).</p>
+</div>
+<div id="time-partitioning-between-foraging-and-nest-site-attendance" class="section level2">
+<h2><span class="header-section-number">3.6</span> Time Partitioning Between Foraging and Nest Site Attendance</h2>
+
+</div>
+</div>
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="DataManipulation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="AppendixA.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
