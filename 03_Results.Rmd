@@ -3,6 +3,8 @@
 
 library(knitr)
 opts_chunk$set(tidy.opts=list(width.cutoff=50), tidy = TRUE)
+# need to register google key:
+#register_google(key = "INSERT KEY HERE")
 
 ```
 
@@ -15,7 +17,6 @@ library(ggplot2)
 library(viridis)
 library(motus)
 library(pander)
-register_google(key = "AIzaSyACxXsbTc2ucAYnFL37s4kral4HgRQ8ONE")
 ```
 
 ## Study Area

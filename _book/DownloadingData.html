@@ -103,7 +103,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>A walk through the use of R for Motus automated radio-telemetry data</a></li>
-<li class="chapter" data-level="1" data-path="DownloadingData.html"><a href="DownloadingData.html"><i class="fa fa-check"></i><b>1</b> Appendix - Downloading and Accessing Data</a><ul>
+<li class="chapter" data-level="1" data-path="DownloadingData.html"><a href="DownloadingData.html"><i class="fa fa-check"></i><b>1</b> Downloading and Accessing Data</a><ul>
 <li class="chapter" data-level="1.1" data-path="DownloadingData.html"><a href="DownloadingData.html#loading-packages"><i class="fa fa-check"></i><b>1.1</b> Loading Packages</a></li>
 <li class="chapter" data-level="1.2" data-path="DownloadingData.html"><a href="DownloadingData.html#data-download---project-132"><i class="fa fa-check"></i><b>1.2</b> Data Download - project 132</a></li>
 <li class="chapter" data-level="1.3" data-path="DownloadingData.html"><a href="DownloadingData.html#accessing-data"><i class="fa fa-check"></i><b>1.3</b> Accessing Data</a></li>
@@ -145,7 +145,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="DownloadingData" class="section level1">
-<h1><span class="header-section-number">1</span> Appendix - Downloading and Accessing Data</h1>
+<h1><span class="header-section-number">1</span> Downloading and Accessing Data</h1>
 <p>Detailed instructions for accessing and understanding data can be found in the Motus R Book, available <a href="https://motus.org/MotusRBook/">here</a>.</p>
 <div id="loading-packages" class="section level2">
 <h2><span class="header-section-number">1.1</span> Loading Packages</h2>
@@ -228,7 +228,7 @@ th &lt;-<span class="st"> </span><span class="kw">theme_bw</span>() <span class=
 <span class="co"># plot all tags by latitude</span>
 <span class="kw">ggplot</span>(lete17, <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2017filterPlots1-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2017filterPlots1-1.png" width="672" /></p>
 <p>Our first step will be to remove tags that were never detected at the breeding site, these are <strong>23220</strong>, <strong>23221</strong>, and <strong>23222</strong>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># remove tags 23220, 23221, 23222 and create a</span>
 <span class="co"># block</span>
@@ -241,7 +241,7 @@ df.block.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw
     <span class="dv">23216</span>, <span class="dv">23219</span>, <span class="dv">23223</span>, <span class="dv">23225</span>, <span class="dv">23226</span>, <span class="dv">23227</span>, <span class="dv">23270</span>)), 
     <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2017filterPlots3-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2017filterPlots3-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># examining runLen &lt; 5</span>
 <span class="kw">filter</span>(lete17, motusTagID <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">23212</span>, <span class="dv">23214</span>, <span class="dv">23216</span>, 
     <span class="dv">23219</span>, <span class="dv">23223</span>, <span class="dv">23225</span>, <span class="dv">23226</span>, <span class="dv">23227</span>, <span class="dv">23270</span>), runLen <span class="op">&lt;</span><span class="st"> </span>
@@ -281,13 +281,13 @@ df.block.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw
 <span class="kw">ggplot</span>(<span class="kw">filter</span>(lete17, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">23216</span>, ts <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.POSIXct</span>(<span class="st">&quot;2017-06-26&quot;</span>)), 
     <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2017filterPlots4-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2017filterPlots4-1.png" width="672" /></p>
 <p>For <strong>tag 23270</strong>, it again appears there are clear false positives that can be removed at <em>Koffler</em>, <em>Los Vientos Forest</em>, <em>Drasher</em>, and <em>Waggoners Gap</em>. We will therefore remove these detections:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># motusTagID 23270</span>
 <span class="kw">ggplot</span>(<span class="kw">filter</span>(lete17, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">23270</span>), <span class="kw">aes</span>(ts, 
     recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2017filterPlots5-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2017filterPlots5-1.png" width="672" /></p>
 <p>Let’s create a filter block to remove these problem sites with high amounts of short runLen’s:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df.block.<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(df.alltags, <span class="kw">year</span>(ts) <span class="op">==</span><span class="st"> </span><span class="dv">2017</span>, 
     recvDeployName <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Drasher&quot;</span>, <span class="st">&quot;RTNJ&quot;</span>, <span class="st">&quot;Koffler&quot;</span>, 
@@ -300,28 +300,28 @@ df.block.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw
     <span class="dv">23216</span>, <span class="dv">23219</span>, <span class="dv">23223</span>, <span class="dv">23225</span>, <span class="dv">23226</span>, <span class="dv">23227</span>, <span class="dv">23270</span>)), 
     <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2017filterPlots7-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2017filterPlots7-1.png" width="672" /></p>
 <p>Lets examine the remaining tags with questionable detections: <strong>23219, 23225, 23227</strong>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete17, motusTagID <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">23219</span>, <span class="dv">23225</span>, 
     <span class="dv">23227</span>)), <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_grid</span>(motusTagID <span class="op">~</span><span class="st"> </span>.) <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2017filterPlots8-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2017filterPlots8-1.png" width="672" /></p>
 <p>We’ll go through each tag individually, and then create block filters at the end.</p>
 <p><strong>Tag 23219</strong>: Detections at Rockport Bay Education Center are only runLen 2, we will remove these:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete17, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">23219</span>, ts <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.POSIXct</span>(<span class="st">&quot;2017-06-18&quot;</span>)), 
     <span class="kw">aes</span>(ts, sig)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2017filterPlots9-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2017filterPlots9-1.png" width="672" /></p>
 <p><strong>Tag 23225</strong>: detections at Peveto Woods are only runLen 2, we will remove these:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete17, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">23225</span>, ts <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.POSIXct</span>(<span class="st">&quot;2017-07-02&quot;</span>)), 
     <span class="kw">aes</span>(ts, sig)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2017filterPlots10-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2017filterPlots10-1.png" width="672" /></p>
 <p><strong>Tag 23227</strong>: all detections after June 15 are of runLen 2, except for detections at Swallowtail which are too far away to be legitimate detections so we’ll remove these.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete17, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">23227</span>), <span class="kw">aes</span>(ts, 
     sig)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> <span class="kw">as.factor</span>(runLen))) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2017filterPlots11-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2017filterPlots11-1.png" width="672" /></p>
 <p>Now let’s create filter blocks for those 3 tags:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df.block.<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(df.alltags, <span class="kw">year</span>(ts) <span class="op">==</span><span class="st"> </span><span class="dv">2017</span>, 
     motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">23219</span> <span class="op">&amp;</span><span class="st"> </span>recvDeployName <span class="op">==</span><span class="st"> &quot;Rockport Bay Education Center&quot;</span>)
@@ -340,7 +340,7 @@ df.block.<span class="dv">6</span> &lt;-<span class="st"> </span><span class="kw
 <p>Plot all tags by latitude:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(lete18, <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2018filterPlots1-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2018filterPlots1-1.png" width="672" /></p>
 <p>Remove tags that were never detected at the breeding site: <strong>28614</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lete18 &lt;-<span class="st"> </span><span class="kw">filter</span>(lete18, <span class="op">!</span>(motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">28614</span>))
 df.block.<span class="dv">7</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(df.alltags, <span class="kw">year</span>(ts) <span class="op">==</span><span class="st"> </span><span class="dv">2018</span>, 
@@ -350,7 +350,7 @@ df.block.<span class="dv">7</span> &lt;-<span class="st"> </span><span class="kw
     <span class="dv">28525</span>, <span class="dv">28531</span>, <span class="dv">28594</span>, <span class="dv">28600</span>)), <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2018filterPlots3-1.png" width="672" /> Again, we’ll look closer at runLen for these detections</p>
+<p><img src="LETE-Analysis_files/figure-html/2018filterPlots3-1.png" width="672" /> Again, we’ll look closer at runLen for these detections</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(lete18, motusTagID <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">28520</span>, <span class="dv">28524</span>, <span class="dv">28525</span>, 
     <span class="dv">28531</span>, <span class="dv">28594</span>, <span class="dv">28600</span>), runLen <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(recvDeployName, 
     runLen) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">length</span>(motusTagID)) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -382,32 +382,32 @@ df.block.<span class="dv">7</span> &lt;-<span class="st"> </span><span class="kw
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete18, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">28520</span>), <span class="kw">aes</span>(ts, 
     recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2018filterPlots5-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2018filterPlots5-1.png" width="672" /></p>
 <p><strong>Tag 28524</strong>: Given the amount of time and distance between detections at <em>Koffler</em> and <em>Exxon Fields</em>, and between <em>D’Estimauville</em> and <em>Exxon Fields</em>, these are not biologically possible flights, they were also flagged as noisy stations. The detections at Stutchbury and Curries are of runLen 3, and occur in Ontario and Pennsylvania respectively. We will therefore remove these detections at the end.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete18, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">28524</span>), <span class="kw">aes</span>(ts, 
     recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2018filterPlots6-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2018filterPlots6-1.png" width="672" /></p>
 <p><strong>Tag 28525</strong>: Just as with tag 28520, the detection at <em>D’Estimauville</em> will be removed.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete18, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">28525</span>), <span class="kw">aes</span>(ts, 
     recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2018filterPlots7-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2018filterPlots7-1.png" width="672" /></p>
 <p><strong>Tag 28531</strong>: Again, it is unlikely that this tag was in Ontario and Quebec in June so we will remove detections at <em>Koffler</em>, <em>Old Cut</em>, and <em>D’Estimauville</em>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete18, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">28531</span>), <span class="kw">aes</span>(ts, 
     recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2018filterPlots8-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2018filterPlots8-1.png" width="672" /></p>
 <p><strong>Tag 28594</strong>: Again, it is unlikely that this tag was in Ontario, Pennsylvania or Nova Scotia, and all runLen are 3, so we will remove detections at <em>BPLH</em>, <em>Drasher</em>, and <em>Old Cut</em>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete18, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">28594</span>), <span class="kw">aes</span>(ts, 
     recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2018filterPlots9-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2018filterPlots9-1.png" width="672" /></p>
 <p><strong>Tag 28600</strong>: Koffler and D’Estimauville once again appear problematic and will be removed.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete18, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">28600</span>), <span class="kw">aes</span>(ts, 
     recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2018filterPlots10-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2018filterPlots10-1.png" width="672" /></p>
 <p>Since all false positives in these cases are for the same stations, we’ll apply one filter to remove them all:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df.block.<span class="dv">8</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(df.alltags, <span class="kw">year</span>(ts) <span class="op">==</span><span class="st"> </span><span class="dv">2018</span>, 
     recvDeployName <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;D&#39;Estimauville&quot;</span>, <span class="st">&quot;Koffler&quot;</span>, 
@@ -421,7 +421,7 @@ df.block.<span class="dv">7</span> &lt;-<span class="st"> </span><span class="kw
     <span class="dv">28525</span>, <span class="dv">28531</span>, <span class="dv">28594</span>, <span class="dv">28600</span>)), <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span>th</code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/2018filterPlots12-1.png" width="672" /></p>
+<p><img src="LETE-Analysis_files/figure-html/2018filterPlots12-1.png" width="672" /></p>
 <p>Now that we’re happy with our filters, we can save a custom filter for all our data combined. The Motus R package offers functionalities to save your filters directly within your .motus file. Once they’re saved in your database, you can do the type of left_join as below without having to rely on dataframes or an RDS file to store your data. More info can be found in <a href="https://motus.org/MotusRBook/appendixD.html">Appendix D</a> of the Motus R Book.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Combine our df.blocks into a single data frame,</span>
 <span class="co"># and apply a probability of 0 for filtered</span>
@@ -483,7 +483,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"download": null,
 "toc": {
 "collapse": "section"
 }
