@@ -2,7 +2,7 @@ library(ggmap)
 library(tidyr)
 library(gridExtra)
 library(RColorBrewer)
-register_google(key = "AIzaSyACxXsbTc2ucAYnFL37s4kral4HgRQ8ONE")
+register_google(key = "ADD HERE")
 
 
 ## Map of 2017 station locations
@@ -194,7 +194,7 @@ p1 <- ggplot(filter(inc, motusTagID == 23219), aes(ts, sig, col = recvDeployName
   facet_grid(recvDeployName~.) +
   geom_vline(xintercept = inc$sunrise,col = "orange") +
   geom_vline(xintercept = inc$sunset, col = "blue") + th +
-  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2017:motusTagID 23219")
+  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2017: motusTagID 23219")
 p2 <- ggplot(filter(inc, motusTagID == 23218, ts > as.POSIXct("2017-06-15")), aes(ts, sig, col = recvDeployName)) + geom_point(size = 1) +
   facet_grid(recvDeployName~.) +
   geom_vline(xintercept = inc$sunrise,col = "orange") +
@@ -410,7 +410,8 @@ grid.arrange(arrangeGrob(exxon17, grandIsle17, wisner17, grandTerre17,
                                    c(1, 1, 3, 4),
                                    c(2, 2, 5, 6),
                                    c(2, 2, 7, 8))),
-             mylegend, nrow = 2, heights = c(20,1))
+             mylegend, nrow = 2, heights = c(20,1),
+             top = "2017: Number of detections by antenna bearing")
 
 # 2018
 # Bolivar_Flats
@@ -434,7 +435,8 @@ grid.arrange(arrangeGrob(exxon18, grandIsle18, grandTerre18, bolivar18,
              nrow = 2,
              layout_matrix = rbind(c(1, 2),
                                    c(3, 4))),
-             mylegend, nrow = 2, heights = c(20,1))
+             mylegend, nrow = 2, heights = c(20,1),
+             top = "2018: Number of detections by antenna bearing")
 
 
 # directions for mapping
@@ -580,7 +582,7 @@ headquarters17 <- ggplot(filter(for.dir, year == 2017, recvDeployName == "San Be
   geom_bar(stat = "identity", width = 5) + scale_x_continuous("",limits = c(0,360), breaks = seq(0, 360-1, 45)) +
   coord_polar(theta = "x", start = 0)  + ylab("") + thBearingMap
 # San Bernard NWR (Big Pond Unit)
-bigPond17 <- ggplot(filter(for.dir, year == 2017, recvDeployName == "San Bernard NWR (Big Pond Unit)"), aes(antBearing, nDet, fill = nDet)) +
+bigPond17 <- ggplot(filter(for.dir, year == 2017, recvDeployName == "San Bernard NWR (BPU)"), aes(antBearing, nDet, fill = nDet)) +
   geom_bar(stat = "identity", width = 5) + scale_x_continuous("",limits = c(0,360), breaks = seq(0, 360-1, 45)) +
   coord_polar(theta = "x", start = 0)  + ylab("") + thBearingMap
 # Scenic Galveston

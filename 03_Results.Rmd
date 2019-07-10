@@ -20,7 +20,7 @@ library(pander)
 ```
 
 ## Study Area
-Stations within the study region are presented below, grey stations had no detections, while red stations had at least one tag detected during the study period from 2017 to 2018. Triangles represent receivers that were active during 2017 *and* 2018, circles represent stations that were only active in 2017. The blue lines indicate the direction of antennas during the study period. All receivers maintained the same bearings throughout the study period with the exception of Bolivar_Flats, here the solid blue lines are the 2017 bearings, while the dashed blue lines are the 2018 bearings.
+Stations within the study region are presented below, grey stations had no detections, while red stations had at least one tag detected during the study period from 2017 to 2018. Triangles represent receivers that were active during 2017 *and* 2018, circles represent stations that were only active in 2017 (Quintana and East Grand Terre). The blue lines indicate the direction of antennas during the study period. All receivers maintained the same bearings throughout the study period with the exception of Bolivar_Flats, here the solid blue lines are the 2017 bearings, while the dashed blue lines are the 2018 bearings.
 
 ********ADD SCALE BARS TO ALL MAPS*******
 
@@ -64,7 +64,7 @@ ggplot(na.map, aes(long, lat)) +
 
 ggsave("./images/outlineMap.png")
 ```  
-All LETE were tagged within close proximity to Exxon Fields, and for the purposes of this report stations considered within proximity to the breeding area are Exxon Fields, East Grand Terre, Grand_Isle, and Wisner. A close up of this area is below
+All LETE were tagged within close proximity to Exxon Fields, and for the purposes of this report stations considered within proximity to the breeding area are Exxon Fields, East Grand Terre, Grand_Isle, and Wisner. A close up of this area is below:
 
 ```{r breedingRegionMap, echo = FALSE, message = FALSE, warning = FALSE}
 arr.sc <- 0.3  # determines length of the vectors for antenna bearings and vanishing bearing lines
@@ -181,7 +181,7 @@ p1 <- ggplot(filter(inc, motusTagID == 23219), aes(ts, sig, col = recvDeployName
   facet_grid(recvDeployName~.) +
   geom_vline(xintercept = inc$sunrise,col = "orange") +
   geom_vline(xintercept = inc$sunset, col = "blue") + th +
-  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2017:motusTagID 23219")
+  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2017: motusTagID 23219")
 p2 <- ggplot(filter(inc, motusTagID == 23218, ts > as.POSIXct("2017-06-15")), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
   facet_grid(recvDeployName~.) +
   geom_vline(xintercept = inc$sunrise,col = "orange") +
@@ -203,7 +203,7 @@ grid.arrange(p1, p2, p3, p4, nrow = 2)
 
 The above plot is a selection of 4 representative detection patterns of individuals; examining the signal strength it is not always clear when birds are attending the nest site and when they are foraging. For example, tag 23219 shows clear daily signal strength patterns, with low signal strength occuring overnight when the bird is likely incubating. Tag 23218 has a similar but less distinct pattern, some nights the bird is detected while other nights it is not. In other cases the tag is picked up far less consistently as in tag 28593, and in even more extreme cases as in tag 28522. For these final two tags, the bird is rarely if ever detected while at the nest site, and most detections likely occur as the bird is leaving or arriving at the nest site. 
 
-Furthermore, even tags with clear daily detection patterns as in tag 23219, apart from long stretches of detections at the nest overnight, shorter nest site attendance periods during the day are not as obviously picked up. However, based on these detections, the signal strength during incubation is generally much lower than during flight. This is to be expected as tags detection ranges increase substantially when a bird is in the air as compared to on the ground. Therefore, all detections on the Exxon Fields receiver with a signal strength < 80 will be excluded from foraging analysis from this point onwards to exclude likely detections on the nest. While this will invariably also remove detections on Exxon Fields that may occur when the bird is in flight, since the station is in very close proximity to the nesting site, in most cases this will only remove the tail ends of a detection streak as the bird is departing or approaching the nesting site. 
+Furthermore, even tags with clear daily detection patterns as in tag 23219, shorter nest site attendance periods during the day are not as obviously picked up. However, based on these detections, the signal strength during incubation is generally much lower than during flight. This is to be expected as a tags detection range increases substantially when a bird is in the air as compared to on the ground. Therefore, all detections on the Exxon Fields receiver with a signal strength < 80 will be excluded from foraging analysis from this point onwards to exclude likely detections on the nest. While this will invariably also remove detections on Exxon Fields that may occur when the bird is in flight, since the station is in very close proximity to the nesting site, in most cases this will only remove the tail ends of a detection streak as the bird is departing or approaching the nesting site. 
 
 ```{r removeIncubationDetections, echo = FALSE, message = FALSE}
 foraging <- filter(inc, !(recvDeployName == "Exxon Fields" & sig <80))
@@ -222,7 +222,7 @@ p <- rename(p, "Site Name" = "recvDeployName2", "Distance from Exxon Fields (m)"
 pander(p, split.cell = 50, split.table = Inf, justify = c("left"))
 ```
 
-For each station the number total number of visits was calculated, as expected Exxon Fields had by far the highest number of visits as it was at the nesting area. In 2017 and 2018 Grand_Isle had the next highest frequency of detections, this is not surprising as it is the closest station to the nesting area. East Grand Terre and Wisner followed with lower numbers of site visits and are also near the nesting area. Note the lack of detections at Wisner in 2018, this is likely due to receiver malfunction rather than a true lack of detections. All other stations had negligible (<3) visits and are substantially farther away from the nesting grounds.
+For each station the number of total number of visits was calculated, as expected Exxon Fields had by far the highest number of visits as it was at the nesting area. In 2017 and 2018 Grand_Isle had the next highest frequency of detections, this is not surprising as it is the closest station to the nesting area. East Grand Terre and Wisner followed with lower numbers of site visits and are also near the nesting area. Note the lack of detections at Wisner in 2018, this is likely due to receiver malfunction rather than a true lack of detections. All other stations had negligible (<3) visits and are substantially farther away from the nesting grounds.
 ```{r visitFrequency, echo = FALSE, message = FALSE}
 ggplot(filter(visits), aes(recvDeployName)) +
   geom_bar(stat = "count") + geom_text(stat= "count", aes(label = ..count..), vjust = -1, size = 3) +
@@ -247,7 +247,7 @@ p + coord_cartesian(ylim = ylim1*1.05) + th +
        x = NULL)
 ```
 
-Of the birds that were detected at Exxon Fields in 2017 and 2018, all were detected on at least 6 different visits. At Grand_Isle, the majority (39/44, 88.6%) of birds were detected on more than 2 separate occasions (>2 discrete visits). In comparison, the remaining stations less than half (10/23, 43.5%) were detected on more than two occasions. Only tags 23261 appeared semi-regularly at wisner but is notable in 12 detections, 28522/28529 to East Grand Terre. 
+Of the birds that were detected at Exxon Fields in 2017 and 2018, all were detected on at least 6 different visits. At Grand_Isle, the majority (39/44, 88.6%) of birds were detected on more than 2 separate occasions (>2 discrete visits). In comparison, at the remaining stations less than half (10/23, 43.5%) were detected on more than two occasions. Only tags 23261 appeared semi-regularly at wisner but is notable in 12 detections. 
 
 Thus birds appear to spend the majority of their time in close proximity to Exxon Fields, however this could be a by-product of increased detection due to proximity to nesting sites and therefore a necessity to frequently pass the receiver regardless if foraging is occuring nearby or not. Most birds frequented Grand_Isle regularly which could be due to nearby foraging, or a proximity to the nesting site. See Appendix \@ref(AppendixC) for detection plots of all birds detected more than twice on stations outside of Exxon Fields and Grand_Isle. 
 
@@ -319,7 +319,7 @@ headquarters17 <- ggplot(filter(for.dir, year == 2017, recvDeployName == "San Be
   geom_vline(xintercept = filter(df.antDeps, recvDeployName == "San Bernard National Wildlife Refuge Headquarters")$antBearing,col = "orange") +
   labs(title ="San Bernard NWR HQ") + sf + cp + sx + gb + thCirc
 # San Bernard NWR (Big Pond Unit)
-bigPond17 <- ggplot(filter(for.dir, year == 2017, recvDeployName == "San Bernard NWR (Big Pond Unit)"), aes(antBearing, nDet, fill = nDet)) +
+bigPond17 <- ggplot(filter(for.dir, year == 2017, recvDeployName == "San Bernard NWR (BPU)"), aes(antBearing, nDet, fill = nDet)) +
   geom_vline(xintercept = filter(df.antDeps, recvDeployName == "San Bernard NWR (Big Pond Unit)")$antBearing,col = "orange") +
   labs(title ="San Bernard NWR (Big Pond Unit)") + sf + cp + sx + gb + thCirc
 # Scenic Galveston
@@ -338,7 +338,8 @@ grid.arrange(arrangeGrob(exxon17, grandIsle17, wisner17, grandTerre17,
                                    c(1, 1, 3, 4),
                                    c(2, 2, 5, 6),
                                    c(2, 2, 7, 8))),
-             mylegend, nrow = 2, heights = c(20,1))
+             mylegend, nrow = 2, heights = c(20,1),
+             top = "2017: Number of detections by antenna bearing")
 ggsave("./images/2017antennaDetections.png")
 
 # 2018
@@ -363,7 +364,8 @@ grid.arrange(arrangeGrob(exxon18, grandIsle18, grandTerre18, bolivar18,
              nrow = 2,
              layout_matrix = rbind(c(1, 2),
                                    c(3, 4))),
-             mylegend, nrow = 2, heights = c(20,1))
+             mylegend, nrow = 2, heights = c(20,1),
+             top = "2018: Number of detections by antenna bearing")
 ggsave("./images/2018antennaDetections.png")
 
 ```

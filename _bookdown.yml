@@ -1,5 +1,4 @@
-book_filename: "LETE-Analysis"
+book_filename: "LETE_Analysis"
 language:
   ui:
     chapter_name: ""
-delete_merged_file: true
