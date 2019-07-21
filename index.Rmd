@@ -1,5 +1,5 @@
 ---
-title: "Statistical analysis of BTNEP Automated VHF Telemetry Network Project"
+title: "Spatial and temporal requirements of breeding Least Terns in the Barataria-Terrebonne National Estuary through the use of Motus automated radio-telemetry data"
 author: "Zoe Crysler"
 date: "`r Sys.Date()`"
 output: bookdown::gitbook
@@ -10,6 +10,6 @@ site: bookdown::bookdown_site
 
 ---
 
-# Spatial and temporal requirements of breeding Least Terns through the use of Motus automated radio-telemetry data  {-}
+# Statistical analysis in Support of Barataria-Terrebonne National Estuary Program Automated VHF Telemetry Network Project {-}
 
 

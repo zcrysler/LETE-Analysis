@@ -1,0 +1,59 @@
+# Appendix - Site Visits {#AppendixC}
+
+```{r tidyr5, echo = FALSE, message = FALSE, warning = FALSE}
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=50), tidy = TRUE)
+require(pander)
+```
+
+## Unique Visits
+The following table shows the length in minutes of each unique visit:
+```{r parameterTableVisits, echo = FALSE}
+param.table <- dplyr::select(read.csv("./data/visits.csv", stringsAsFactors=FALSE), 
+                             motusTagID, mfgID, recvDeployName, year, mints, maxts, 
+                             visitLength, recvLat, recvLon, distFromExxon)
+param.table <- param.table %>% 
+  mutate(Location = paste(round(recvLat, digits = 2), round(recvLon, digits = 2), sep = ", "),
+         visitLength = round(visitLength, digits = 2))
+param.table <- rename(param.table, "Motus Tag ID" = motusTagID, "Lotek ID" = mfgID,
+                      Receiver = recvDeployName, Year = year, 
+                      "First Detection" = mints,
+                      "Final Detection" = maxts, "Visit Length (mins)" = visitLength, 
+                      "Distance from Exxon Fields (m)" = distFromExxon)
+knitr::kable(select(param.table, "Motus Tag ID", "Lotek ID", Receiver, Location, 
+                    "Distance from Exxon Fields (m)", "First Detection", "Final Detection", 
+                    "Visit Length (mins)"), 
+      booktabs = TRUE, caption = 'Time and length of each unique visit for each tag')
+```
+
+
+## Visits by tag and station
+For each year and tag, the following table shows the total number and mean length (mins) of visits at each station:
+```{r parameterTableVisitsTag, echo = FALSE}
+param.table <- dplyr::select(read.csv("./data/visits_tag.csv", stringsAsFactors=FALSE), 2:7)
+param.table <- param.table %>% mutate(meanLength = round(meanLength, digits = 2))
+param.table <- arrange(param.table, motusTagID, recvDeployName)
+param.table <- rename(param.table,  "Motus Tag ID" = motusTagID, "Lotek ID" = mfgID,
+                      Receiver = recvDeployName, Year = year, 
+                      "Mean Length of Visits (mins)" = meanLength, 
+                      "Total Number of Visits" = totVisits)
+knitr::kable(select(param.table, Year, "Motus Tag ID", "Lotek ID", Receiver, 
+             "Total Number of Visits", "Mean Length of Visits (mins)"), 
+      booktabs = TRUE, caption = 'Total number and mean length of visits (mins) for each tag by receiver')
+```
+
+
+## Visits by Station
+For each year and receiver, the following table shows the mean number and length (mins) of visits of all tags.
+
+```{r parameterTableVisitsRecv, echo = FALSE}
+param.table <- dplyr::select(read.csv("./data/visits_recv.csv", stringsAsFactors=FALSE), 2:5)
+param.table <- param.table %>% mutate(meanLength = round(meanLength, digits = 2),
+                                      meanVisits = round(meanVisits, digits = 2))
+param.table <- rename(param.table, Year = year, Receiver = recvDeployName, 
+                      "Mean Length of Visits (mins)" = meanLength, 
+                      "Mean Number of Visits" = meanVisits)
+knitr::kable(param.table, 
+      booktabs = TRUE, caption = 'Mean length (mins) and number of visits of all tags at each receiver by year') 
+
+```

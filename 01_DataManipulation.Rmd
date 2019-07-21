@@ -1,0 +1,392 @@
+# Methods {#Methods}
+```{r tidyr2, echo = FALSE, message = FALSE, warning = FALSE}
+
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=50), tidy = TRUE)
+```
+## Data Download
+Least Tern detection data was downloaded from Motus using the motus R package, and then filtered to remove false positive detections. Detailed information on data download processes, formats, and false detections can be found here: [https://motus.org/MotusRBook/](https://motus.org/MotusRBook/). 
+
+## Data Cleaning
+Strings of detections with only 2 consecutive detections at a station (run length = 2) are questionable and may indicate the tag was just barely within range of the station, or more likely, that it is a false positive produced by background radio noise which is present to varying degrees at all stations. 
+
+To begin, several tags were never detected near the breeding site and were removed (2017 Lotek tag ID's 95, 96, 97, 2018 Lotek tag ID 315). Then, detections at stations outside the tagging area with a run length of 2 were deemed to be false positives and removed. Each remaining tag was then visually inspected to examine detections that occurred at questionable latitudes far from the breeding site. Several stations had large numbers of detections with low run lengths, this is characteristic of stations with high levels of background radio noise which can often result in false positives. These stations were *Drasher*, *RTNJ*, *Koffler*, *Waggoners Gap*, *Burntpoint*, *Los Vientos Forest*, and *D'Estimauville*. Further inspection of detections at these stations showed that it would be biologically impossible for birds to make the flight between detections on the breeding ground and subsequent detections at these stations in the amount of time between consecutive detections. Therefore, all detections at these stations were deemed to be false positives due to noisy sites.
+
+Remaining detections far from the tagging location were examined, many had run lengths of only 2 which are questionable at best and were deemed to be false positives. Others with run lengths of 3 or 4 were not biologically possible flights such as between the tagging area and eastern Canada. 
+
+All detections deemed to be false positives were added to a custom filter that was applied to the data and were excluded from further analysis.
+
+Detailed data filtering methodology with complete R code is available in [Appendix A](#AppendixA).
+
+```{r LoadFilteredData, echo = FALSE, warning = FALSE, message = FALSE}
+# load filtered data
+library(motus)
+proj.num <- 132
+sql.motus <- tagme(projRecv = proj.num, new = FALSE, update = FALSE) # could check periodically if more data is expected 
+tbl.alltags <- tbl(sql.motus, "alltags")
+
+# obtain a table object of the filter
+tbl.filter = getRunsFilters(sql.motus, "filtFalsePos")
+
+# filter and convert the table into a data frame, with a few modifications
+lete <- left_join(tbl.alltags, tbl.filter, by = c("runID", "motusTagID")) %>%
+  mutate(probability = ifelse(is.na(probability), 1, probability),
+         recvLat = if_else((is.na(gpsLat)|gpsLat == 0), # create new lat/lon variables
+                           recvDeployLat, gpsLat), 
+         recvLon = if_else((is.na(gpsLon)|gpsLon == 0), 
+                           recvDeployLon, gpsLon)) %>% 
+  filter(probability > 0) %>%
+  #remove unecessary columns
+  select(-ambigID, -tagProjID, -sigsd, -noise, -freq, -freqsd, -slop, -burstSlop, -done, -bootnum, -tagType, -codeSet, -mfg, -tagModel, -tagLifespan, -nomFreq, -pulseLen, -markerNumber, -markerType, -tagDeployAlt, -tagDeployComments, -fullID, -recvDeployAlt, -antHeight, -speciesFR, -speciesSci, -speciesGroup, -tagProjName, -gpsAlt, -recvSiteName, -tagBI, -speciesID, -deviceID, -tagDeployID) %>%  
+  filter(speciesEN == "Least Tern") %>% # keep only LETE
+  collect() %>% 
+  as.data.frame %>% # convert tbl to data.frame
+  # convert times to datetime
+  mutate(ts = as_datetime(ts, tz = "UTC", origin = "1970-01-01"),
+         tagDeployStart = as_datetime(tagDeployStart, tz = "UTC", origin = "1970-01-01"),
+         tagDeployEnd = as_datetime(tagDeployEnd, tz = "UTC", origin = "1970-01-01"),
+         year = year(ts),
+         recvDeployName = as.factor(recvDeployName),
+         mfgID = as.numeric(mfgID)) %>% # get year variable
+  arrange(motusTagID, ts)
+```
+
+## Data Manipulation
+Detailed nest monitoring records were used to determine tag retention and incubation periods. To determine incubation period, each tag was assigned an end date based on the "Fate" variable, once a nest's fate was categorized as either "failed nest", "successful nest", or "eggs due to hatch but no chicks found", it was assigned an end date of that day; the "nestEnd" variable.
+
+Lotek tag ID's 114 and 316 did not have any nest records, as their incubation period could therefore not be determined, they were excluded from further analysis.
+
+```{r importTagRetention, echo = FALSE, warning = FALSE, message = FALSE}
+# Import nest monitoring data
+nesting <- read.csv("./data/LETE Nesting & Tag Retention Data.csv")
+# rename some variables
+nesting <- rename(nesting, "mfgID" = "Tag..", "nestLat" = "Latitude", "nestLon" = "Longitude")
+# convert date to proper date format
+nesting <- mutate(nesting, Date = as.Date(nesting$Date, tz = "CDT"),
+                  mfgID = as.character(mfgID))
+# tags 132 and 120 are recorded together, need to separate
+tag132 <- filter(nesting, mfgID == "132 & 120")
+tag132$mfgID <- ifelse(tag132$mfgID == "132 & 120", "132", "")
+nesting$mfgID <- ifelse(nesting$mfgID == "132 & 120", "120", nesting$mfgID)
+nesting <- rbind(tag132, nesting)
+
+# get data frame of nest end dates
+nestEnd <- filter(nesting, is.na(Fate) == FALSE & mfgID != "")
+nestEnd <- select(nestEnd, mfgID, Date)
+nestEnd <- rename(nestEnd, "nestEnd" = "Date")
+# get data frame of tag loss dates
+tagLoss <- filter(nesting, Tag.Status == 2)
+tagLoss <- tagLoss %>% group_by(mfgID) %>% summarize(tagLoss = min(Date)) %>% as.data.frame()
+tagLoss$mfgID <- as.numeric(tagLoss$mfgID)
+tags <- unique(select(nesting, mfgID))
+tags$mfgID <- as.character(tags$mfgID)
+tags$mfgID <- as.numeric(tags$mfgID)
+tagLoss <- left_join(tags, tagLoss)
+tagLoss$tagLoss[is.na(tagLoss$tagLoss)] <- as.Date("2019-01-01")
+tagLoss <- tagLoss[!is.na(tagLoss$mfgID),]
+# join nest end dates to nesting data frame
+nesting <- left_join(select(nesting, mfgID, Nest_ID, nestLat, nestLon, Fate), nestEnd, by = "mfgID")
+nesting <- unique(filter(nesting, mfgID != "", is.na(Fate) == FALSE))
+nesting$mfgID <- as.numeric(nesting$mfgID)
+# join tagLoss to nesting data frame
+nesting <- left_join(nesting, tagLoss)
+# join with lete database
+lete <- left_join(lete, nesting, by = "mfgID")
+# remove any detections after tag fell off
+lete <- filter(lete, ts < tagLoss)
+# label as incubating or not based on nestEnd date (ie. remove anything beyond nestEnd)
+lete$incubate <- ifelse(as.Date(lete$ts) <= lete$nestEnd, "TRUE", "FALSE")
+# Tags 114 and 316 do not have incubation information and will be set to FALSE
+lete$incubate <- ifelse(lete$mfgID %in% c(114, 316), "FALSE", lete$incubate)
+
+# Determine sunrise and sunset times for each detection based on detection location
+lete <- sunRiseSet(lete, lat = "recvLat", lon = "recvLon")
+
+#Only detections that occurred during incubation will be kept, 
+# note that tags 114 and 316 do not have incubation information 
+# and will thus be excluded.
+inc <- filter(lete, incubate == TRUE)
+```
+Several tags were only detected for a short period of time; for meaningful results, tags that were detected for less than 24 hours were excluded from further analysis (Lotek tag ID's 85, 98, 120, 130, 286, 288, 309, 312).
+```{r detectionLength, echo = FALSE, message = FALSE, warning = FALSE}
+#Examine how long each tag was detected for during incubation
+detDate <- inc %>% group_by(year, motusTagID, mfgID) %>% 
+  summarize(mints = min(ts), 
+            maxts = max(ts), 
+            range = difftime(maxts, mints, units = "days"),
+            nSites = length(unique(recvDeployName)))
+# some birds not detected for very long, therefore only look at ones detected for at least 1 full day
+tmp <- unique(filter(detDate, range > 1)$motusTagID)
+inc <- filter(inc, motusTagID %in% tmp)
+tmp <- detDate
+tmp <- rename(detDate, Year = year, "First Detection" = mints, "Final Detection" = maxts, "Detection Period (days)" = range, "Number of Sites" = nSites)
+tmp <- tmp %>% as.data.frame(tmp) %>% arrange(motusTagID)
+kable(tmp, booktabs = TRUE, caption = 'Incubation detection period for all tags') 
+```
+
+```{r distances, echo = FALSE, message = FALSE, warning = FALSE}
+#Create a data frame with distances between each receiver
+
+# first create latLonDist function:
+##
+## translated from: http://www.movable-type.co.uk/scripts/latlong-vincenty.html
+##
+## /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+## /* Vincenty Inverse Solution of Geodesics on the Ellipsoid (c) Chris Veness 2002-2012             */
+## /*                                                                                                */
+## /* from: Vincenty inverse formula - T Vincenty, "Direct and Inverse Solutions of Geodesics on the */
+## /*       Ellipsoid with application of nested equations", Survey Review, vol XXII no 176, 1975    */
+## /*       http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf                                             */
+## /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
+## /**
+##  * Calculates geodetic distance between two points specified by latitude/longitude using 
+##  * Vincenty inverse formula for ellipsoids
+##  *
+##  * @param   {Number} lat1, lon1: first point in decimal degrees
+##  * @param   {Number} lat2, lon2: second point in decimal degrees
+##  * @returns (Number} distance in metres between points
+##  */
+
+latLonDist = function(lat1, lon1, lat2, lon2) {
+  a = 6378137
+  b = 6356752.314245
+  f = 1/298.257223563  ## WGS-84 ellipsoid params
+  
+  llmat = cbind(lat1, lon1, lat2, lon2) ## recycles coordinates to match
+  
+  s = rep(-1, nrow(llmat)) ## return values; -1 means not yet computed
+  for (i in 1:nrow(llmat)) {  ## calculate distance between i'th pair of points
+    if (!all(is.finite(llmat[i,]))) {
+      s[i] = NA
+      next
+    }
+    
+    L = rad(llmat[i, 4]-llmat[i, 2])
+    U1 = atan((1-f) * tan(rad(llmat[i, 1])))
+    U2 = atan((1-f) * tan(rad(llmat[i, 3])))
+    sinU1 = sin(U1)
+    cosU1 = cos(U1)
+    sinU2 = sin(U2)
+    cosU2 = cos(U2)
+    lambda = L
+    iterLimit = 100
+    repeat {
+      sinLambda = sin(lambda)
+      cosLambda = cos(lambda)
+      sinSigma = sqrt((cosU2*sinLambda) * (cosU2*sinLambda) + 
+                        (cosU1*sinU2-sinU1*cosU2*cosLambda) * (cosU1*sinU2-sinU1*cosU2*cosLambda))
+      if (abs(sinSigma) < 1e-10) {
+        s[i] = 0 ## co-incident points
+        break
+      }
+      cosSigma = sinU1*sinU2 + cosU1*cosU2*cosLambda
+      sigma = atan2(sinSigma, cosSigma)
+      sinAlpha = cosU1 * cosU2 * sinLambda / sinSigma
+      cosSqAlpha = 1 - sinAlpha*sinAlpha
+      cos2SigmaM = cosSigma - 2*sinU1*sinU2 / cosSqAlpha
+      if (is.nan(cos2SigmaM))
+        cos2SigmaM = 0  ## equatorial line: cosSqAlpha=0 (§6)
+      C = f/16*cosSqAlpha*(4+f*(4-3*cosSqAlpha))
+      lambdaP = lambda
+      lambda = L + (1-C) * f * sinAlpha *
+        (sigma + C*sinSigma*(cos2SigmaM+C*cosSigma*(-1+2*cos2SigmaM*cos2SigmaM)))
+      iterLimit = iterLimit - 1
+      if (abs(lambda-lambdaP) <= 1e-12 || iterLimit == 0)
+        break
+    } 
+    
+    if (iterLimit==0) {
+      s[i] = NaN  ## formula failed to converge
+    } else if (s[i] < 0) {
+      uSq = cosSqAlpha * (a*a - b*b) / (b*b)
+      A = 1 + uSq/16384*(4096+uSq*(-768+uSq*(320-175*uSq)))
+      B = uSq/1024 * (256+uSq*(-128+uSq*(74-47*uSq)))
+      deltaSigma = B*sinSigma*(cos2SigmaM+B/4*(cosSigma*(-1+2*cos2SigmaM*cos2SigmaM)-
+                                                 B/6*cos2SigmaM*(-3+4*sinSigma*sinSigma)*(-3+4*cos2SigmaM*cos2SigmaM)))
+      s[i] = b*A*(sigma-deltaSigma)
+    }
+  }
+  s = round(s, 3)
+  return (s)
+}
+
+## convert to radians from degrees
+rad = function(x) {
+  return (x * (pi/180))
+}
+## Distances
+dist <- expand.grid("recvDeployName1" = unique(lete$recvDeployName), "recvDeployName2" = unique(lete$recvDeployName))
+dist <- unique(left_join(dist, select(lete, recvDeployName, recvLat, recvLon), by = c("recvDeployName1" = "recvDeployName")))
+dist <- rename(dist, "recvLat1" = "recvLat", "recvLon1" = "recvLon")
+dist <- unique(left_join(dist, select(lete, recvDeployName, recvLat, recvLon), by = c("recvDeployName2" = "recvDeployName")))
+dist <- rename(dist, "recvLat2" = "recvLat", "recvLon2" = "recvLon")
+# Get distance (m) between site combos
+# get mean lat/lon
+dist <- dist %>% group_by(recvDeployName1, recvDeployName2) %>% 
+  summarize(recvLat1 = mean(recvLat1),
+            recvLon1 = mean(recvLon1),
+            recvLat2 = mean(recvLat2),
+            recvLon2 = mean(recvLon2)) %>% as.data.frame
+dist$distance <- with(dist, latLonDist(recvLat1, recvLon1, recvLat2, recvLon2))
+write.csv(dist, file = "./data/distances.csv")
+```
+
+## Site Visits
+To determine the frequency at which Least Terns visited each foraging area, detections at each station were grouped into distinct 'visits'. A visit was categorized as a period of consecutive detections (in minutes) at a single station, or multiple periods of consecutive detections at a single station where there were fewer that 10 minutes between consecutive periods of detection. Detailed visit summaries are available in Appendix \@ref(AppendixC).
+```{r hourly, echo = FALSE, message = FALSE, warning = FALSE}
+# Get a small data frame (lete.path) of hourly detections for easier data manipulation
+
+# Hourly detections
+fun.getpath <- function(df) 
+{
+  mutate(df, ts.h = as.POSIXct(round(ts, "hours"))) %>%
+    group_by(year, motusTagID, runID, ts.h, recvDeployName, recv, 
+             tagDeployLon, tagDeployLat, recvLat, recvLon, incubate) %>%
+    summarize(max.runLen = max(runLen),
+              tot.runLen = sum(runLen)) %>% 
+    arrange(motusTagID, ts.h) %>%
+    data.frame()
+}
+
+lete.path <- fun.getpath(filter(inc, incubate == TRUE))
+```
+
+```{r activeReceivers, echo = FALSE, message = FALSE, warning = FALSE, results = "hide"}
+#Create data frames of 2017 and 2018 active receivers during tagging period
+
+## list of active receivers
+#find active periods for 2017 and 2018
+range(filter(lete, year == "2017")$ts)
+range(filter(lete, year == "2018")$ts)
+# get receiver metadata
+tbl.recvDeps <- tbl(sql.motus, "recvDeps")
+df.recvDeps <- tbl.recvDeps %>% collect %>% as.data.frame() %>% 
+  mutate(tsStart = as_datetime(tsStart, tz = "UTC", 
+                               origin = "1970-01-01"), tsEnd = as_datetime(tsEnd, 
+                                                                           tz = "UTC", origin = "1970-01-01"))
+# for deployments with no end dates, make an end date a year from now
+df.recvDeps$tsEnd <- as.POSIXct(ifelse(is.na(df.recvDeps$tsEnd), 
+                                       as.POSIXct(format(Sys.time(), "%Y-%m-%d %H:%M:%S")) + 
+                                         lubridate::dyears(1), df.recvDeps$tsEnd), tz = "UTC", 
+                                origin = "1970-01-01")
+# get running intervals for all receiver deployments
+siteOp <- with(df.recvDeps, lubridate::interval(tsStart, 
+                                                tsEnd))  # get running intervals for each deployment
+# set the date range you're interested in
+dateRange17 <- lubridate::interval(as.POSIXct("2017-05-15"), 
+                                   as.POSIXct("2017-07-04"))
+dateRange18 <- lubridate::interval(as.POSIXct("2018-05-08"), 
+                                   as.POSIXct("2018-07-10"))
+# create new variable 'active' which will be set to 
+# TRUE if the receiver was active at some point during the specified date range, 
+# and FALSE if not
+df.recvDeps17 <- df.recvDeps
+df.recvDeps17$active17 <- lubridate::int_overlaps(siteOp, 
+                                                dateRange17)
+df.recvDeps17 <- select(df.recvDeps17, serno, name, active17, latitude, longitude)
+df.recvDeps18 <- df.recvDeps
+df.recvDeps18$active18 <- lubridate::int_overlaps(siteOp, 
+                                                dateRange18)
+df.recvDeps18 <- select(df.recvDeps18, serno, name, active18, latitude, longitude)
+# combined data frame showing when each was active
+df.recvDepsCombined <- left_join(filter(df.recvDeps17, active17 == TRUE), filter(df.recvDeps18, active18 == TRUE))
+df.recvDepsCombined$active18 <- ifelse(is.na(df.recvDepsCombined$active18), "FALSE", df.recvDepsCombined$active18)
+df.recvDepsCombined$active <- df.recvDepsCombined$active18
+df.recvDepsCombined <- rename(df.recvDepsCombined, "recvDeployName" = "name", "recv" = "serno")
+# combine with lete detections for mapping later
+tmp <- unique(select(lete.path, recvDeployName, recv, incubate))
+tmp <- filter(tmp, incubate == TRUE)
+df.recvDepsCombined <- left_join(df.recvDepsCombined, tmp)
+```
+
+```{r visits, echo = FALSE, message = FALSE, warning = FALSE}
+# Consider birds to be at the nest anytime they are detected with a 
+# signal strength below 80 at Exxon Fields (see results), thus foraging will be:
+foraging <- filter(inc, !(recvDeployName == "Exxon Fields" & sig <80))
+# rounding lat/lons
+foraging <- foraging %>% group_by(recvDeployName) %>% 
+  mutate(recvLat = mean(recvLat),
+            recvLon = mean(recvLon),
+            recvLat = mean(recvLat),
+            recvLon = mean(recvLon)) %>% as.data.frame
+
+## look at foraging detections
+visits <- foraging %>% group_by(motusTagID, mfgID, recvDeployName, recvDeployID, runID, batchID, year) %>%
+  summarize(mints = min(ts),
+            maxts = max(ts),
+            numHits = length(motusTagID))
+visits <- as.data.frame(visits)
+visits <- visits[with(visits, order(motusTagID, mints)),]
+visits <- visits %>%
+  mutate(diffsec = as.numeric(mints) - lag(as.numeric(maxts)),
+         diffmin = as.numeric(diffsec/60)) %>% as.data.frame
+## assign a group number for each group of hits at a station per tag by time
+visits <- visits[with(visits, order(motusTagID, mints)),] ## first make sure it's ordered correctly
+visits <- visits %>% group_by(motusTagID) %>% mutate(count1 = cumsum(c(1,as.numeric(diff(as.factor(recvDeployName)))!=0))) ## assign a group number each time the time difference from one runID to another is > 10
+visits <- visits[with(visits, order(motusTagID, mints)),] ## first make sure it's ordered correctly
+visits$diffmin[is.na(visits$diffmin)] <- 0 ## set NA in time differences to 0
+visits <- visits %>% group_by(motusTagID, count1) %>% mutate(count2 = c(cumsum(diffmin >10)),
+                                                             visitID = paste(count1, count2, sep = ".")) ## now get one value to number each variable
+
+## now get the total time (in minutes) for each "visit"
+visits <- visits %>% group_by(motusTagID, mfgID, recvDeployName, recvDeployID, visitID, year) %>%
+  summarize(mints = min(mints),
+            maxts = max(maxts)) %>% as.data.frame()
+visits <- visits %>% mutate(visitLength = as.numeric(difftime(maxts, mints), units = "mins"),
+                            date = as.Date(mints),
+                            tsRound = as.POSIXct(round(mints, "hours")),
+                            visitID = as.numeric(visitID))
+visits <- merge(visits, select(df.recvDeps, name, deployID, latitude, longitude, projectID), by.x = "recvDeployID", by.y = "deployID", all.x = TRUE)
+## Distance travelled for the visit
+visits <- visits[with(visits, order(as.numeric(motusTagID, mints))),]
+visits$visit.Dist <- with(visits, latLonDist(lag(latitude), lag(longitude), latitude, longitude)) ## distance for a visit is the distance it took to get there from the last station
+## Sunrise info
+visits <- rename(visits, recvDeployLat = latitude, recvDeployLon = longitude, ts = mints)
+visits <- rename(visits, recvLat = recvDeployLat, recvLon = recvDeployLon, mints = ts)
+visits <- arrange(visits, recvDeployID, motusTagID, mints)
+# order site variable based on distance from exxon fields
+# first add in distance column
+tmp <- filter(dist, recvDeployName1 == "Exxon Fields")
+visits <- left_join(visits, select(tmp, recvDeployName2, distance), by = c("recvDeployName" = "recvDeployName2"))
+visits <- rename(visits, distFromExxon = distance)
+visits$recvDeployName <- reorder(visits$recvDeployName, visits$distFromExxon)
+  
+write.csv(visits, "./data/visits.csv")
+
+# visit length summarized by tagID and receiver
+visits.tag <- visits %>% group_by(year, recvDeployName, motusTagID, mfgID) %>%
+  summarize(meanLength = mean(visitLength),
+            totVisits = length(visitLength)) %>% 
+  arrange(year, recvDeployName, motusTagID, totVisits)
+write.csv(visits.tag, "./data/visits_tag.csv")
+
+#visit length summarized by receiver
+visits.recv <- filter(visits.tag) %>% group_by(year, recvDeployName) %>%
+  summarize(meanLength = mean(meanLength),
+            meanVisits = mean(totVisits)) %>% 
+  arrange(year, recvDeployName)
+write.csv(visits.recv, "./data/visits_recv.csv")
+
+```
+
+```{r antBearings, echo = FALSE, message = FALSE, warning = FALSE}
+# Create data frame of antenna bearings
+
+# Antenna metadata
+tbl.antDeps <- tbl(sql.motus, "antDeps")
+df.antDeps <- tbl.antDeps %>% collect %>% as.data.frame()
+# merge with receiver metadata
+df.antDeps <- left_join(select(df.antDeps, deployID, antennaType, bearing), select(df.recvDeps, deployID, name, latitude, longitude, tsStart, tsEnd), by = "deployID")
+# keep only relevant receivers
+deps <- unique(df.recvDepsCombined$recvDeployName)
+df.antDeps <- filter(df.antDeps, name %in% deps)
+df.antDeps <- rename(df.antDeps, "recvDeployName" = "name", "antBearing" = "bearing", "recvDeployID" = "deployID")
+```
+
+
+
+
+
+
+
