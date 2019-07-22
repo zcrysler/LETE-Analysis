@@ -1,197 +1,197 @@
 "","recvDeployName1","recvDeployName2","recvLat1","recvLon1","recvLat2","recvLon2","distance"
 "1","Bolivar_Flats","Bolivar_Flats",29.3714,-94.7495,29.3714,-94.7495,0
-"2","Bolivar_Flats","Brazoria National Wildlife Refuge",29.3714,-94.7495,29.0942,-95.27995,60029.025
-"3","Bolivar_Flats","East Grand Terre",29.3714,-94.7495,29.311458,-89.863249,474549.841
-"4","Bolivar_Flats","Exxon Fields",29.3714,-94.7495,29.2511,-89.9735,464126.449
-"5","Bolivar_Flats","Grand_Isle",29.3714,-94.7495,29.2391,-90.003051,461324.784
-"6","Bolivar_Flats","High_Island",29.3714,-94.7495,29.5621666666667,-94.3903333333333,40753.326
-"7","Bolivar_Flats","Quintana",29.3714,-94.7495,28.9339333333333,-95.3088666666667,72890.382
-"8","Bolivar_Flats","Rock W",29.3714,-94.7495,29.707,-92.8307,189668.301
-"9","Bolivar_Flats","Rockport Bay Education Center",29.3714,-94.7495,28.0264,-97.04665,269453.623
-"10","Bolivar_Flats","Sabine NWR",29.3714,-94.7495,29.8892,-93.4021,142548.871
-"11","Bolivar_Flats","San Bernard National Wildlife Refuge Headquarters",29.3714,-94.7495,28.9131,-95.5784,95318.876
-"12","Bolivar_Flats","San Bernard NWR (Big Pond Unit)",29.3714,-94.7495,29.16235,-95.8254125,107101.387
-"13","Bolivar_Flats","Scenic Galveston",29.3714,-94.7495,29.33475,-94.91605,16675.38
-"14","Bolivar_Flats","Wisner",29.3714,-94.7495,29.12297,-90.16045,446903.997
-"15","Brazoria National Wildlife Refuge","Bolivar_Flats",29.0942,-95.27995,29.3714,-94.7495,60029.025
+"2","Bolivar_Flats","Brazoria National Wildlife Refuge",29.3714,-94.7495,29.0942,-95.27995,37.3003068330947
+"3","Bolivar_Flats","East Grand Terre",29.3714,-94.7495,29.311458,-89.863249,294.871600478207
+"4","Bolivar_Flats","Exxon Fields",29.3714,-94.7495,29.2511,-89.9735,288.39480496401
+"5","Bolivar_Flats","Grand_Isle",29.3714,-94.7495,29.2391,-90.003051,286.653931042711
+"6","Bolivar_Flats","High_Island",29.3714,-94.7495,29.5621666666667,-94.3903333333333,25.3229427642567
+"7","Bolivar_Flats","Quintana",29.3714,-94.7495,28.9339333333333,-95.3088666666667,45.2919835659747
+"8","Bolivar_Flats","Rock W",29.3714,-94.7495,29.707,-92.8307,117.854418322
+"9","Bolivar_Flats","Rockport Bay Education Center",29.3714,-94.7495,28.0264,-97.04665,167.430718976179
+"10","Bolivar_Flats","Sabine NWR",29.3714,-94.7495,29.8892,-93.4021,88.5757619253559
+"11","Bolivar_Flats","San Bernard National Wildlife Refuge Headquarters",29.3714,-94.7495,28.9131,-95.5784,59.2284036228426
+"12","Bolivar_Flats","San Bernard NWR (Big Pond Unit)",29.3714,-94.7495,29.16235,-95.8254125,66.5497165304621
+"13","Bolivar_Flats","Scenic Galveston",29.3714,-94.7495,29.33475,-94.91605,10.3616007516106
+"14","Bolivar_Flats","Wisner",29.3714,-94.7495,29.12297,-90.16045,277.69326943152
+"15","Brazoria National Wildlife Refuge","Bolivar_Flats",29.0942,-95.27995,29.3714,-94.7495,37.3003068330947
 "16","Brazoria National Wildlife Refuge","Brazoria National Wildlife Refuge",29.0942,-95.27995,29.0942,-95.27995,0
-"17","Brazoria National Wildlife Refuge","East Grand Terre",29.0942,-95.27995,29.311458,-89.863249,527266.597
-"18","Brazoria National Wildlife Refuge","Exxon Fields",29.0942,-95.27995,29.2511,-89.9735,516441.853
-"19","Brazoria National Wildlife Refuge","Grand_Isle",29.0942,-95.27995,29.2391,-90.003051,513556.182
-"20","Brazoria National Wildlife Refuge","High_Island",29.0942,-95.27995,29.5621666666667,-94.3903333333333,100780.601
-"21","Brazoria National Wildlife Refuge","Quintana",29.0942,-95.27995,28.9339333333333,-95.3088666666667,17985.331
-"22","Brazoria National Wildlife Refuge","Rock W",29.0942,-95.27995,29.707,-92.8307,247233.374
-"23","Brazoria National Wildlife Refuge","Rockport Bay Education Center",29.0942,-95.27995,28.0264,-97.04665,209490.914
-"24","Brazoria National Wildlife Refuge","Sabine NWR",29.0942,-95.27995,29.8892,-93.4021,202299.364
-"25","Brazoria National Wildlife Refuge","San Bernard National Wildlife Refuge Headquarters",29.0942,-95.27995,28.9131,-95.5784,35334.438
-"26","Brazoria National Wildlife Refuge","San Bernard NWR (Big Pond Unit)",29.0942,-95.27995,29.16235,-95.8254125,53618.197
-"27","Brazoria National Wildlife Refuge","Scenic Galveston",29.0942,-95.27995,29.33475,-94.91605,44305.157
-"28","Brazoria National Wildlife Refuge","Wisner",29.0942,-95.27995,29.12297,-90.16045,498287.191
-"29","East Grand Terre","Bolivar_Flats",29.311458,-89.863249,29.3714,-94.7495,474549.841
-"30","East Grand Terre","Brazoria National Wildlife Refuge",29.311458,-89.863249,29.0942,-95.27995,527266.597
+"17","Brazoria National Wildlife Refuge","East Grand Terre",29.0942,-95.27995,29.311458,-89.863249,327.628274004812
+"18","Brazoria National Wildlife Refuge","Exxon Fields",29.0942,-95.27995,29.2511,-89.9735,320.902089919868
+"19","Brazoria National Wildlife Refuge","Grand_Isle",29.0942,-95.27995,29.2391,-90.003051,319.109017090193
+"20","Brazoria National Wildlife Refuge","High_Island",29.0942,-95.27995,29.5621666666667,-94.3903333333333,62.622162197765
+"21","Brazoria National Wildlife Refuge","Quintana",29.0942,-95.27995,28.9339333333333,-95.3088666666667,11.1755665662531
+"22","Brazoria National Wildlife Refuge","Rock W",29.0942,-95.27995,29.707,-92.8307,153.623696363239
+"23","Brazoria National Wildlife Refuge","Rockport Bay Education Center",29.0942,-95.27995,28.0264,-97.04665,130.171618995069
+"24","Brazoria National Wildlife Refuge","Sabine NWR",29.0942,-95.27995,29.8892,-93.4021,125.702996997534
+"25","Brazoria National Wildlife Refuge","San Bernard National Wildlife Refuge Headquarters",29.0942,-95.27995,28.9131,-95.5784,21.9558018670962
+"26","Brazoria National Wildlife Refuge","San Bernard NWR (Big Pond Unit)",29.0942,-95.27995,29.16235,-95.8254125,33.3168029955062
+"27","Brazoria National Wildlife Refuge","Scenic Galveston",29.0942,-95.27995,29.33475,-94.91605,27.5299482273523
+"28","Brazoria National Wildlife Refuge","Wisner",29.0942,-95.27995,29.12297,-90.16045,309.621305948262
+"29","East Grand Terre","Bolivar_Flats",29.311458,-89.863249,29.3714,-94.7495,294.871600478207
+"30","East Grand Terre","Brazoria National Wildlife Refuge",29.311458,-89.863249,29.0942,-95.27995,327.628274004812
 "31","East Grand Terre","East Grand Terre",29.311458,-89.863249,29.311458,-89.863249,0
-"32","East Grand Terre","Exxon Fields",29.311458,-89.863249,29.2511,-89.9735,12630.799
-"33","East Grand Terre","Grand_Isle",29.311458,-89.863249,29.2391,-90.003051,15776.568
-"34","East Grand Terre","High_Island",29.311458,-89.863249,29.5621666666667,-94.3903333333333,440096.733
-"35","East Grand Terre","Quintana",29.311458,-89.863249,28.9339333333333,-95.3088666666667,531587.509
-"36","East Grand Terre","Rock W",29.311458,-89.863249,29.707,-92.8307,291029.153
-"37","East Grand Terre","Rockport Bay Education Center",29.311458,-89.863249,28.0264,-97.04665,716328.917
-"38","East Grand Terre","Sabine NWR",29.311458,-89.863249,29.8892,-93.4021,348724.96
-"39","East Grand Terre","San Bernard National Wildlife Refuge Headquarters",29.311458,-89.863249,28.9131,-95.5784,557968.111
-"40","East Grand Terre","San Bernard NWR (Big Pond Unit)",29.311458,-89.863249,29.16235,-95.8254125,579789.931
-"41","East Grand Terre","Scenic Galveston",29.311458,-89.863249,29.33475,-94.91605,490769.115
-"42","East Grand Terre","Wisner",29.311458,-89.863249,29.12297,-90.16045,35659.143
-"43","Exxon Fields","Bolivar_Flats",29.2511,-89.9735,29.3714,-94.7495,464126.449
-"44","Exxon Fields","Brazoria National Wildlife Refuge",29.2511,-89.9735,29.0942,-95.27995,516441.853
-"45","Exxon Fields","East Grand Terre",29.2511,-89.9735,29.311458,-89.863249,12630.799
+"32","East Grand Terre","Exxon Fields",29.311458,-89.863249,29.2511,-89.9735,7.84841463354013
+"33","East Grand Terre","Grand_Isle",29.311458,-89.863249,29.2391,-90.003051,9.80310486757337
+"34","East Grand Terre","High_Island",29.311458,-89.863249,29.5621666666667,-94.3903333333333,273.463431683966
+"35","East Grand Terre","Quintana",29.311458,-89.863249,28.9339333333333,-95.3088666666667,330.313164245804
+"36","East Grand Terre","Rock W",29.311458,-89.863249,29.707,-92.8307,180.837131775431
+"37","East Grand Terre","Rockport Bay Education Center",29.311458,-89.863249,28.0264,-97.04665,445.106153190368
+"38","East Grand Terre","Sabine NWR",29.311458,-89.863249,29.8892,-93.4021,216.687644158117
+"39","East Grand Terre","San Bernard National Wildlife Refuge Headquarters",29.311458,-89.863249,28.9131,-95.5784,346.705310362483
+"40","East Grand Terre","San Bernard NWR (Big Pond Unit)",29.311458,-89.863249,29.16235,-95.8254125,360.264760672672
+"41","East Grand Terre","Scenic Galveston",29.311458,-89.863249,29.33475,-94.91605,304.949790100811
+"42","East Grand Terre","Wisner",29.311458,-89.863249,29.12297,-90.16045,22.1575642000716
+"43","Exxon Fields","Bolivar_Flats",29.2511,-89.9735,29.3714,-94.7495,288.39480496401
+"44","Exxon Fields","Brazoria National Wildlife Refuge",29.2511,-89.9735,29.0942,-95.27995,320.902089919868
+"45","Exxon Fields","East Grand Terre",29.2511,-89.9735,29.311458,-89.863249,7.84841463354013
 "46","Exxon Fields","Exxon Fields",29.2511,-89.9735,29.2511,-89.9735,0
-"47","Exxon Fields","Grand_Isle",29.2511,-89.9735,29.2391,-90.003051,3165.585
-"48","Exxon Fields","High_Island",29.2511,-89.9735,29.5621666666667,-94.3903333333333,430034.058
-"49","Exxon Fields","Quintana",29.2511,-89.9735,28.9339333333333,-95.3088666666667,520551.388
-"50","Exxon Fields","Rock W",29.2511,-89.9735,29.707,-92.8307,281670.804
-"51","Exxon Fields","Rockport Bay Education Center",29.2511,-89.9735,28.0264,-97.04665,704653.044
-"52","Exxon Fields","Sabine NWR",29.2511,-89.9735,29.8892,-93.4021,339659.799
-"53","Exxon Fields","San Bernard National Wildlife Refuge Headquarters",29.2511,-89.9735,28.9131,-95.5784,546934.792
-"54","Exxon Fields","San Bernard NWR (Big Pond Unit)",29.2511,-89.9735,29.16235,-95.8254125,569091.693
-"55","Exxon Fields","Scenic Galveston",29.2511,-89.9735,29.33475,-94.91605,480286.345
-"56","Exxon Fields","Wisner",29.2511,-89.9735,29.12297,-90.16045,23072.131
-"57","Grand_Isle","Bolivar_Flats",29.2391,-90.003051,29.3714,-94.7495,461324.784
-"58","Grand_Isle","Brazoria National Wildlife Refuge",29.2391,-90.003051,29.0942,-95.27995,513556.182
-"59","Grand_Isle","East Grand Terre",29.2391,-90.003051,29.311458,-89.863249,15776.568
-"60","Grand_Isle","Exxon Fields",29.2391,-90.003051,29.2511,-89.9735,3165.585
+"47","Exxon Fields","Grand_Isle",29.2511,-89.9735,29.2391,-90.003051,1.96700332557862
+"48","Exxon Fields","High_Island",29.2511,-89.9735,29.5621666666667,-94.3903333333333,267.210775322119
+"49","Exxon Fields","Quintana",29.2511,-89.9735,28.9339333333333,-95.3088666666667,323.455636582359
+"50","Exxon Fields","Rock W",29.2511,-89.9735,29.707,-92.8307,175.022123299928
+"51","Exxon Fields","Rockport Bay Education Center",29.2511,-89.9735,28.0264,-97.04665,437.851102063947
+"52","Exxon Fields","Sabine NWR",29.2511,-89.9735,29.8892,-93.4021,211.054814259723
+"53","Exxon Fields","San Bernard National Wildlife Refuge Headquarters",29.2511,-89.9735,28.9131,-95.5784,339.849523781118
+"54","Exxon Fields","San Bernard NWR (Big Pond Unit)",29.2511,-89.9735,29.16235,-95.8254125,353.617183771773
+"55","Exxon Fields","Scenic Galveston",29.2511,-89.9735,29.33475,-94.91605,298.436098807961
+"56","Exxon Fields","Wisner",29.2511,-89.9735,29.12297,-90.16045,14.336357546926
+"57","Grand_Isle","Bolivar_Flats",29.2391,-90.003051,29.3714,-94.7495,286.653931042711
+"58","Grand_Isle","Brazoria National Wildlife Refuge",29.2391,-90.003051,29.0942,-95.27995,319.109017090193
+"59","Grand_Isle","East Grand Terre",29.2391,-90.003051,29.311458,-89.863249,9.80310486757337
+"60","Grand_Isle","Exxon Fields",29.2391,-90.003051,29.2511,-89.9735,1.96700332557862
 "61","Grand_Isle","Grand_Isle",29.2391,-90.003051,29.2391,-90.003051,0
-"62","Grand_Isle","High_Island",29.2391,-90.003051,29.5621666666667,-94.3903333333333,427310.05
-"63","Grand_Isle","Quintana",29.2391,-90.003051,28.9339333333333,-95.3088666666667,517623.248
-"64","Grand_Isle","Rock W",29.2391,-90.003051,29.707,-92.8307,279111.864
-"65","Grand_Isle","Rockport Bay Education Center",29.2391,-90.003051,28.0264,-97.04665,701602.28
-"66","Grand_Isle","Sabine NWR",29.2391,-90.003051,29.8892,-93.4021,337160.64
-"67","Grand_Isle","San Bernard National Wildlife Refuge Headquarters",29.2391,-90.003051,28.9131,-95.5784,544006.799
-"68","Grand_Isle","San Bernard NWR (Big Pond Unit)",29.2391,-90.003051,29.16235,-95.8254125,566230.815
-"69","Grand_Isle","Scenic Galveston",29.2391,-90.003051,29.33475,-94.91605,477471.819
-"70","Grand_Isle","Wisner",29.2391,-90.003051,29.12297,-90.16045,20001.907
-"71","High_Island","Bolivar_Flats",29.5621666666667,-94.3903333333333,29.3714,-94.7495,40753.326
-"72","High_Island","Brazoria National Wildlife Refuge",29.5621666666667,-94.3903333333333,29.0942,-95.27995,100780.601
-"73","High_Island","East Grand Terre",29.5621666666667,-94.3903333333333,29.311458,-89.863249,440096.733
-"74","High_Island","Exxon Fields",29.5621666666667,-94.3903333333333,29.2511,-89.9735,430034.058
-"75","High_Island","Grand_Isle",29.5621666666667,-94.3903333333333,29.2391,-90.003051,427310.05
+"62","Grand_Isle","High_Island",29.2391,-90.003051,29.5621666666667,-94.3903333333333,265.518155223495
+"63","Grand_Isle","Quintana",29.2391,-90.003051,28.9339333333333,-95.3088666666667,321.636174739521
+"64","Grand_Isle","Rock W",29.2391,-90.003051,29.707,-92.8307,173.432071701265
+"65","Grand_Isle","Rockport Bay Education Center",29.2391,-90.003051,28.0264,-97.04665,435.955445200032
+"66","Grand_Isle","Sabine NWR",29.2391,-90.003051,29.8892,-93.4021,209.501908852303
+"67","Grand_Isle","San Bernard National Wildlife Refuge Headquarters",29.2391,-90.003051,28.9131,-95.5784,338.030153279846
+"68","Grand_Isle","San Bernard NWR (Big Pond Unit)",29.2391,-90.003051,29.16235,-95.8254125,351.839516598067
+"69","Grand_Isle","Scenic Galveston",29.2391,-90.003051,29.33475,-94.91605,296.687233431759
+"70","Grand_Isle","Wisner",29.2391,-90.003051,29.12297,-90.16045,12.4286087996103
+"71","High_Island","Bolivar_Flats",29.5621666666667,-94.3903333333333,29.3714,-94.7495,25.3229427642567
+"72","High_Island","Brazoria National Wildlife Refuge",29.5621666666667,-94.3903333333333,29.0942,-95.27995,62.622162197765
+"73","High_Island","East Grand Terre",29.5621666666667,-94.3903333333333,29.311458,-89.863249,273.463431683966
+"74","High_Island","Exxon Fields",29.5621666666667,-94.3903333333333,29.2511,-89.9735,267.210775322119
+"75","High_Island","Grand_Isle",29.5621666666667,-94.3903333333333,29.2391,-90.003051,265.518155223495
 "76","High_Island","High_Island",29.5621666666667,-94.3903333333333,29.5621666666667,-94.3903333333333,0
-"77","High_Island","Quintana",29.5621666666667,-94.3903333333333,28.9339333333333,-95.3088666666667,113228.339
-"78","High_Island","Rock W",29.5621666666667,-94.3903333333333,29.707,-92.8307,151881.127
-"79","High_Island","Rockport Bay Education Center",29.5621666666667,-94.3903333333333,28.0264,-97.04665,310191.604
-"80","High_Island","Sabine NWR",29.5621666666667,-94.3903333333333,29.8892,-93.4021,102253.121
-"81","High_Island","San Bernard National Wildlife Refuge Headquarters",29.5621666666667,-94.3903333333333,28.9131,-95.5784,136070.329
-"82","High_Island","San Bernard NWR (Big Pond Unit)",29.5621666666667,-94.3903333333333,29.16235,-95.8254125,146218.309
-"83","High_Island","Scenic Galveston",29.5621666666667,-94.3903333333333,29.33475,-94.91605,56891.785
-"84","High_Island","Wisner",29.5621666666667,-94.3903333333333,29.12297,-90.16045,413639.17
-"85","Quintana","Bolivar_Flats",28.9339333333333,-95.3088666666667,29.3714,-94.7495,72890.382
-"86","Quintana","Brazoria National Wildlife Refuge",28.9339333333333,-95.3088666666667,29.0942,-95.27995,17985.331
-"87","Quintana","East Grand Terre",28.9339333333333,-95.3088666666667,29.311458,-89.863249,531587.509
-"88","Quintana","Exxon Fields",28.9339333333333,-95.3088666666667,29.2511,-89.9735,520551.388
-"89","Quintana","Grand_Isle",28.9339333333333,-95.3088666666667,29.2391,-90.003051,517623.248
-"90","Quintana","High_Island",28.9339333333333,-95.3088666666667,29.5621666666667,-94.3903333333333,113228.339
+"77","High_Island","Quintana",29.5621666666667,-94.3903333333333,28.9339333333333,-95.3088666666667,70.356827999483
+"78","High_Island","Rock W",29.5621666666667,-94.3903333333333,29.707,-92.8307,94.3745569623399
+"79","High_Island","Rockport Bay Education Center",29.5621666666667,-94.3903333333333,28.0264,-97.04665,192.744126799491
+"80","High_Island","Sabine NWR",29.5621666666667,-94.3903333333333,29.8892,-93.4021,63.5371437057584
+"81","High_Island","San Bernard National Wildlife Refuge Headquarters",29.5621666666667,-94.3903333333333,28.9131,-95.5784,84.5501825588563
+"82","High_Island","San Bernard NWR (Big Pond Unit)",29.5621666666667,-94.3903333333333,29.16235,-95.8254125,90.8558449902569
+"83","High_Island","Scenic Galveston",29.5621666666667,-94.3903333333333,29.33475,-94.91605,35.3509162739601
+"84","High_Island","Wisner",29.5621666666667,-94.3903333333333,29.12297,-90.16045,257.023464218961
+"85","Quintana","Bolivar_Flats",28.9339333333333,-95.3088666666667,29.3714,-94.7495,45.2919835659747
+"86","Quintana","Brazoria National Wildlife Refuge",28.9339333333333,-95.3088666666667,29.0942,-95.27995,11.1755665662531
+"87","Quintana","East Grand Terre",28.9339333333333,-95.3088666666667,29.311458,-89.863249,330.313164245804
+"88","Quintana","Exxon Fields",28.9339333333333,-95.3088666666667,29.2511,-89.9735,323.455636582359
+"89","Quintana","Grand_Isle",28.9339333333333,-95.3088666666667,29.2391,-90.003051,321.636174739521
+"90","Quintana","High_Island",28.9339333333333,-95.3088666666667,29.5621666666667,-94.3903333333333,70.356827999483
 "91","Quintana","Quintana",28.9339333333333,-95.3088666666667,28.9339333333333,-95.3088666666667,0
-"92","Quintana","Rock W",28.9339333333333,-95.3088666666667,29.707,-92.8307,255509.71
-"93","Quintana","Rockport Bay Education Center",28.9339333333333,-95.3088666666667,28.0264,-97.04665,197665.635
-"94","Quintana","Sabine NWR",28.9339333333333,-95.3088666666667,29.8892,-93.4021,213198.469
-"95","Quintana","San Bernard National Wildlife Refuge Headquarters",28.9339333333333,-95.3088666666667,28.9131,-95.5784,26383.574
-"96","Quintana","San Bernard NWR (Big Pond Unit)",28.9339333333333,-95.3088666666667,29.16235,-95.8254125,56319.296
-"97","Quintana","Scenic Galveston",28.9339333333333,-95.3088666666667,29.33475,-94.91605,58607.683
-"98","Quintana","Wisner",28.9339333333333,-95.3088666666667,29.12297,-90.16045,501915.978
-"99","Rock W","Bolivar_Flats",29.707,-92.8307,29.3714,-94.7495,189668.301
-"100","Rock W","Brazoria National Wildlife Refuge",29.707,-92.8307,29.0942,-95.27995,247233.374
-"101","Rock W","East Grand Terre",29.707,-92.8307,29.311458,-89.863249,291029.153
-"102","Rock W","Exxon Fields",29.707,-92.8307,29.2511,-89.9735,281670.804
-"103","Rock W","Grand_Isle",29.707,-92.8307,29.2391,-90.003051,279111.864
-"104","Rock W","High_Island",29.707,-92.8307,29.5621666666667,-94.3903333333333,151881.127
-"105","Rock W","Quintana",29.707,-92.8307,28.9339333333333,-95.3088666666667,255509.71
+"92","Quintana","Rock W",28.9339333333333,-95.3088666666667,29.707,-92.8307,158.766373130915
+"93","Quintana","Rockport Bay Education Center",28.9339333333333,-95.3088666666667,28.0264,-97.04665,122.8237312843
+"94","Quintana","Sabine NWR",28.9339333333333,-95.3088666666667,29.8892,-93.4021,132.475386865704
+"95","Quintana","San Bernard National Wildlife Refuge Headquarters",28.9339333333333,-95.3088666666667,28.9131,-95.5784,16.3939928318619
+"96","Quintana","San Bernard NWR (Big Pond Unit)",28.9339333333333,-95.3088666666667,29.16235,-95.8254125,34.9951881014873
+"97","Quintana","Scenic Galveston",28.9339333333333,-95.3088666666667,29.33475,-94.91605,36.4171258599777
+"98","Quintana","Wisner",28.9339333333333,-95.3088666666667,29.12297,-90.16045,311.876129652827
+"99","Rock W","Bolivar_Flats",29.707,-92.8307,29.3714,-94.7495,117.854418322
+"100","Rock W","Brazoria National Wildlife Refuge",29.707,-92.8307,29.0942,-95.27995,153.623696363239
+"101","Rock W","East Grand Terre",29.707,-92.8307,29.311458,-89.863249,180.837131775431
+"102","Rock W","Exxon Fields",29.707,-92.8307,29.2511,-89.9735,175.022123299928
+"103","Rock W","Grand_Isle",29.707,-92.8307,29.2391,-90.003051,173.432071701265
+"104","Rock W","High_Island",29.707,-92.8307,29.5621666666667,-94.3903333333333,94.3745569623399
+"105","Rock W","Quintana",29.707,-92.8307,28.9339333333333,-95.3088666666667,158.766373130915
 "106","Rock W","Rock W",29.707,-92.8307,29.707,-92.8307,0
-"107","Rock W","Rockport Bay Education Center",29.707,-92.8307,28.0264,-97.04665,451488.012
-"108","Rock W","Sabine NWR",29.707,-92.8307,29.8892,-93.4021,58819.568
-"109","Rock W","San Bernard National Wildlife Refuge Headquarters",29.707,-92.8307,28.9131,-95.5784,281050.775
-"110","Rock W","San Bernard NWR (Big Pond Unit)",29.707,-92.8307,29.16235,-95.8254125,296767.588
-"111","Rock W","Scenic Galveston",29.707,-92.8307,29.33475,-94.91605,206331.582
-"112","Rock W","Wisner",29.707,-92.8307,29.12297,-90.16045,267095.958
-"113","Rockport Bay Education Center","Bolivar_Flats",28.0264,-97.04665,29.3714,-94.7495,269453.623
-"114","Rockport Bay Education Center","Brazoria National Wildlife Refuge",28.0264,-97.04665,29.0942,-95.27995,209490.914
-"115","Rockport Bay Education Center","East Grand Terre",28.0264,-97.04665,29.311458,-89.863249,716328.917
-"116","Rockport Bay Education Center","Exxon Fields",28.0264,-97.04665,29.2511,-89.9735,704653.044
-"117","Rockport Bay Education Center","Grand_Isle",28.0264,-97.04665,29.2391,-90.003051,701602.28
-"118","Rockport Bay Education Center","High_Island",28.0264,-97.04665,29.5621666666667,-94.3903333333333,310191.604
-"119","Rockport Bay Education Center","Quintana",28.0264,-97.04665,28.9339333333333,-95.3088666666667,197665.635
-"120","Rockport Bay Education Center","Rock W",28.0264,-97.04665,29.707,-92.8307,451488.012
+"107","Rock W","Rockport Bay Education Center",29.707,-92.8307,28.0264,-97.04665,280.541644297304
+"108","Rock W","Sabine NWR",29.707,-92.8307,29.8892,-93.4021,36.5487850950449
+"109","Rock W","San Bernard National Wildlife Refuge Headquarters",29.707,-92.8307,28.9131,-95.5784,174.636855140977
+"110","Rock W","San Bernard NWR (Big Pond Unit)",29.707,-92.8307,29.16235,-95.8254125,184.402829972958
+"111","Rock W","Scenic Galveston",29.707,-92.8307,29.33475,-94.91605,128.208501103555
+"112","Rock W","Wisner",29.707,-92.8307,29.12297,-90.16045,165.965733864233
+"113","Rockport Bay Education Center","Bolivar_Flats",28.0264,-97.04665,29.3714,-94.7495,167.430718976179
+"114","Rockport Bay Education Center","Brazoria National Wildlife Refuge",28.0264,-97.04665,29.0942,-95.27995,130.171618995069
+"115","Rockport Bay Education Center","East Grand Terre",28.0264,-97.04665,29.311458,-89.863249,445.106153190368
+"116","Rockport Bay Education Center","Exxon Fields",28.0264,-97.04665,29.2511,-89.9735,437.851102063947
+"117","Rockport Bay Education Center","Grand_Isle",28.0264,-97.04665,29.2391,-90.003051,435.955445200032
+"118","Rockport Bay Education Center","High_Island",28.0264,-97.04665,29.5621666666667,-94.3903333333333,192.744126799491
+"119","Rockport Bay Education Center","Quintana",28.0264,-97.04665,28.9339333333333,-95.3088666666667,122.8237312843
+"120","Rockport Bay Education Center","Rock W",28.0264,-97.04665,29.707,-92.8307,280.541644297304
 "121","Rockport Bay Education Center","Rockport Bay Education Center",28.0264,-97.04665,28.0264,-97.04665,0
-"122","Rockport Bay Education Center","Sabine NWR",28.0264,-97.04665,29.8892,-93.4021,410864.018
-"123","Rockport Bay Education Center","San Bernard National Wildlife Refuge Headquarters",28.0264,-97.04665,28.9131,-95.5784,174158.604
-"124","Rockport Bay Education Center","San Bernard NWR (Big Pond Unit)",28.0264,-97.04665,29.16235,-95.8254125,173548.288
-"125","Rockport Bay Education Center","Scenic Galveston",28.0264,-97.04665,29.33475,-94.91605,253741.962
-"126","Rockport Bay Education Center","Wisner",28.0264,-97.04665,29.12297,-90.16045,684475.379
-"127","Sabine NWR","Bolivar_Flats",29.8892,-93.4021,29.3714,-94.7495,142548.871
-"128","Sabine NWR","Brazoria National Wildlife Refuge",29.8892,-93.4021,29.0942,-95.27995,202299.364
-"129","Sabine NWR","East Grand Terre",29.8892,-93.4021,29.311458,-89.863249,348724.96
-"130","Sabine NWR","Exxon Fields",29.8892,-93.4021,29.2511,-89.9735,339659.799
-"131","Sabine NWR","Grand_Isle",29.8892,-93.4021,29.2391,-90.003051,337160.64
-"132","Sabine NWR","High_Island",29.8892,-93.4021,29.5621666666667,-94.3903333333333,102253.121
-"133","Sabine NWR","Quintana",29.8892,-93.4021,28.9339333333333,-95.3088666666667,213198.469
-"134","Sabine NWR","Rock W",29.8892,-93.4021,29.707,-92.8307,58819.568
-"135","Sabine NWR","Rockport Bay Education Center",29.8892,-93.4021,28.0264,-97.04665,410864.018
+"122","Rockport Bay Education Center","Sabine NWR",28.0264,-97.04665,29.8892,-93.4021,255.299064712081
+"123","Rockport Bay Education Center","San Bernard National Wildlife Refuge Headquarters",28.0264,-97.04665,28.9131,-95.5784,108.21713940587
+"124","Rockport Bay Education Center","San Bernard NWR (Big Pond Unit)",28.0264,-97.04665,29.16235,-95.8254125,107.837906625308
+"125","Rockport Bay Education Center","Scenic Galveston",28.0264,-97.04665,29.33475,-94.91605,157.66794544858
+"126","Rockport Bay Education Center","Wisner",28.0264,-97.04665,29.12297,-90.16045,425.313282306331
+"127","Sabine NWR","Bolivar_Flats",29.8892,-93.4021,29.3714,-94.7495,88.5757619253559
+"128","Sabine NWR","Brazoria National Wildlife Refuge",29.8892,-93.4021,29.0942,-95.27995,125.702996997534
+"129","Sabine NWR","East Grand Terre",29.8892,-93.4021,29.311458,-89.863249,216.687644158117
+"130","Sabine NWR","Exxon Fields",29.8892,-93.4021,29.2511,-89.9735,211.054814259723
+"131","Sabine NWR","Grand_Isle",29.8892,-93.4021,29.2391,-90.003051,209.501908852303
+"132","Sabine NWR","High_Island",29.8892,-93.4021,29.5621666666667,-94.3903333333333,63.5371437057584
+"133","Sabine NWR","Quintana",29.8892,-93.4021,28.9339333333333,-95.3088666666667,132.475386865704
+"134","Sabine NWR","Rock W",29.8892,-93.4021,29.707,-92.8307,36.5487850950449
+"135","Sabine NWR","Rockport Bay Education Center",29.8892,-93.4021,28.0264,-97.04665,255.299064712081
 "136","Sabine NWR","Sabine NWR",29.8892,-93.4021,29.8892,-93.4021,0
-"137","Sabine NWR","San Bernard National Wildlife Refuge Headquarters",29.8892,-93.4021,28.9131,-95.5784,237321.502
-"138","Sabine NWR","San Bernard NWR (Big Pond Unit)",29.8892,-93.4021,29.16235,-95.8254125,248344.699
-"139","Sabine NWR","Scenic Galveston",29.8892,-93.4021,29.33475,-94.91605,158996.546
-"140","Sabine NWR","Wisner",29.8892,-93.4021,29.12297,-90.16045,325570.573
-"141","San Bernard National Wildlife Refuge Headquarters","Bolivar_Flats",28.9131,-95.5784,29.3714,-94.7495,95318.876
-"142","San Bernard National Wildlife Refuge Headquarters","Brazoria National Wildlife Refuge",28.9131,-95.5784,29.0942,-95.27995,35334.438
-"143","San Bernard National Wildlife Refuge Headquarters","East Grand Terre",28.9131,-95.5784,29.311458,-89.863249,557968.111
-"144","San Bernard National Wildlife Refuge Headquarters","Exxon Fields",28.9131,-95.5784,29.2511,-89.9735,546934.792
-"145","San Bernard National Wildlife Refuge Headquarters","Grand_Isle",28.9131,-95.5784,29.2391,-90.003051,544006.799
-"146","San Bernard National Wildlife Refuge Headquarters","High_Island",28.9131,-95.5784,29.5621666666667,-94.3903333333333,136070.329
-"147","San Bernard National Wildlife Refuge Headquarters","Quintana",28.9131,-95.5784,28.9339333333333,-95.3088666666667,26383.574
-"148","San Bernard National Wildlife Refuge Headquarters","Rock W",28.9131,-95.5784,29.707,-92.8307,281050.775
-"149","San Bernard National Wildlife Refuge Headquarters","Rockport Bay Education Center",28.9131,-95.5784,28.0264,-97.04665,174158.604
-"150","San Bernard National Wildlife Refuge Headquarters","Sabine NWR",28.9131,-95.5784,29.8892,-93.4021,237321.502
+"137","Sabine NWR","San Bernard National Wildlife Refuge Headquarters",29.8892,-93.4021,28.9131,-95.5784,147.464744641295
+"138","Sabine NWR","San Bernard NWR (Big Pond Unit)",29.8892,-93.4021,29.16235,-95.8254125,154.314241703452
+"139","Sabine NWR","Scenic Galveston",29.8892,-93.4021,29.33475,-94.91605,98.7958733496381
+"140","Sabine NWR","Wisner",29.8892,-93.4021,29.12297,-90.16045,202.300175102402
+"141","San Bernard National Wildlife Refuge Headquarters","Bolivar_Flats",28.9131,-95.5784,29.3714,-94.7495,59.2284036228426
+"142","San Bernard National Wildlife Refuge Headquarters","Brazoria National Wildlife Refuge",28.9131,-95.5784,29.0942,-95.27995,21.9558018670962
+"143","San Bernard National Wildlife Refuge Headquarters","East Grand Terre",28.9131,-95.5784,29.311458,-89.863249,346.705310362483
+"144","San Bernard National Wildlife Refuge Headquarters","Exxon Fields",28.9131,-95.5784,29.2511,-89.9735,339.849523781118
+"145","San Bernard National Wildlife Refuge Headquarters","Grand_Isle",28.9131,-95.5784,29.2391,-90.003051,338.030153279846
+"146","San Bernard National Wildlife Refuge Headquarters","High_Island",28.9131,-95.5784,29.5621666666667,-94.3903333333333,84.5501825588563
+"147","San Bernard National Wildlife Refuge Headquarters","Quintana",28.9131,-95.5784,28.9339333333333,-95.3088666666667,16.3939928318619
+"148","San Bernard National Wildlife Refuge Headquarters","Rock W",28.9131,-95.5784,29.707,-92.8307,174.636855140977
+"149","San Bernard National Wildlife Refuge Headquarters","Rockport Bay Education Center",28.9131,-95.5784,28.0264,-97.04665,108.21713940587
+"150","San Bernard National Wildlife Refuge Headquarters","Sabine NWR",28.9131,-95.5784,29.8892,-93.4021,147.464744641295
 "151","San Bernard National Wildlife Refuge Headquarters","San Bernard National Wildlife Refuge Headquarters",28.9131,-95.5784,28.9131,-95.5784,0
-"152","San Bernard National Wildlife Refuge Headquarters","San Bernard NWR (Big Pond Unit)",28.9131,-95.5784,29.16235,-95.8254125,36634.277
-"153","San Bernard National Wildlife Refuge Headquarters","Scenic Galveston",28.9131,-95.5784,29.33475,-94.91605,79620.223
-"154","San Bernard National Wildlife Refuge Headquarters","Wisner",28.9131,-95.5784,29.12297,-90.16045,528292.948
-"155","San Bernard NWR (Big Pond Unit)","Bolivar_Flats",29.16235,-95.8254125,29.3714,-94.7495,107101.387
-"156","San Bernard NWR (Big Pond Unit)","Brazoria National Wildlife Refuge",29.16235,-95.8254125,29.0942,-95.27995,53618.197
-"157","San Bernard NWR (Big Pond Unit)","East Grand Terre",29.16235,-95.8254125,29.311458,-89.863249,579789.931
-"158","San Bernard NWR (Big Pond Unit)","Exxon Fields",29.16235,-95.8254125,29.2511,-89.9735,569091.693
-"159","San Bernard NWR (Big Pond Unit)","Grand_Isle",29.16235,-95.8254125,29.2391,-90.003051,566230.815
-"160","San Bernard NWR (Big Pond Unit)","High_Island",29.16235,-95.8254125,29.5621666666667,-94.3903333333333,146218.309
-"161","San Bernard NWR (Big Pond Unit)","Quintana",29.16235,-95.8254125,28.9339333333333,-95.3088666666667,56319.296
-"162","San Bernard NWR (Big Pond Unit)","Rock W",29.16235,-95.8254125,29.707,-92.8307,296767.588
-"163","San Bernard NWR (Big Pond Unit)","Rockport Bay Education Center",29.16235,-95.8254125,28.0264,-97.04665,173548.288
-"164","San Bernard NWR (Big Pond Unit)","Sabine NWR",29.16235,-95.8254125,29.8892,-93.4021,248344.699
-"165","San Bernard NWR (Big Pond Unit)","San Bernard National Wildlife Refuge Headquarters",29.16235,-95.8254125,28.9131,-95.5784,36634.277
+"152","San Bernard National Wildlife Refuge Headquarters","San Bernard NWR (Big Pond Unit)",28.9131,-95.5784,29.16235,-95.8254125,22.7634843762427
+"153","San Bernard National Wildlife Refuge Headquarters","Scenic Galveston",28.9131,-95.5784,29.33475,-94.91605,49.4737128917124
+"154","San Bernard National Wildlife Refuge Headquarters","Wisner",28.9131,-95.5784,29.12297,-90.16045,328.266018949336
+"155","San Bernard NWR (Big Pond Unit)","Bolivar_Flats",29.16235,-95.8254125,29.3714,-94.7495,66.5497165304621
+"156","San Bernard NWR (Big Pond Unit)","Brazoria National Wildlife Refuge",29.16235,-95.8254125,29.0942,-95.27995,33.3168029955062
+"157","San Bernard NWR (Big Pond Unit)","East Grand Terre",29.16235,-95.8254125,29.311458,-89.863249,360.264760672672
+"158","San Bernard NWR (Big Pond Unit)","Exxon Fields",29.16235,-95.8254125,29.2511,-89.9735,353.617183771773
+"159","San Bernard NWR (Big Pond Unit)","Grand_Isle",29.16235,-95.8254125,29.2391,-90.003051,351.839516598067
+"160","San Bernard NWR (Big Pond Unit)","High_Island",29.16235,-95.8254125,29.5621666666667,-94.3903333333333,90.8558449902569
+"161","San Bernard NWR (Big Pond Unit)","Quintana",29.16235,-95.8254125,28.9339333333333,-95.3088666666667,34.9951881014873
+"162","San Bernard NWR (Big Pond Unit)","Rock W",29.16235,-95.8254125,29.707,-92.8307,184.402829972958
+"163","San Bernard NWR (Big Pond Unit)","Rockport Bay Education Center",29.16235,-95.8254125,28.0264,-97.04665,107.837906625308
+"164","San Bernard NWR (Big Pond Unit)","Sabine NWR",29.16235,-95.8254125,29.8892,-93.4021,154.314241703452
+"165","San Bernard NWR (Big Pond Unit)","San Bernard National Wildlife Refuge Headquarters",29.16235,-95.8254125,28.9131,-95.5784,22.7634843762427
 "166","San Bernard NWR (Big Pond Unit)","San Bernard NWR (Big Pond Unit)",29.16235,-95.8254125,29.16235,-95.8254125,0
-"167","San Bernard NWR (Big Pond Unit)","Scenic Galveston",29.16235,-95.8254125,29.33475,-94.91605,90436.056
-"168","San Bernard NWR (Big Pond Unit)","Wisner",29.16235,-95.8254125,29.12297,-90.16045,551192.099
-"169","Scenic Galveston","Bolivar_Flats",29.33475,-94.91605,29.3714,-94.7495,16675.38
-"170","Scenic Galveston","Brazoria National Wildlife Refuge",29.33475,-94.91605,29.0942,-95.27995,44305.157
-"171","Scenic Galveston","East Grand Terre",29.33475,-94.91605,29.311458,-89.863249,490769.115
-"172","Scenic Galveston","Exxon Fields",29.33475,-94.91605,29.2511,-89.9735,480286.345
-"173","Scenic Galveston","Grand_Isle",29.33475,-94.91605,29.2391,-90.003051,477471.819
-"174","Scenic Galveston","High_Island",29.33475,-94.91605,29.5621666666667,-94.3903333333333,56891.785
-"175","Scenic Galveston","Quintana",29.33475,-94.91605,28.9339333333333,-95.3088666666667,58607.683
-"176","Scenic Galveston","Rock W",29.33475,-94.91605,29.707,-92.8307,206331.582
-"177","Scenic Galveston","Rockport Bay Education Center",29.33475,-94.91605,28.0264,-97.04665,253741.962
-"178","Scenic Galveston","Sabine NWR",29.33475,-94.91605,29.8892,-93.4021,158996.546
-"179","Scenic Galveston","San Bernard National Wildlife Refuge Headquarters",29.33475,-94.91605,28.9131,-95.5784,79620.223
-"180","Scenic Galveston","San Bernard NWR (Big Pond Unit)",29.33475,-94.91605,29.16235,-95.8254125,90436.056
+"167","San Bernard NWR (Big Pond Unit)","Scenic Galveston",29.16235,-95.8254125,29.33475,-94.91605,56.1943599379623
+"168","San Bernard NWR (Big Pond Unit)","Wisner",29.16235,-95.8254125,29.12297,-90.16045,342.494891707429
+"169","Scenic Galveston","Bolivar_Flats",29.33475,-94.91605,29.3714,-94.7495,10.3616007516106
+"170","Scenic Galveston","Brazoria National Wildlife Refuge",29.33475,-94.91605,29.0942,-95.27995,27.5299482273523
+"171","Scenic Galveston","East Grand Terre",29.33475,-94.91605,29.311458,-89.863249,304.949790100811
+"172","Scenic Galveston","Exxon Fields",29.33475,-94.91605,29.2511,-89.9735,298.436098807961
+"173","Scenic Galveston","Grand_Isle",29.33475,-94.91605,29.2391,-90.003051,296.687233431759
+"174","Scenic Galveston","High_Island",29.33475,-94.91605,29.5621666666667,-94.3903333333333,35.3509162739601
+"175","Scenic Galveston","Quintana",29.33475,-94.91605,28.9339333333333,-95.3088666666667,36.4171258599777
+"176","Scenic Galveston","Rock W",29.33475,-94.91605,29.707,-92.8307,128.208501103555
+"177","Scenic Galveston","Rockport Bay Education Center",29.33475,-94.91605,28.0264,-97.04665,157.66794544858
+"178","Scenic Galveston","Sabine NWR",29.33475,-94.91605,29.8892,-93.4021,98.7958733496381
+"179","Scenic Galveston","San Bernard National Wildlife Refuge Headquarters",29.33475,-94.91605,28.9131,-95.5784,49.4737128917124
+"180","Scenic Galveston","San Bernard NWR (Big Pond Unit)",29.33475,-94.91605,29.16235,-95.8254125,56.1943599379623
 "181","Scenic Galveston","Scenic Galveston",29.33475,-94.91605,29.33475,-94.91605,0
-"182","Scenic Galveston","Wisner",29.33475,-94.91605,29.12297,-90.16045,462919.425
-"183","Wisner","Bolivar_Flats",29.12297,-90.16045,29.3714,-94.7495,446903.997
-"184","Wisner","Brazoria National Wildlife Refuge",29.12297,-90.16045,29.0942,-95.27995,498287.191
-"185","Wisner","East Grand Terre",29.12297,-90.16045,29.311458,-89.863249,35659.143
-"186","Wisner","Exxon Fields",29.12297,-90.16045,29.2511,-89.9735,23072.131
-"187","Wisner","Grand_Isle",29.12297,-90.16045,29.2391,-90.003051,20001.907
-"188","Wisner","High_Island",29.12297,-90.16045,29.5621666666667,-94.3903333333333,413639.17
-"189","Wisner","Quintana",29.12297,-90.16045,28.9339333333333,-95.3088666666667,501915.978
-"190","Wisner","Rock W",29.12297,-90.16045,29.707,-92.8307,267095.958
-"191","Wisner","Rockport Bay Education Center",29.12297,-90.16045,28.0264,-97.04665,684475.379
-"192","Wisner","Sabine NWR",29.12297,-90.16045,29.8892,-93.4021,325570.573
-"193","Wisner","San Bernard National Wildlife Refuge Headquarters",29.12297,-90.16045,28.9131,-95.5784,528292.948
-"194","Wisner","San Bernard NWR (Big Pond Unit)",29.12297,-90.16045,29.16235,-95.8254125,551192.099
-"195","Wisner","Scenic Galveston",29.12297,-90.16045,29.33475,-94.91605,462919.425
+"182","Scenic Galveston","Wisner",29.33475,-94.91605,29.12297,-90.16045,287.644795022071
+"183","Wisner","Bolivar_Flats",29.12297,-90.16045,29.3714,-94.7495,277.69326943152
+"184","Wisner","Brazoria National Wildlife Refuge",29.12297,-90.16045,29.0942,-95.27995,309.621305948262
+"185","Wisner","East Grand Terre",29.12297,-90.16045,29.311458,-89.863249,22.1575642000716
+"186","Wisner","Exxon Fields",29.12297,-90.16045,29.2511,-89.9735,14.336357546926
+"187","Wisner","Grand_Isle",29.12297,-90.16045,29.2391,-90.003051,12.4286087996103
+"188","Wisner","High_Island",29.12297,-90.16045,29.5621666666667,-94.3903333333333,257.023464218961
+"189","Wisner","Quintana",29.12297,-90.16045,28.9339333333333,-95.3088666666667,311.876129652827
+"190","Wisner","Rock W",29.12297,-90.16045,29.707,-92.8307,165.965733864233
+"191","Wisner","Rockport Bay Education Center",29.12297,-90.16045,28.0264,-97.04665,425.313282306331
+"192","Wisner","Sabine NWR",29.12297,-90.16045,29.8892,-93.4021,202.300175102402
+"193","Wisner","San Bernard National Wildlife Refuge Headquarters",29.12297,-90.16045,28.9131,-95.5784,328.266018949336
+"194","Wisner","San Bernard NWR (Big Pond Unit)",29.12297,-90.16045,29.16235,-95.8254125,342.494891707429
+"195","Wisner","Scenic Galveston",29.12297,-90.16045,29.33475,-94.91605,287.644795022071
 "196","Wisner","Wisner",29.12297,-90.16045,29.12297,-90.16045,0

@@ -17,17 +17,17 @@ p + geom_point(data = filter(df.recvDepsCombined, active == TRUE),
 
 ## outline map
 #triangles = 2017 AND 2018 receivers, circles = 2017 receivers ONLY
-#red = positive incubation detections, black = no incubation detections
+# coloured = positive incubation detections, white with red outline = no incubation detections
 # dashed line = Bolivar_Flats 2018 antenna bearings
 #bearings <- select(lete, recvDeployName, )
 na.map <- map_data(map = "world2")
 na.map <- na.map %>% filter(region %in% c("Canada",
                                           "USA")) %>% mutate(long = long - 360)
-arr.sc <- 0.5  # determines length of the vectors for antenna bearings and vanishing bearing lines
-ggplot(na.map, aes(long, lat)) +
-  geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey", fill = "blue") +
+arr.sc <- 0.24  # determines length of the vectors for antenna bearings and vanishing bearing lines (0.3 = 30 km)
+bigMap <- ggplot(na.map, aes(long, lat)) +
+  geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey") +
   geom_polygon(aes(group = group), colour = "grey", fill = "grey98") +
-  coord_map(projection = "mercator", xlim = c(-98, -88), ylim = c(27, 31)) +
+  coord_map(projection = "mercator", xlim = c(-100, -88), ylim = c(21, 31)) +
   xlab("") + ylab("") + theme_bw() +
   geom_segment(data = filter(df.antDeps, !(recvDeployID %in% c(5149, 4304, 4615, 4616))), # remove Quintana and Bolivar deployments outside detection range
                aes(x = longitude, xend = longitude +
@@ -37,29 +37,44 @@ ggplot(na.map, aes(long, lat)) +
                aes(x = longitude, xend = longitude +
                      (sin(rad(antBearing)) *arr.sc), y = latitude, yend = latitude +
                      (cos(rad(antBearing)) *arr.sc)), colour = "blue", linetype = "dashed") +
-  geom_point(data = df.recvDepsCombined,
-             aes(longitude, latitude, shape = active, fill = incubate), colour = "black", size = 4) +
+  geom_point(data = filter(df.recvDepsCombined, is.na(incubate)),
+             aes(longitude, latitude, shape = active), fill = "white", colour = "red", size = 3) +
   scale_shape_manual(values = c(21, 24)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Quintana", "Bolivar_Flats", "Wisner")),
-            aes(longitude, latitude, label=recvDeployName, hjust = -0.2, vjust = 1)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("East Grand Terre")),
-            aes(longitude, latitude, label=recvDeployName, hjust = -0.1, vjust = 0.1)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Scenic Galveston", "San Bernard NWR (Big Pond Unit)")),
-          aes(longitude, latitude, label=recvDeployName, hjust = 1.1, vjust = 0.5)) +
+  geom_point(data = filter(df.recvDepsCombined, incubate == TRUE),
+             aes(longitude, latitude, shape = active, fill = recvDeployName), colour = "black", size = 3) +
+  scale_fill_manual(values = cols) +
+  #geom_point(data = df.recvDepsCombined,
+  #           aes(longitude, latitude, shape = active, fill = incubate), colour = "black", size = 4) +
+  #scale_shape_manual(values = c(21, 24)) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Quintana", "Bolivar_Flats")),
+            aes(longitude, latitude, label=recvDeployName, hjust = -0.2, vjust = 1), size = 3) +
+  #  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Wisner")),
+  #            aes(longitude, latitude, label=recvDeployName, hjust = 0, vjust = 2)) +  
+  #  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("East Grand Terre")),
+  #            aes(longitude, latitude, label=recvDeployName, hjust = -0.1, vjust = 0.1)) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Scenic Galveston")),
+            aes(longitude, latitude, label=recvDeployName, hjust = 1.1, vjust = -0.5), size = 3) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("San Bernard NWR (Big Pond Unit)")),
+            aes(longitude, latitude, label="San Bernard NWR (BPU)", hjust = 1.1, vjust = 0.5), size = 3) +  
   geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("San Bernard National Wildlife Refuge Headquarters")),
-            aes(longitude, latitude, label="San Bernard NWR Headquarters", hjust = 1, vjust = 0.5)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Grand_Isle")),
-            aes(longitude, latitude, label=recvDeployName, hjust = 1.2, vjust = 0.5)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Exxon Fields")),
-            aes(longitude, latitude, label=recvDeployName, hjust = 1, vjust = -1)) +
-  theme(legend.position = "none")
+            aes(longitude, latitude, label="San Bernard NWR HQ", hjust = 0.9, vjust = 1.7), size = 3) +
+  #  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Grand_Isle")),
+  #            aes(longitude, latitude, label=recvDeployName, hjust = 1.2, vjust = 0.5)) +
+  #  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Exxon Fields")),
+  #            aes(longitude, latitude, label=recvDeployName, hjust = 1, vjust = -1)) +
+  annotate(geom = "rect", xmin=-90.5, xmax=-88.9, ymin=28.6, ymax=29.9, color="red", fill = NA) +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = "transparent", color = NA)) +
+  scale_bar(lon = -99, lat = 21.8, 
+            distance_lon = 50, distance_lat = 10, distance_legend = 25, 
+            dist_unit = "mi", orientation = FALSE)
 
 ## closeup map of breeding area
-arr.sc <- 0.3  # determines length of the vectors for antenna bearings and vanishing bearing lines
-ggplot(na.map, aes(long, lat)) +
+arr.sc <- 0.24  # determines length of the vectors for antenna bearings and vanishing bearing lines (0.3 = 30 km)
+insetMap <- ggplot(na.map, aes(long, lat)) +
   geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey", fill = "blue") +
   geom_polygon(aes(group = group), colour = "grey", fill = "grey98") +
-  coord_map(projection = "mercator", xlim = c(-91, -88.5), ylim = c(28.4, 30)) +
+  coord_map(projection = "mercator", xlim = c(-90.5, -88.9), ylim = c(28.6, 29.9)) +
   xlab("") + ylab("") + theme_bw() +
   geom_segment(data = filter(df.antDeps, !(recvDeployID %in% c(5149, 4304, 4615, 4616))), # remove Quintana and Bolivar deployments outside detection range
                aes(x = longitude, xend = longitude +
@@ -69,22 +84,42 @@ ggplot(na.map, aes(long, lat)) +
                aes(x = longitude, xend = longitude +
                      (sin(rad(antBearing)) *arr.sc), y = latitude, yend = latitude +
                      (cos(rad(antBearing)) *arr.sc)), colour = "blue", linetype = "dashed") +
-  geom_point(data = df.recvDepsCombined,
-             aes(longitude, latitude, shape = active, fill = incubate), colour = "black", size = 4) +
+  geom_point(data = filter(df.recvDepsCombined, incubate == TRUE),
+             aes(longitude, latitude, shape = active, fill = recvDeployName), colour = "black", size = 4) +
   scale_shape_manual(values = c(21, 24)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Quintana", "Bolivar_Flats", "Wisner")),
-            aes(longitude, latitude, label=recvDeployName, hjust = -0.2, vjust = 1)) +
+  geom_point(data = filter(df.recvDepsCombined, is.na(incubate)),
+             aes(longitude, latitude, shape = active), fill = "white", colour = "red", size = 4) +
+  scale_fill_manual(values = cols) +
+  #  geom_point(data = df.recvDepsCombined,
+  #             aes(longitude, latitude, shape = active, fill = incubate), colour = "black", size = 4) +
+  #  scale_shape_manual(values = c(21, 24)) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Wisner")),
+            aes(longitude, latitude, label=recvDeployName, hjust = 1.3, vjust = 0.9), size = 3.5) +
   geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("East Grand Terre")),
-            aes(longitude, latitude, label=recvDeployName, hjust = -0.1, vjust = 0.1)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Scenic Galveston", "San Bernard NWR (Big Pond Unit)")),
-            aes(longitude, latitude, label=recvDeployName, hjust = 1.1, vjust = 0.5)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("San Bernard National Wildlife Refuge Headquarters")),
-            aes(longitude, latitude, label="San Bernard NWR Headquarters", hjust = 1, vjust = 0.5)) +
+            aes(longitude, latitude, label=recvDeployName, hjust = -0.1, vjust = 1), size = 3.5) +
+  #  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Scenic Galveston", "San Bernard NWR (Big Pond Unit)")),
+  #            aes(longitude, latitude, label=recvDeployName, hjust = 1.1, vjust = 0.5)) +
+  #  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("San Bernard National Wildlife Refuge Headquarters")),
+  #            aes(longitude, latitude, label="San Bernard NWR Headquarters", hjust = 1, vjust = 0.5)) +
   geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Grand_Isle")),
-            aes(longitude, latitude, label=recvDeployName, hjust = 1.2, vjust = 0.5)) +
+            aes(longitude, latitude, label=recvDeployName, hjust = 1.2, vjust = 0.8), size = 3.5) +
   geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Exxon Fields")),
-            aes(longitude, latitude, label=recvDeployName, hjust = 1, vjust = -1)) +
-  theme(legend.position = "none")
+            aes(longitude, latitude, label=recvDeployName, hjust = 1, vjust = -1), size = 3.5) +
+  theme(legend.position = "none",
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        plot.background = element_rect(fill = "transparent", color = NA)) + 
+  scale_bar(lon = -89.9, lat = 28.7, 
+            distance_lon = 25, distance_lat = 3, distance_legend = 6, 
+            dist_unit = "mi", orientation = FALSE)
+
+# Create complete station map with inset
+vp_inset <- grid::viewport(width = 0.5, x = 0.6, y = 0.4)
+print(bigMap)
+print(insetMap, vp = vp_inset)
+
+
+
 
 ## Map of 2017 detections
 gmap <- get_map(location = c(lon = -93, lat = 29), maptype = "satellite", source = "google", zoom = 7)
@@ -102,7 +137,9 @@ ggplot(na.map, aes(long, lat)) +
   geom_path(data = filter(lete.path, year == "2017"),
             aes(recvLon, recvLat, group = motusTagID, col = as.factor(motusTagID)),
             position = position_jitter(w=0, h = 0.05)) +
-  labs(x = NULL, y = NULL, col = "Motus Tag ID") + theme_bw() + guides(fill = FALSE)
+  labs(x = NULL, y = NULL, col = "Motus Tag ID") + theme_bw() + 
+  guides(fill = FALSE,
+         colour = guide_legend(override.aes = list(size = 2)))
 
 ## Map of 2017 detections removing 23270
 gmap <- get_map(location = c(lon = -90, lat = 29.2), maptype = "satellite", source = "google", zoom = 11)
@@ -121,7 +158,9 @@ ggplot(na.map, aes(long, lat)) +
   geom_path(data = filter(lete.path, year == "2018"),
             aes(recvLon, recvLat, group = motusTagID, col = as.factor(motusTagID)),
             position = position_jitter(w=0, h = 0.05)) +
-  labs(x = NULL, y = NULL, col = "Motus Tag ID") + theme_bw() + guides(fill = FALSE)
+  labs(x = NULL, y = NULL, col = "Motus Tag ID") + theme_bw() +
+  guides(fill = FALSE,
+         colour = guide_legend(override.aes = list(size = 2)))
 ## Map of 2018 detections removing 28520
 gmap <- get_map(location = c(lon = -89.9, lat = 29.3), maptype = "satellite", source = "google", zoom = 11)
 p <- ggmap(gmap)
@@ -153,11 +192,14 @@ ggplot(filter(lete.path, year == "2017"),
   geom_path(col = "grey45") +
   th + labs(y = "what") + facet_wrap(~motusTagID, scales = "free", ncol = 4) +
   theme(legend.direction = "horizontal",
-        legend.position = c(0.7, 0),
+        legend.position = c(0.61, 0.07),
         legend.title = element_blank(),
         axis.title = element_blank()) +
   scale_color_manual(values = cols) +
-  theme(text = element_text(size = 8))
+  theme(text = element_text(size = 8),
+        legend.text=element_text(size=10),
+        strip.text.x = element_text(size = 10)) +
+  guides(colour = guide_legend(override.aes = list(size = 3), ncol = 2))
 ggsave("./images/2017LongitudePlot.png")
 
   #scale_color_viridis(discrete = TRUE)
@@ -173,7 +215,11 @@ ggplot(filter(lete.path, year == "2018"),
         legend.title = element_blank(),
         axis.title = element_blank()) +
   scale_color_manual(values = cols) +
-  theme(text = element_text(size = 8))
+  theme(text = element_text(size = 8),
+        legend.text=element_text(size=10),
+        strip.text.x = element_text(size = 10)) +
+  guides(colour = guide_legend(override.aes = list(size = 3)))
+
 #  scale_color_viridis(discrete = TRUE)
 
 ggplot(filter(lete.path, year == "2018"),

@@ -17,105 +17,13 @@ library(ggplot2)
 library(viridis)
 library(motus)
 library(pander)
+library(legendMap)
 ```
 
 ## Study Area
-Stations within the study region are presented in [Figure 2.1](#fig:2017StationMap), grey stations had no detections, while red stations had at least one tag detected during the study period from 2017 to 2018. Triangles represent receivers that were active during 2017 *and* 2018, circles represent stations that were only active in 2017 (*Quintana* and *East Grand Terre*). The blue lines indicate the direction of antennas during the study period. All receivers maintained the same bearings throughout the study period with the exception of "Bolivar_Flats", here the solid blue lines are the 2017 bearings, while the dashed blue lines are the 2018 bearings.
+Stations within the study region are presented in [Figure 2.1](#fig:2017StationMap), stations with red outlines had no detections, while coloured stations had at least one tag detected during the study period from 2017 to 2018. Triangles represent receivers that were active during 2017 *and* 2018, circles represent stations that were only active in 2017 (*Quintana* and *East Grand Terre*). The blue lines indicate the direction of antennas during the study period and span 15 miles from the receiver. All receivers maintained the same bearings throughout the study period with the exception of *Bolivar_Flats*, here the solid blue lines are the 2017 bearings, while the dashed blue lines are the 2018 bearings.
 
-********ADD SCALE BARS TO ALL MAPS*******
-
-```{r 2017StationMap, fig.cap = "Map of study region during 2017 and 2018. Triangles represent receivers that were active during 2017 and 2018, circles represent stations that were only active in 2017. Grey stations had no detections, red stations had at least one detection during the study period. Blue lines indicate antenna bearings which remained constant throughout the study period with the exception of Bolivar_Flats where the solid lines indicate 2017 bearings and dashed lines indicate 2018 bearings.", echo = FALSE, message = FALSE, warning = FALSE}
-na.map <- map_data(map = "world2")
-na.map <- na.map %>%  mutate(long = long - 360)
-arr.sc <- 0.5  # determines length of the vectors for antenna bearings and vanishing bearing lines
-na.map <- map_data(map = "world2")
-na.map <- na.map %>% filter(region %in% c("Canada",
-                                          "USA")) %>% mutate(long = long - 360)
-arr.sc <- 0.5  # determines length of the vectors for antenna bearings and vanishing bearing lines
-ggplot(na.map, aes(long, lat)) +
-  geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey", fill = "blue") +
-  geom_polygon(aes(group = group), colour = "grey", fill = "grey98") +
-  coord_map(projection = "mercator", xlim = c(-98, -88), ylim = c(27, 31)) +
-  xlab("") + ylab("") + theme_bw() +
-  geom_segment(data = filter(df.antDeps, !(recvDeployID %in% c(5149, 4304, 4615, 4616))), # remove Quintana and Bolivar deployments outside detection range
-               aes(x = longitude, xend = longitude +
-                     (sin(rad(antBearing)) *arr.sc), y = latitude, yend = latitude +
-                     (cos(rad(antBearing)) *arr.sc)), colour = "blue") +
-  geom_segment(data = filter(df.antDeps, recvDeployID == 4616), # Create dashed lines for Bolivar 2018 antenna bearings
-               aes(x = longitude, xend = longitude +
-                     (sin(rad(antBearing)) *arr.sc), y = latitude, yend = latitude +
-                     (cos(rad(antBearing)) *arr.sc)), colour = "blue", linetype = "dashed") +
-  geom_point(data = df.recvDepsCombined,
-             aes(longitude, latitude, shape = active, fill = incubate), colour = "black", size = 4) +
-  scale_shape_manual(values = c(21, 24)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Quintana", "Bolivar_Flats", "Wisner")),
-            aes(longitude, latitude, label=recvDeployName, hjust = -0.2, vjust = 1)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("East Grand Terre")),
-            aes(longitude, latitude, label=recvDeployName, hjust = -0.1, vjust = 0.1)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Scenic Galveston", "San Bernard NWR (Big Pond Unit)")),
-          aes(longitude, latitude, label=recvDeployName, hjust = 1.1, vjust = 0.5)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("San Bernard National Wildlife Refuge Headquarters")),
-            aes(longitude, latitude, label="San Bernard NWR Headquarters", hjust = 1, vjust = 0.5)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Grand_Isle")),
-            aes(longitude, latitude, label=recvDeployName, hjust = 1.2, vjust = 0.5)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Exxon Fields")),
-            aes(longitude, latitude, label=recvDeployName, hjust = 1, vjust = -1)) +
-  theme(legend.position = "none")
-
-ggsave("./images/outlineMap.png")
-```  
-All Least Terns were tagged within close proximity of *Exxon Fields*, and for the purposes of this report stations considered within proximity to the breeding area are *Exxon Fields*, *East Grand Terre*, *Grand_Isle*, and *Wisner.* A close up of this area is below is presented in [figure 2.2](#fig:breedingRegionMap)
-
-```{r breedingRegionMap, fig.cap = "Map of immediate breeding area, Least Terns were tagged in close proximity to Exxon Fields", echo = FALSE, message = FALSE, warning = FALSE}
-arr.sc <- 0.3  # determines length of the vectors for antenna bearings and vanishing bearing lines
-ggplot(na.map, aes(long, lat)) +
-  geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey", fill = "blue") +
-  geom_polygon(aes(group = group), colour = "grey", fill = "grey98") +
-  coord_map(projection = "mercator", xlim = c(-90.5, -88.75), ylim = c(28.6, 29.9)) +
-  xlab("") + ylab("") + theme_bw() +
-  geom_segment(data = filter(df.antDeps, !(recvDeployID %in% c(5149, 4304, 4615, 4616))), # remove Quintana and Bolivar deployments outside detection range
-               aes(x = longitude, xend = longitude +
-                     (sin(rad(antBearing)) *arr.sc), y = latitude, yend = latitude +
-                     (cos(rad(antBearing)) *arr.sc)), colour = "blue") +
-  geom_segment(data = filter(df.antDeps, recvDeployID == 4616), # Create dashed lines for Bolivar 2018 antenna bearings
-               aes(x = longitude, xend = longitude +
-                     (sin(rad(antBearing)) *arr.sc), y = latitude, yend = latitude +
-                     (cos(rad(antBearing)) *arr.sc)), colour = "blue", linetype = "dashed") +
-  geom_point(data = df.recvDepsCombined,
-             aes(longitude, latitude, shape = active, fill = incubate), colour = "black", size = 4) +
-  scale_shape_manual(values = c(21, 24)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Quintana", "Bolivar_Flats", "Wisner")),
-            aes(longitude, latitude, label=recvDeployName, hjust = -0.2, vjust = 1)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("East Grand Terre")),
-            aes(longitude, latitude, label=recvDeployName, hjust = -0.1, vjust = 0.1)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Scenic Galveston", "San Bernard NWR (Big Pond Unit)")),
-            aes(longitude, latitude, label=recvDeployName, hjust = 1.1, vjust = 0.5)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("San Bernard National Wildlife Refuge Headquarters")),
-            aes(longitude, latitude, label="San Bernard NWR Headquarters", hjust = 1, vjust = 0.5)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Grand_Isle")),
-            aes(longitude, latitude, label=recvDeployName, hjust = 1.2, vjust = 0.5)) +
-  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Exxon Fields")),
-            aes(longitude, latitude, label=recvDeployName, hjust = 1, vjust = -1)) +
-  theme(legend.position = "none")
-ggsave("./images/closeUpMap.png")
-```
-
-## Detection Overview
-In 2017, only one individual (Motus tag ID 23270) was detected at stations outside the immediate tagging region, all other individuals and the bulk of the detections occurred at *Exxon Fields*, *East Grand Terre*, *Grand_Isle*, and *Wisner.* [Figure 2.3](#fig:2017DetectionMap) shows a map of all 2017 tagged bird detections, lines are coloured by tag ID. [Figure 2.4](#fig:2017LongitudePlots) displays the same data by plotting latitude vs. time for each tag, with points coloured by receiver site.
-```{r 2017DetectionMap, fig.cap = "Map of 2017 tag detections, only tag 23270 was detected outside the immediate tagging region.", echo = FALSE, message = FALSE, warning = FALSE}
-# outline map of 2017 incubation detections
-ggplot(na.map, aes(long, lat)) +
-  geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey", fill = "blue") +
-  geom_polygon(aes(group = group), colour = "grey", fill = "grey98") +
-  coord_map(projection = "mercator", xlim = c(-98, -88), ylim = c(27, 31)) +
-  geom_point(data = df.recvDepsCombined,
-             aes(longitude, latitude, fill = incubate), shape = 21, colour = "black", size = 4) +
-  geom_path(data = filter(lete.path, year == "2017"),
-            aes(recvLon, recvLat, group = motusTagID, col = as.factor(motusTagID)),
-            position = position_jitter(w=0, h = 0.05)) +
-  labs(x = NULL, y = NULL, col = "Motus Tag ID") + theme_bw() + guides(fill = FALSE)
-ggsave("./images/detections2017.png")
-```
+All Least Terns were tagged within close proximity of *Exxon Fields*, and for the purposes of this report stations considered within proximity to the breeding area are *Exxon Fields*, *East Grand Terre*, *Grand_Isle*, and *Wisner.* A close up of this area is presented in the inset of [figure 2.1](#fig:2017StationMap)
 
 ```{r colourBlindPalette, echo = FALSE, message = FALSE, warning = FALSE, results = "hide"}
 # Get all station names
@@ -132,22 +40,135 @@ th <- theme_bw() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust
 
 
 ```
-```{r 2017LongitudePlots, fig.cap = "Individual 2017 plots by tag ID showing latitudinal movements of tags over time, detection points are coloured by station location. Note that the x and y scales vary between tag plots.", echo = FALSE, message = FALSE, fig.height = 10}
+
+```{r 2017StationMap, fig.cap = "Map of study region during 2017 and 2018. Triangles represent receivers that were active during 2017 and 2018, circles represent stations that were only active in 2017. Stations outlined in a red circle had no detections while coloured stations had at least one detection during the study period. Blue lines indicate antenna bearings spanning 15 miles from the station, bearings remained constant throughout the study period with the exception of *Bolivar_Flats* where the solid lines indicate 2017 bearings and dashed lines indicate 2018 bearings.", echo = FALSE, message = FALSE, warning = FALSE}
+
+na.map <- map_data(map = "world2")
+na.map <- na.map %>%  mutate(long = long - 360)
+arr.sc <- 0.5  # determines length of the vectors for antenna bearings and vanishing bearing lines
+na.map <- map_data(map = "world2")
+na.map <- na.map %>% filter(region %in% c("Canada",
+                                          "USA")) %>% mutate(long = long - 360)
+arr.sc <- 0.24  # determines length of the vectors for antenna bearings and vanishing bearing lines (0.3 = 30 km)
+
+# Create underlying map
+bigMap <- ggplot(na.map, aes(long, lat)) +
+  geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey") +
+  geom_polygon(aes(group = group), colour = "grey", fill = "grey98") +
+  coord_map(projection = "mercator", xlim = c(-100, -88), ylim = c(21, 31)) +
+  xlab("") + ylab("") + theme_bw() +
+  geom_segment(data = filter(df.antDeps, !(recvDeployID %in% c(5149, 4304, 4615, 4616))), # remove Quintana and Bolivar deployments outside detection range
+               aes(x = longitude, xend = longitude +
+                     (sin(rad(antBearing)) *arr.sc), y = latitude, yend = latitude +
+                     (cos(rad(antBearing)) *arr.sc)), colour = "blue") +
+  geom_segment(data = filter(df.antDeps, recvDeployID == 4616), # Create dashed lines for Bolicvar 2018 antenna bearings
+               aes(x = longitude, xend = longitude +
+                     (sin(rad(antBearing)) *arr.sc), y = latitude, yend = latitude +
+                     (cos(rad(antBearing)) *arr.sc)), colour = "blue", linetype = "dashed") +
+  geom_point(data = filter(df.recvDepsCombined, is.na(incubate)),
+             aes(longitude, latitude, shape = active), fill = "white", colour = "red", size = 3) +
+  scale_shape_manual(values = c(21, 24)) +
+  geom_point(data = filter(df.recvDepsCombined, incubate == TRUE),
+             aes(longitude, latitude, shape = active, fill = recvDeployName), colour = "black", size = 3) +
+  scale_fill_manual(values = cols) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Quintana", "Bolivar_Flats")),
+            aes(longitude, latitude, label=recvDeployName, hjust = -0.2, vjust = 1), size = 3) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Scenic Galveston")),
+          aes(longitude, latitude, label=recvDeployName, hjust = 1.1, vjust = -0.5), size = 3) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("San Bernard NWR (Big Pond Unit)")),
+            aes(longitude, latitude, label="San Bernard NWR (BPU)", hjust = 1.1, vjust = 0.5), size = 3) +  
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("San Bernard National Wildlife Refuge Headquarters")),
+            aes(longitude, latitude, label="San Bernard NWR HQ", hjust = 0.9, vjust = 1.7), size = 3) +
+  annotate(geom = "rect", xmin=-90.5, xmax=-88.9, ymin=28.6, ymax=29.9, color="red", fill = NA) +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = "transparent", color = NA)) +
+  scale_bar(lon = -99, lat = 21.8, 
+            distance_lon = 50, distance_lat = 10, distance_legend = 25, 
+            dist_unit = "mi", orientation = FALSE)
+
+## create inset map
+insetMap <- ggplot(na.map, aes(long, lat)) +
+  geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey", fill = "blue") +
+  geom_polygon(aes(group = group), colour = "grey", fill = "grey98") +
+  coord_map(projection = "mercator", xlim = c(-90.5, -88.9), ylim = c(28.6, 29.9)) +
+  xlab("") + ylab("") + theme_bw() +
+  geom_segment(data = filter(df.antDeps, !(recvDeployID %in% c(5149, 4304, 4615, 4616))), # remove Quintana and Bolivar deployments outside detection range
+               aes(x = longitude, xend = longitude +
+                     (sin(rad(antBearing)) *arr.sc), y = latitude, yend = latitude +
+                     (cos(rad(antBearing)) *arr.sc)), colour = "blue") +
+  geom_segment(data = filter(df.antDeps, recvDeployID == 4616), # Create dashed lines for Bolicvar 2018 antenna bearings
+               aes(x = longitude, xend = longitude +
+                     (sin(rad(antBearing)) *arr.sc), y = latitude, yend = latitude +
+                     (cos(rad(antBearing)) *arr.sc)), colour = "blue", linetype = "dashed") +
+  geom_point(data = filter(df.recvDepsCombined, incubate == TRUE),
+             aes(longitude, latitude, shape = active, fill = recvDeployName), colour = "black", size = 4) +
+  scale_shape_manual(values = c(21, 24)) +
+  geom_point(data = filter(df.recvDepsCombined, is.na(incubate)),
+             aes(longitude, latitude, shape = active), fill = "white", colour = "red", size = 4) +
+  scale_fill_manual(values = cols) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Wisner")),
+            aes(longitude, latitude, label=recvDeployName, hjust = 1.3, vjust = 0.9), size = 3.5) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("East Grand Terre")),
+            aes(longitude, latitude, label=recvDeployName, hjust = -0.1, vjust = 1), size = 3.5) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Grand_Isle")),
+            aes(longitude, latitude, label=recvDeployName, hjust = 1.2, vjust = 0.8), size = 3.5) +
+  geom_text(data = filter(df.recvDepsCombined, recvDeployName %in% c("Exxon Fields")),
+            aes(longitude, latitude, label=recvDeployName, hjust = 1, vjust = -1), size = 3.5) +
+  theme(legend.position = "none",
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        plot.background = element_rect(fill = "transparent", color = NA)) + 
+  scale_bar(lon = -89.9, lat = 28.7, 
+            distance_lon = 25, distance_lat = 3, distance_legend = 6, 
+            dist_unit = "mi", orientation = FALSE)
+
+# Create complete station map with inset
+vp_inset <- grid::viewport(width = 0.5, x = 0.6, y = 0.4)
+print(bigMap)
+print(insetMap, vp = vp_inset)
+
+ggsave("./images/StationMap.png")
+```
+
+## Detection Overview
+In 2017, only one individual (Motus tag ID 23270) was detected at stations outside the immediate tagging region, all other individuals and the bulk of the detections occurred at *Exxon Fields*, *East Grand Terre*, *Grand_Isle*, and *Wisner.* [Figure 2.2](#fig:2017DetectionMap) shows a map of all 2017 tagged bird detections, lines are coloured by tag ID. [Figure 2.3](#fig:2017LongitudePlots) displays the same data by plotting latitude vs. time for each tag, with points coloured by receiver site.
+```{r 2017DetectionMap, fig.cap = "Map of 2017 tag detections, only tag 23270 was detected outside the immediate tagging region.", echo = FALSE, message = FALSE, warning = FALSE}
+
+# outline map of 2017 incubation detections
+ggplot(na.map, aes(long, lat)) +
+  geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey", fill = "blue") +
+  geom_polygon(aes(group = group), colour = "grey", fill = "grey98") +
+  coord_map(projection = "mercator", xlim = c(-98, -88), ylim = c(27, 31)) +
+  geom_point(data = df.recvDepsCombined,
+             aes(longitude, latitude, fill = incubate), shape = 21, colour = "black", size = 4) +
+  geom_path(data = filter(lete.path, year == "2017"),
+            aes(recvLon, recvLat, group = motusTagID, col = as.factor(motusTagID)),
+            position = position_jitter(w=0, h = 0.05)) +
+  labs(x = NULL, y = NULL, col = "Motus Tag ID") + theme_bw() + 
+  guides(fill = FALSE,
+         colour = guide_legend(override.aes = list(size = 2)))
+ggsave("./images/detections2017.png")
+```
+
+```{r 2017LongitudePlots, fig.cap = "Individual 2017 plots by Motus tag ID showing latitudinal movements of tags over time, detection points are coloured by station location. Note that the x and y scales vary between tag plots.", echo = FALSE, message = FALSE, fig.height = 10}
 ggplot(filter(lete.path, year == "2017"),
        aes(ts.h, recvLon, group = as.factor(motusTagID))) +
   geom_point(aes(colour = as.factor(recvDeployName)), size = 1) +
   geom_path(col = "grey45") +
   th + labs(y = "what") + facet_wrap(~motusTagID, scales = "free", ncol = 4) +
   theme(legend.direction = "horizontal",
-        legend.position = c(0.6, 0),
+        legend.position = c(0.61, 0.07),
         legend.title = element_blank(),
         axis.title = element_blank()) +
   scale_color_manual(values = cols) +
-  theme(text = element_text(size = 8))
+  theme(text = element_text(size = 8),
+        legend.text=element_text(size=10),
+        strip.text.x = element_text(size = 10)) +
+  guides(colour = guide_legend(override.aes = list(size = 3), ncol = 2))
 ggsave("./images/2017LongitudePlot.png")
 ```
 
-In 2018, again only one individual was detected outside the immediate tagging region (Motus tag ID 28520), all other individuals and the bulk of the detections occurred at *Exxon Fields*, *East Grand Terre*, and *Grand_Isle*. Note that in 2018 no birds were detected at *Wisner* despite close proximity to nesting areas. Based on receiver performance outputs, this is likely due to receiver functionality rather than a true lack of detections. [Figure 2.5](#fig:2018DetectionMap) shows a map of detection pattern of all 2018 tagged birds, while [figure 2.6](#fig:2018LongitudePlots) displays the same data as individual tag plots of latitude vs. time.
+In 2018, again only one individual was detected outside the immediate tagging region (Motus tag ID 28520), all other individuals and the bulk of the detections occurred at *Exxon Fields*, *East Grand Terre*, and *Grand_Isle*. Note that in 2018 no birds were detected at *Wisner* despite close proximity to nesting areas. Based on receiver performance outputs, this is likely due to receiver functionality rather than a true lack of detections. [Figure 2.4](#fig:2018DetectionMap) shows a map of detection pattern of all 2018 tagged birds, while [figure 2.5](#fig:2018LongitudePlots) displays the same data as individual tag plots of latitude vs. time.
 
 ```{r 2018DetectionMap, fig.cap = "Map of 2018 tag detections, only tag 28520 was detected outside the immediate tagging region.", message = FALSE, echo = FALSE, warning = FALSE}
 ## Map of 2018 detections
@@ -160,7 +181,9 @@ ggplot(na.map, aes(long, lat)) +
   geom_path(data = filter(lete.path, year == "2018"),
             aes(recvLon, recvLat, group = motusTagID, col = as.factor(motusTagID)),
             position = position_jitter(w=0, h = 0.05)) +
-  labs(x = NULL, y = NULL, col = "Motus Tag ID") + theme_bw() + guides(fill = FALSE)
+  labs(x = NULL, y = NULL, col = "Motus Tag ID") + theme_bw() +
+  guides(fill = FALSE,
+         colour = guide_legend(override.aes = list(size = 2)))
 ```
 
 ```{r 2018LongitudePlots, fig.cap = "Individual 2018 plots by tag ID showing latitudinal movements of tags over time, detection points are coloured by station location. Note that the x and y scales vary between tag plots.", echo = FALSE, message = FALSE, fig.height = 10}
@@ -174,7 +197,10 @@ ggplot(filter(lete.path, year == "2018"),
         legend.title = element_blank(),
         axis.title = element_blank()) +
   scale_color_manual(values = cols) +
-    theme(text = element_text(size = 8))
+  theme(text = element_text(size = 8),
+        legend.text=element_text(size=10),
+        strip.text.x = element_text(size = 10)) +
+  guides(colour = guide_legend(override.aes = list(size = 3)))
 ggsave("./images/2018LongitudePlot.png")
 ```
 
@@ -204,10 +230,9 @@ grid.arrange(p1, p2, p3, p4, nrow = 2)
 
 ```
 
-[Figure 2.7](#fig:incubatingBirds) is a selection of 4 representative detection patterns of individuals; examining the signal strength it is not always clear when birds are attending the nest site and when they are foraging. For example, tag 23219 shows clear daily signal strength patterns, with low signal strength occurring overnight when the bird is likely incubating. Tag 23218 has a similar but less distinct pattern; some nights the bird is detected while other nights it is not. In other cases the tag is picked up far less consistently as in tag 28593, and in even more extreme cases as in tag 28522. For these final two tags, the bird is rarely if ever detected while incubating, and most detections likely occur as the bird is leaving or arriving at the nest site. 
+[Figure 2.6](#fig:incubatingBirds) is a selection of 4 representative detection patterns of individuals; examining the signal strength it is not always clear when birds are attending the nest site and when they are foraging. For example, tag 23219 shows clear daily signal strength patterns, with low signal strength occurring overnight when the bird is likely incubating. Tag 23218 has a similar but less distinct pattern; some nights the bird is detected while other nights it is not. In other cases the tag is picked up far less consistently as in tag 28593, and in even more extreme cases as in tag 28522. For these final two tags, the bird is rarely if ever detected while incubating, and most detections likely occur as the bird is leaving or arriving at the nest site. 
 
 Furthermore, even tags with clear daily detection patterns as in tag 23219, shorter nest site attendance periods during the day are not as obviously picked up. However, based on these detections, the signal strength during incubation is generally much lower than during flight. This is to be expected as a tags detection range increases substantially when a bird is in the air as compared to on the ground (low signal strength = weaker detection). Therefore, all detections on the Exxon Fields receiver with a signal strength < 80 will be excluded from foraging analysis from this point forward to exclude likely detections on the nest during incubation. While this will invariably also remove detections on Exxon Fields that may occur when the bird is in flight, since the station is in very close proximity to the nesting site, in most cases this will only remove the tail ends of a detection streak as the bird is departing or approaching the nesting site. 
-
 ```{r removeIncubationDetections, echo = FALSE, message = FALSE}
 foraging <- filter(inc, !(recvDeployName == "Exxon Fields" & sig <80))
 ```
@@ -219,26 +244,19 @@ To add meaning to receiver detections, the distance from *Exxon Fields* was calc
 p <- dist %>% filter(recvDeployName1 == "Exxon Fields") %>% 
   select(recvDeployName2, distance) %>%
   arrange(distance)
-p <- rename(p, "Site Name" = "recvDeployName2", "Distance from Exxon Fields (m)" = "distance")
+p <- rename(p, "Site Name" = "recvDeployName2", "Distance from Exxon Fields (mi)" = "distance")
 
-knitr::kable(p, booktabs = TRUE, caption = 'Distance in metres between each receiver and Exxon Fields')
+knitr::kable(p, booktabs = TRUE, caption = 'Distance in miles between each receiver and Exxon Fields')
 ```
-
 For each station the total number of visits was calculated ([figure 2.8](#fig:visitFrequency)), as expected *Exxon Fields* had by far the highest number of visits as it was at the nesting area. In 2017 and 2018 *Grand_Isle* had the next highest frequency of detections, this is not surprising as it is the closest station to the nesting area (see [table 2.1](#tab:distanceTable)). *East Grand Terre* and *Wisner* followed with lower numbers of site visits and are also near the nesting area. Note the lack of detections at *Wisner* in 2018, this is likely due to receiver malfunction rather than a true lack of detections. All other stations had negligible (<3) visits and are substantially farther away from the nesting grounds.
-```{r visitFrequency, fig.cap = "Detection frequencies of tags at each station by year, ordered by distance from Exxon Fields", echo = FALSE, message = FALSE}
+```{r visitFrequency, fig.cap = "Detection frequencies of tags at each station by year, ordered by distance from *Exxon Fields*", echo = FALSE, message = FALSE}
 ggplot(filter(visits), aes(recvDeployName)) +
   geom_bar(stat = "count") + geom_text(stat= "count", aes(label = ..count..), vjust = -1, size = 3) +
   facet_grid(year~.) + th + ylim(0,2300) +
   labs(y = "Number of site visits", x = NULL)
 ```
-
-The length of visits was consistent with the number of visits, that is, birds generally had longer detection periods at *Exxon Fields*, followed by *East Grand Terre*, *Grand_Isle*, and *Wisner*, only *Grand_Isle* and *Exxon Fields* differed significantly in their visit length. [Figure 2.9](#fig:visitLength) shows the mean length of time each bird was detected at each station during each visit (See [Appendix C](#AppendixC) for complete visit information).
-```{r visitLength, fig.cap = "Mean length of foraging visits in minutes at each station for 2017 and 2018, ordered by distance from Exxon Fields. Note that the plot has been cut off due to the high number of outliers, Exxon Fields had a maximum visit length of 61 minutes, Grand_Isle 107 minutes, East Grand Terre 19 minutes, Wisner 27 minutes", echo = FALSE, message = FALSE}
-tmp <- aov(data = filter(visits, recvDeployName %in% c("East Grand Terre", "Exxon Fields", "Grand_Isle", "Wisner")), visitLength ~ recvDeployName)
-#summary(tmp)
-tukey <- TukeyHSD(tmp, conf.level=0.95)
-#plot(TukeyHSD(tmp, conf.level = 0.95), las=1, col = "red")
-
+The length of visits was consistent with the number of visits, that is, birds generally had longer detection periods at *Exxon Fields*, followed by *East Grand Terre*, *Grand_Isle*, and *Wisner*. However, for both 2017 and 2018 only *Grand_Isle* and *Exxon Fields* differed significantly (p < 0.001) in their visit length. [Figure 2.8](#fig:visitLength) shows the mean length of time each bird was detected at each station during each visit (See [Appendix C](#AppendixC) for complete visit information).
+```{r visitLength, fig.cap = "Mean length of foraging visits in minutes at each station for 2017 and 2018, ordered by distance from Exxon Fields. Note that the plot has been cut off due to the high number of outliers, *Exxon Fields* had a maximum visit length of 61 minutes, *Grand_Isle* 107 minutes, *East Grand Terre* 19 minutes, *Wisner* 27 minutes.", echo = FALSE, message = FALSE}
 p <- ggplot(visits, aes(recvDeployName, visitLength)) +
   geom_boxplot() + facet_grid(year~.)
 ylim1 <- boxplot.stats(visits$visitLength)$stats[c(1,5)]
@@ -255,7 +273,7 @@ Thus birds appear to spend the majority of their time in close proximity to *Exx
 # how often are birds detected simultaneously at 2 or more stations?
 simSites <- simSiteDet(foraging)
 ```
-If stations are within close proximity of one another, it's possible to get simultaneous detections on both stations at once. During incubation there were 161 pairs of simultaneous detections, 2 of these occurred between *East Grand Terre* and *Exxon Fields*, 3 between *East Grand Terre* and *Grand_Isle*, and the other 156 between *Exxon Fields* and *Grand_Isle*. *Exxon Fields* and *Grand_Isle* are the closest two stations at 3.1 km apart, easily within range of each other particularly when birds are in flight (see [Appendix B](#AppendixB)). *East Grand Terre* is 12.6 km and 15.8 km away from *Exxon Fields* and *Grand_Isle* respectively, the next closest pairs of stations.
+If stations are within close proximity of one another, it's possible to get simultaneous detections on both stations at once. During incubation there were 161 pairs of simultaneous detections, 2 of these occurred between *East Grand Terre* and *Exxon Fields*, 3 between *East Grand Terre* and *Grand_Isle*, and the other 156 between *Exxon Fields* and *Grand_Isle*. *Exxon Fields* and *Grand_Isle* are the closest two stations at 1.97 miles apart, easily within range of each other particularly when birds are in flight (see [Appendix B](#AppendixB)). *East Grand Terre* is 7.85 miles and 9.80 miles away from *Exxon Fields* and *Grand_Isle* respectively, the next closest pairs of stations.
 
 ### Detection Directions
 We can narrow down the areas visited beyond which site they were detected at by examining which antenna they were detected on. Figures \@ref(fig:detBearings2017) and \@ref(fig:detBearings2018) show the total number of detections for each antenna bearing at each site for 2017 and 2018 respectively. Orange lines indicate the antenna bearings at each site, the blue bars are coloured by the number of detections on each antenna throughout the incubation period - note that scales differ by site.
@@ -290,7 +308,7 @@ g_legend<-function(a.gplot){
 mylegend<-g_legend(legendPlot)
 ```
 
-```{r detBearings2017, fig.cap = "Frequency of all 2017 detections on each antenna. Increasingly darker blue bars indicate increased numbers of detections during the incubation period, orange lines indicate antenna bearings at each site. Note that scales differ by site", echo = FALSE, message = FALSE, warning = FALSE, fig.height = 4}
+```{r detBearings2017, fig.cap = "Frequency of all 2017 detections on each antenna. Increasingly darker blue bars indicate increased numbers of detections during the incubation period, orange lines indicate antenna bearings at each site. Note that scales differ by site.", echo = FALSE, message = FALSE, warning = FALSE, fig.height = 8}
 # 2017
 # East Grand Terre
 grandTerre17 <- ggplot(filter(for.dir, year == 2017, recvDeployName == "East Grand Terre"), aes(antBearing, nDet, fill = nDet)) +
@@ -337,7 +355,7 @@ grid.arrange(arrangeGrob(exxon17, grandIsle17, wisner17, grandTerre17,
 ggsave("./images/2017antennaDetections.png")
 ```
 
-```{r detBearings2018, fig.cap = "Frequency of all 2018 detections on each antenna. Increasingly darker blue bars indicate increased numbers of detections during the incubation period, orange lines indicate antenna bearings at each site. Note that scales differ by site", echo = FALSE, message = FALSE, warning = FALSE, fig.height = 4}
+```{r detBearings2018, fig.cap = "Frequency of all 2018 detections on each antenna. Increasingly darker blue bars indicate increased numbers of detections during the incubation period, orange lines indicate antenna bearings at each site. Note that scales differ by site.", echo = FALSE, message = FALSE, warning = FALSE, fig.height = 8}
 # 2018
 # Bolivar_Flats
 bolivar18 <- ggplot(filter(for.dir, year == 2018, recvDeployName == "Bolivar_Flats"), aes(antBearing, nDet, fill = nDet)) +
@@ -374,13 +392,13 @@ In 2017, birds were picked up in very small numbers outside of the immediate bre
 ```{r distanceTravelled, echo = FALSE, message = FALSE, results = "hide"}
 summary(visits$distFromExxon)
 # mean of 1670m, max of 569092m
-summary(filter(visits, year == 2017)$distFromExxon) # mean 2528m, max 569092
-summary(filter(visits, year == 2018)$distFromExxon) # mean 866.4m, max 464126.4m
+summary(filter(visits, year == 2017)$distFromExxon) # mean 1.57 mi, max 353.617 mi
+summary(filter(visits, year == 2018)$distFromExxon) # mean 0.5383 mi, max 288.3948 mi
 table(visits$year, visits$recvDeployName)
 # but in 2017 on 7 visits away from breeding area (Exxon, Grand Isle, E Grand Terre, Wisner), in 2018 only 1 visit away
 # So 4,366/4,374 = 99.8% were within 23072m from Exxon (furthest being Wisner)
 ```
-Based on detection data, in 2017 the mean distance travelled for all detection periods was 2.5km, with a maximum distance travelled to *San Bernard NWR (Big Pond Unit)* at 569.1 km. In 2018 the mean distance travelled was 0.86 km, with a maximum distance travelled of 464.1 km to *Bolivar Flats*. However, the vast majority of detections (4,366/4,374 or 99.8%) during foraging trips occurred within 23.1 km from the colony detected at the four closest receiver stations (*Exxon Fields*, *Grand_Isle*, *East Grand Terre*, and *Wisner*).
+Based on detection data, in 2017 the mean distance travelled for all detection periods was 1.57 miles, with a maximum distance travelled to *San Bernard NWR (Big Pond Unit)* at 353.62 miles. In 2018 the mean distance travelled was 0.54 miles, with a maximum distance travelled of 288.39 miles to *Bolivar Flats*. However, the vast majority of detections (4,366/4,374 or 99.8%) during foraging trips occurred within 14.34 miles from the colony detected at the four closest receiver stations (*Exxon Fields*, *Grand_Isle*, *East Grand Terre*, and *Wisner*).
 
 ## Time Partitioning Between Foraging and Nest Site Attendance
 

@@ -6,7 +6,7 @@ opts_chunk$set(tidy.opts=list(width.cutoff=50), tidy = TRUE)
 require(pander)
 ```
 
-The following table lists the latitude and longitude for each pair of receivers (X and Y), and distance (m) between them:
+The following table lists the latitude and longitude for each pair of receivers (X and Y), and distance (miles) between them:
 
 ```{r parameterTableDistance, echo = FALSE}
 param.table <- dplyr::select(read.csv("./data/distances.csv", stringsAsFactors=FALSE), 2:8)
@@ -16,7 +16,7 @@ param.table <- param.table %>% mutate("Location X" = paste(round(recvLat1, digit
                                                            round(recvLon2, digits = 2), sep = ", "),
                                       distance = round(distance, digits = 2))
 param.table <- rename(param.table, "Receiver X" = recvDeployName1, 
-                      "Receiver Y" = recvDeployName2, "Distance (m)" = distance)
-knitr::kable(select(param.table, "Receiver X", "Receiver Y", "Location X", "Location Y", "Distance (m)"), 
+                      "Receiver Y" = recvDeployName2, "Distance (mi)" = distance)
+knitr::kable(select(param.table, "Receiver X", "Receiver Y", "Location X", "Location Y", "Distance (mi)"), 
       booktabs = TRUE, caption = 'Location and distance between each pair of receivers')
 ```
