@@ -1,7 +1,14 @@
+---
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
 # Methods {#Methods}
 ```{r tidyr2, echo = FALSE, message = FALSE, warning = FALSE}
 
 library(knitr)
+library(pander)
 opts_chunk$set(tidy.opts=list(width.cutoff=50), tidy = TRUE)
 ```
 ## Data Download
@@ -107,21 +114,23 @@ lete <- sunRiseSet(lete, lat = "recvLat", lon = "recvLon")
 # and will thus be excluded.
 inc <- filter(lete, incubate == TRUE)
 ```
-Several tags were only detected for a short period of time; for meaningful results, tags that were detected for less than 24 hours were excluded from further analysis (Lotek tag ID's 85, 98, 120, 130, 286, 288, 309, 312).
+Several tags were only detected for a short period of time; for meaningful results, tags that were detected for less than 24 hours were excluded from further analysis (Lotek tag ID's 85, 98, 120, 130, 286, 288, 309, 312). See [table 1.1](#tab:detectionlength) for a detection summary of all tags during incubation.
 ```{r detectionLength, echo = FALSE, message = FALSE, warning = FALSE}
 #Examine how long each tag was detected for during incubation
 detDate <- inc %>% group_by(year, motusTagID, mfgID) %>% 
   summarize(mints = min(ts), 
             maxts = max(ts), 
-            range = difftime(maxts, mints, units = "days"),
-            nSites = length(unique(recvDeployName)))
+            range = round(as.numeric(difftime(maxts, mints, units = "days")), digits = 2),
+            nSites = length(unique(recvDeployName))) %>% data.frame()
 # some birds not detected for very long, therefore only look at ones detected for at least 1 full day
 tmp <- unique(filter(detDate, range > 1)$motusTagID)
 inc <- filter(inc, motusTagID %in% tmp)
 tmp <- detDate
 tmp <- rename(detDate, Year = year, "First Detection" = mints, "Final Detection" = maxts, "Detection Period (days)" = range, "Number of Sites" = nSites)
-tmp <- tmp %>% as.data.frame(tmp) %>% arrange(motusTagID)
-kable(tmp, booktabs = TRUE, caption = 'Incubation detection period for all tags') 
+tmp <- tmp %>% arrange(motusTagID)
+#kable(tmp, booktabs = TRUE, caption = 'Incubation detection period for all tags', longtable = TRUE)
+pander(tmp, booktabs = TRUE, caption = '(\\#tab:detectionLength) Incubation detection period for all tags', split.cell = 11, split.table = Inf, justify = 'left')
+
 ```
 
 ```{r distances, echo = FALSE, message = FALSE, warning = FALSE}
@@ -411,7 +420,7 @@ summary(tmp18)
 tt <- TukeyHSD(tmp18, conf.level=0.95) #only Grand_Isle-Exxon is significant
 print(tt, digits = 15) # significance of Grand_Isle-Exxon: p = 4.2e-8
 
-p <- plot(TukeyHSD(tmp, conf.level = 0.95), las=1, col = "red")
+#p <- plot(TukeyHSD(tmp, conf.level = 0.95), las=1, col = "red")
 ```
 
 

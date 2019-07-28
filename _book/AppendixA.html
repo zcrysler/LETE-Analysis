@@ -25,7 +25,7 @@
 <meta name="author" content="Zoe Crysler">
 
 
-<meta name="date" content="2019-07-21">
+<meta name="date" content="2019-07-28">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -241,8 +241,7 @@ th &lt;-<span class="st"> </span><span class="kw">theme_bw</span>() <span class=
 <span class="co"># plot all tags by latitude</span>
 <span class="kw">ggplot</span>(lete17, <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>th <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&quot;Receiver Latitude&quot;</span>)</code></pre></div>
-<p><img src="LETE_Analysis_files/figure-html/2017filterPlots1-1.png" width="672" /></p>
-<p>Tags are removed that were never detected at the breeding site, these are <strong>23220</strong>, <strong>23221</strong>, and <strong>23222</strong>.</p>
+<p><img src="LETE_Analysis_files/figure-html/2017filterPlots1-1.png" width="672" /> Tags are removed that were never detected at the breeding site, these are <strong>23220</strong>, <strong>23221</strong>, and <strong>23222</strong>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># remove tags 23220, 23221, 23222 and create a</span>
 <span class="co"># block</span>
 lete17 &lt;-<span class="st"> </span><span class="kw">filter</span>(lete17, <span class="op">!</span>(motusTagID <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">23220</span>, 
@@ -316,14 +315,12 @@ df.block.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw
     <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>motusTagID) <span class="op">+</span><span class="st"> </span>th <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&quot;Receiver Latitude&quot;</span>, 
     <span class="dt">col =</span> <span class="st">&quot;Receiver Station&quot;</span>)</code></pre></div>
-<p><img src="LETE_Analysis_files/figure-html/2017filterPlots7-1.png" width="672" /></p>
-<p>There are three remaining tags with questionable detections: <strong>23219, 23225, 23227</strong>:</p>
+<p><img src="LETE_Analysis_files/figure-html/2017filterPlots7-1.png" width="672" /> There are three remaining tags with questionable detections: <strong>23219, 23225, 23227</strong>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete17, motusTagID <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">23219</span>, <span class="dv">23225</span>, 
     <span class="dv">23227</span>)), <span class="kw">aes</span>(ts, recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_grid</span>(motusTagID <span class="op">~</span><span class="st"> </span>.) <span class="op">+</span><span class="st"> </span>th <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&quot;Receiver Latitude&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;Receiver Station&quot;</span>)</code></pre></div>
-<p><img src="LETE_Analysis_files/figure-html/2017filterPlots8-1.png" width="672" /></p>
-<p>To determine if detections are reliable, each tag will be examined on an individual basis.</p>
+<p><img src="LETE_Analysis_files/figure-html/2017filterPlots8-1.png" width="672" /> To determine if detections are reliable, each tag will be examined on an individual basis.</p>
 <p><strong>Tag 23219</strong>: Detections at Rockport Bay Education Center are only runLen 2, these are not reliable detections:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete17, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">23219</span>, ts <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.POSIXct</span>(<span class="st">&quot;2017-06-18&quot;</span>)), 
     <span class="kw">aes</span>(ts, sig)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
@@ -430,7 +427,7 @@ df.block.<span class="dv">7</span> &lt;-<span class="st"> </span><span class="kw
     recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span>th <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&quot;Receiver Latitude&quot;</span>, 
     <span class="dt">col =</span> <span class="st">&quot;Receiver Station&quot;</span>)</code></pre></div>
-<p><img src="LETE_Analysis_files/figure-html/2018filterPlots9-1.png" width="672" /></p>
+<p><img src="LETE_Analysis_files/figure-html/2018filterPlots-1.png" width="672" /></p>
 <p><strong>Tag 28600</strong>: Detections at <em>Koffler</em> and <em>D’Estimauville</em> once again appear problematic and will be removed.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">filter</span>(lete18, motusTagID <span class="op">==</span><span class="st"> </span><span class="dv">28600</span>), <span class="kw">aes</span>(ts, 
     recvLat)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">col =</span> recvDeployName)) <span class="op">+</span><span class="st"> </span>

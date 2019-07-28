@@ -3,7 +3,6 @@
 ```{r tidyr4, echo = FALSE, message = FALSE, warning = FALSE}
 library(knitr)
 opts_chunk$set(tidy.opts=list(width.cutoff=50), tidy = TRUE)
-require(pander)
 ```
 
 The following table lists the latitude and longitude for each pair of receivers (X and Y), and distance (miles) between them:
@@ -17,6 +16,10 @@ param.table <- param.table %>% mutate("Location X" = paste(round(recvLat1, digit
                                       distance = round(distance, digits = 2))
 param.table <- rename(param.table, "Receiver X" = recvDeployName1, 
                       "Receiver Y" = recvDeployName2, "Distance (mi)" = distance)
-knitr::kable(select(param.table, "Receiver X", "Receiver Y", "Location X", "Location Y", "Distance (mi)"), 
-      booktabs = TRUE, caption = 'Location and distance between each pair of receivers')
+#kable(select(param.table, "Receiver X", "Receiver Y", "Location X", "Location Y", "Distance (mi)"), 
+#      booktabs = TRUE, caption = 'Location and distance between each pair of receivers', longtable = TRUE)
+pander(select(param.table, "Receiver X", "Receiver Y", "Location X", "Location Y", "Distance (mi)"), 
+      booktabs = TRUE, caption = '(\\#tab:parameterTableDistance) Location and distance between each pair of receivers', 
+      split.cell = 20, split.table = Inf, justify = 'left')
+
 ```

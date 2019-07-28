@@ -7,7 +7,6 @@ opts_chunk$set(tidy.opts=list(width.cutoff=50), tidy = TRUE)
 # register_google(key = "INSERT YOUR KEY HERE")
 
 ```
-
 ```{r loadPackages2, eval = TRUE, echo = FALSE, message = FALSE, warning = FALSE}
 ## Loading packages if not already loaded
 library(ggmap)
@@ -16,10 +15,8 @@ library(gridExtra)
 library(ggplot2)
 library(viridis)
 library(motus)
-library(pander)
 library(legendMap)
 ```
-
 ## Study Area
 Stations within the study region are presented in [Figure 2.1](#fig:2017StationMap), stations with red outlines had no detections, while coloured stations had at least one tag detected during the study period from 2017 to 2018. Triangles represent receivers that were active during 2017 *and* 2018, circles represent stations that were only active in 2017 (*Quintana* and *East Grand Terre*). The blue lines indicate the direction of antennas during the study period and span 15 miles from the receiver. All receivers maintained the same bearings throughout the study period with the exception of *Bolivar_Flats*, here the solid blue lines are the 2017 bearings, while the dashed blue lines are the 2018 bearings.
 
@@ -40,8 +37,7 @@ th <- theme_bw() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust
 
 
 ```
-
-```{r 2017StationMap, fig.cap = "Map of study region during 2017 and 2018. Triangles represent receivers that were active during 2017 and 2018, circles represent stations that were only active in 2017. Stations outlined in a red circle had no detections while coloured stations had at least one detection during the study period. Blue lines indicate antenna bearings spanning 15 miles from the station, bearings remained constant throughout the study period with the exception of *Bolivar_Flats* where the solid lines indicate 2017 bearings and dashed lines indicate 2018 bearings.", echo = FALSE, message = FALSE, warning = FALSE}
+```{r 2017StationMap, fig.cap = "Map of study region during 2017 and 2018. Triangles represent receivers that were active during 2017 and 2018, circles represent stations that were only active in 2017. Stations outlined in a red circle had no detections while coloured stations had at least one detection during the study period. Blue lines indicate antenna bearings spanning 15 miles from the station, bearings remained constant throughout the study period with the exception of *Bolivar_Flats* where the solid lines indicate 2017 bearings and dashed lines indicate 2018 bearings.", echo = FALSE, message = FALSE, warning = FALSE, fig.height = 6}
 
 na.map <- map_data(map = "world2")
 na.map <- na.map %>%  mutate(long = long - 360)
@@ -55,7 +51,7 @@ arr.sc <- 0.24  # determines length of the vectors for antenna bearings and vani
 bigMap <- ggplot(na.map, aes(long, lat)) +
   geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey") +
   geom_polygon(aes(group = group), colour = "grey", fill = "grey98") +
-  coord_map(projection = "mercator", xlim = c(-100, -88), ylim = c(21, 31)) +
+  coord_map(projection = "mercator", xlim = c(-99, -88), ylim = c(22, 31)) +
   xlab("") + ylab("") + theme_bw() +
   geom_segment(data = filter(df.antDeps, !(recvDeployID %in% c(5149, 4304, 4615, 4616))), # remove Quintana and Bolivar deployments outside detection range
                aes(x = longitude, xend = longitude +
@@ -82,7 +78,7 @@ bigMap <- ggplot(na.map, aes(long, lat)) +
   annotate(geom = "rect", xmin=-90.5, xmax=-88.9, ymin=28.6, ymax=29.9, color="red", fill = NA) +
   theme(legend.position = "none",
         plot.background = element_rect(fill = "transparent", color = NA)) +
-  scale_bar(lon = -99, lat = 21.8, 
+  scale_bar(lon = -98.5, lat = 22.4, 
             distance_lon = 50, distance_lat = 10, distance_legend = 25, 
             dist_unit = "mi", orientation = FALSE)
 
@@ -123,16 +119,19 @@ insetMap <- ggplot(na.map, aes(long, lat)) +
             dist_unit = "mi", orientation = FALSE)
 
 # Create complete station map with inset
-vp_inset <- grid::viewport(width = 0.5, x = 0.6, y = 0.4)
+vp_inset <- grid::viewport(width = 0.6, x = 0.65, y = 0.5)
 print(bigMap)
 print(insetMap, vp = vp_inset)
 
 ggsave("./images/StationMap.png")
 ```
 
+
 ## Detection Overview
 In 2017, only one individual (Motus tag ID 23270) was detected at stations outside the immediate tagging region, all other individuals and the bulk of the detections occurred at *Exxon Fields*, *East Grand Terre*, *Grand_Isle*, and *Wisner.* [Figure 2.2](#fig:2017DetectionMap) shows a map of all 2017 tagged bird detections, lines are coloured by tag ID. [Figure 2.3](#fig:2017LongitudePlots) displays the same data by plotting latitude vs. time for each tag, with points coloured by receiver site.
-```{r 2017DetectionMap, fig.cap = "Map of 2017 tag detections, only tag 23270 was detected outside the immediate tagging region.", echo = FALSE, message = FALSE, warning = FALSE}
+
+
+```{r 2017DetectionMap, fig.cap = "Map of 2017 tag detections, only tag 23270 was detected outside the immediate tagging region.", echo = FALSE, message = FALSE, warning = FALSE, fig.height = 3}
 
 # outline map of 2017 incubation detections
 ggplot(na.map, aes(long, lat)) +
@@ -149,6 +148,7 @@ ggplot(na.map, aes(long, lat)) +
          colour = guide_legend(override.aes = list(size = 2)))
 ggsave("./images/detections2017.png")
 ```
+
 
 ```{r 2017LongitudePlots, fig.cap = "Individual 2017 plots by Motus tag ID showing latitudinal movements of tags over time, detection points are coloured by station location. Note that the x and y scales vary between tag plots.", echo = FALSE, message = FALSE, fig.height = 10}
 ggplot(filter(lete.path, year == "2017"),
@@ -168,9 +168,10 @@ ggplot(filter(lete.path, year == "2017"),
 ggsave("./images/2017LongitudePlot.png")
 ```
 
+
 In 2018, again only one individual was detected outside the immediate tagging region (Motus tag ID 28520), all other individuals and the bulk of the detections occurred at *Exxon Fields*, *East Grand Terre*, and *Grand_Isle*. Note that in 2018 no birds were detected at *Wisner* despite close proximity to nesting areas. Based on receiver performance outputs, this is likely due to receiver functionality rather than a true lack of detections. [Figure 2.4](#fig:2018DetectionMap) shows a map of detection pattern of all 2018 tagged birds, while [figure 2.5](#fig:2018LongitudePlots) displays the same data as individual tag plots of latitude vs. time.
 
-```{r 2018DetectionMap, fig.cap = "Map of 2018 tag detections, only tag 28520 was detected outside the immediate tagging region.", message = FALSE, echo = FALSE, warning = FALSE}
+```{r 2018DetectionMap, fig.cap = "Map of 2018 tag detections, only tag 28520 was detected outside the immediate tagging region.", message = FALSE, echo = FALSE, warning = FALSE, fig.height = 3.5}
 ## Map of 2018 detections
 ggplot(na.map, aes(long, lat)) +
   geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey", fill = "blue") +
@@ -205,7 +206,8 @@ ggsave("./images/2018LongitudePlot.png")
 ```
 
 ## Foraging vs Incubating
-```{r incubatingBirds, fig.cap = "Signal strength vs. time of four representative tags at select periods of incubation. Points represent individual detections coloured by Receiver, vertical blue lines indicate sunset, and vertical orange lines indicate sunrise. A higher signal strength correlates to a stronger detection. Note x and y scales vary between plots.", echo = FALSE, message = FALSE}
+```{r incubatingBirds, fig.cap = "Signal strength vs. time of four representative tags at select periods of incubation. Points represent individual detections coloured by Receiver, vertical blue lines indicate sunset, and vertical orange lines indicate sunrise. A higher signal strength correlates to a stronger detection. Note x and y scales vary between plots.", echo = FALSE, message = FALSE, fig.height = 5}
+
 p1 <- ggplot(filter(inc, motusTagID == 23219), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
   facet_grid(recvDeployName~.) +
   geom_vline(xintercept = inc$sunrise,col = "orange") +
@@ -220,12 +222,14 @@ p3 <- ggplot(filter(inc, motusTagID == 28593), aes(ts, sig, col = recvDeployName
   facet_grid(recvDeployName~.) +
   geom_vline(xintercept = inc$sunrise,col = "orange") +
   geom_vline(xintercept = inc$sunset, col = "blue") + th +
-theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2018: Motus tag ID 28593")
+  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2018: Motus tag ID 28593")
+levels(inc$recvDeployName) <- gsub(" ", "\n", levels(inc$recvDeployName))
 p4 <- ggplot(filter(inc, motusTagID == 28522), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
   facet_grid(recvDeployName~.) +
   geom_vline(xintercept = inc$sunrise,col = "orange") +
   geom_vline(xintercept = inc$sunset, col = "blue") + th +
-  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2018: Motus tag ID 28522")
+  theme(legend.position = "none", strip.text.y = element_text(size = 7)) + 
+  labs (y = "Signal Strength", x = NULL, title ="2018: Motus tag ID 28522")
 grid.arrange(p1, p2, p3, p4, nrow = 2)
 
 ```
@@ -246,23 +250,34 @@ p <- dist %>% filter(recvDeployName1 == "Exxon Fields") %>%
   arrange(distance)
 p <- rename(p, "Site Name" = "recvDeployName2", "Distance from Exxon Fields (mi)" = "distance")
 
-knitr::kable(p, booktabs = TRUE, caption = 'Distance in miles between each receiver and Exxon Fields')
+#knitr::kable(p, booktabs = TRUE, caption = 'Distance in miles between each receiver and Exxon Fields', longtable = TRUE)
+pander(p, booktabs = TRUE, caption = 'Distance in miles between each receiver and Exxon Fields', split.cell = 30, split.table = Inf, justify = 'left', style = "grid")
+
 ```
 For each station the total number of visits was calculated ([figure 2.8](#fig:visitFrequency)), as expected *Exxon Fields* had by far the highest number of visits as it was at the nesting area. In 2017 and 2018 *Grand_Isle* had the next highest frequency of detections, this is not surprising as it is the closest station to the nesting area (see [table 2.1](#tab:distanceTable)). *East Grand Terre* and *Wisner* followed with lower numbers of site visits and are also near the nesting area. Note the lack of detections at *Wisner* in 2018, this is likely due to receiver malfunction rather than a true lack of detections. All other stations had negligible (<3) visits and are substantially farther away from the nesting grounds.
-```{r visitFrequency, fig.cap = "Detection frequencies of tags at each station by year, ordered by distance from *Exxon Fields*", echo = FALSE, message = FALSE}
+
+
+```{r visitFrequency, fig.cap = "Detection frequencies of tags at each station by year, ordered by distance from *Exxon Fields*", echo = FALSE, message = FALSE, fig.height = 4}
+levels(visits$recvDeployName) <- gsub("Wildlife Refuge", "Wildlife \n Refuge", levels(visits$recvDeployName))
 ggplot(filter(visits), aes(recvDeployName)) +
   geom_bar(stat = "count") + geom_text(stat= "count", aes(label = ..count..), vjust = -1, size = 3) +
   facet_grid(year~.) + th + ylim(0,2300) +
   labs(y = "Number of site visits", x = NULL)
 ```
+
+
 The length of visits was consistent with the number of visits, that is, birds generally had longer detection periods at *Exxon Fields*, followed by *East Grand Terre*, *Grand_Isle*, and *Wisner*. However, for both 2017 and 2018 only *Grand_Isle* and *Exxon Fields* differed significantly (p < 0.001) in their visit length. [Figure 2.8](#fig:visitLength) shows the mean length of time each bird was detected at each station during each visit (See [Appendix C](#AppendixC) for complete visit information).
-```{r visitLength, fig.cap = "Mean length of foraging visits in minutes at each station for 2017 and 2018, ordered by distance from Exxon Fields. Note that the plot has been cut off due to the high number of outliers, *Exxon Fields* had a maximum visit length of 61 minutes, *Grand_Isle* 107 minutes, *East Grand Terre* 19 minutes, *Wisner* 27 minutes.", echo = FALSE, message = FALSE}
+
+
+```{r visitLength, fig.cap = "Mean length of foraging visits in minutes at each station for 2017 and 2018, ordered by distance from Exxon Fields. Note that the plot has been cut off due to the high number of outliers, *Exxon Fields* had a maximum visit length of 61 minutes, *Grand_Isle* 107 minutes, *East Grand Terre* 19 minutes, *Wisner* 27 minutes.", echo = FALSE, message = FALSE, fig.height = 4}
+levels(visits$recvDeployName) <- gsub("Wildlife Refuge", "Wildlife \n Refuge", levels(visits$recvDeployName))
 p <- ggplot(visits, aes(recvDeployName, visitLength)) +
   geom_boxplot() + facet_grid(year~.)
 ylim1 <- boxplot.stats(visits$visitLength)$stats[c(1,5)]
 p + coord_cartesian(ylim = ylim1*1.05) + th + 
   labs(y = "Detection time (mins)", x = NULL)
 ```
+
 
 Of the birds that were detected at *Exxon Fields* in 2017 and 2018, all were detected on at least 6 different visits. At *Grand_Isle*, the majority (39/44, 88.6%) of birds were detected on more than 2 separate occasions (>2 discrete visits). In comparison, at the remaining stations less than half (10/23, 43.5%) were detected on more than two occasions. Only tag 23261 appeared semi-regularly at *Wisner* but is notable in 12 detections. 
 
