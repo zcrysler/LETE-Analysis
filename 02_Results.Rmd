@@ -16,6 +16,7 @@ library(ggplot2)
 library(viridis)
 library(motus)
 library(legendMap)
+library(suncalc)
 ```
 ## Study Area
 Stations within the study region are presented in [Figure 2.1](#fig:2017StationMap), stations with red outlines had no detections, while coloured stations had at least one tag detected during the study period from 2017 to 2018. Triangles represent receivers that were active during 2017 *and* 2018, circles represent stations that were only active in 2017 (*Quintana* and *East Grand Terre*). The blue lines indicate the direction of antennas during the study period and span 15 miles from the receiver. All receivers maintained the same bearings throughout the study period with the exception of *Bolivar_Flats*, here the solid blue lines are the 2017 bearings, while the dashed blue lines are the 2018 bearings.
@@ -119,7 +120,7 @@ insetMap <- ggplot(na.map, aes(long, lat)) +
             dist_unit = "mi", orientation = FALSE)
 
 # Create complete station map with inset
-vp_inset <- grid::viewport(width = 0.6, x = 0.65, y = 0.5)
+vp_inset <- grid::viewport(width = 0.6, x = 0.65, y = 0.36)
 print(bigMap)
 print(insetMap, vp = vp_inset)
 
@@ -208,26 +209,38 @@ ggsave("./images/2018LongitudePlot.png")
 ## Foraging vs Incubating
 ```{r incubatingBirds, fig.cap = "Signal strength vs. time of four representative tags at select periods of incubation. Points represent individual detections coloured by Receiver, vertical blue lines indicate sunset, and vertical orange lines indicate sunrise. A higher signal strength correlates to a stronger detection. Note x and y scales vary between plots.", echo = FALSE, message = FALSE, fig.height = 5}
 
+# do proper time conversion for the lotek receivers
+inc$ts <- (inc$ts - 5*60*60)
+inc$ts <- force_tz(inc$ts, tzone = "America/Chicago")
+inc$date <- as.Date(inc$ts, tz = "America/Chicago")
+# get dawn and dusk times
+days <- unique(inc$date)
+dusk <- getSunlightTimes(date = days, keep = c("dawn", "dusk"),
+                         lat = 29.20644, lon = -89.81102, tz = "America/Chicago")
+inc <- left_join(inc, dusk, by = "date")
+
+
 p1 <- ggplot(filter(inc, motusTagID == 23219), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
   facet_grid(recvDeployName~.) +
-  geom_vline(xintercept = inc$sunrise,col = "orange") +
-  geom_vline(xintercept = inc$sunset, col = "blue") + th +
+  geom_vline(xintercept = inc$dawn,col = "orange") +
+  geom_vline(xintercept = inc$dusk, col = "blue") + th +
   theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2017: Motus tag ID 23219")
 p2 <- ggplot(filter(inc, motusTagID == 23218, ts > as.POSIXct("2017-06-15")), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
   facet_grid(recvDeployName~.) +
-  geom_vline(xintercept = inc$sunrise,col = "orange") +
-  geom_vline(xintercept = inc$sunset, col = "blue") + th +
+  geom_vline(xintercept = inc$dawn,col = "orange") +
+  geom_vline(xintercept = inc$dusk, col = "blue") + th +
   theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2017: Motus tag ID 23218")
 p3 <- ggplot(filter(inc, motusTagID == 28593), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
   facet_grid(recvDeployName~.) +
-  geom_vline(xintercept = inc$sunrise,col = "orange") +
-  geom_vline(xintercept = inc$sunset, col = "blue") + th +
+  geom_vline(xintercept = inc$dawn,col = "orange") +
+  geom_vline(xintercept = inc$dusk, col = "blue") + th +
   theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2018: Motus tag ID 28593")
-levels(inc$recvDeployName) <- gsub(" ", "\n", levels(inc$recvDeployName))
-p4 <- ggplot(filter(inc, motusTagID == 28522), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
+tmp <- inc
+levels(tmp$recvDeployName) <- gsub(" ", "\n", levels(tmp$recvDeployName))
+p4 <- ggplot(filter(tmp, motusTagID == 28522), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
   facet_grid(recvDeployName~.) +
-  geom_vline(xintercept = inc$sunrise,col = "orange") +
-  geom_vline(xintercept = inc$sunset, col = "blue") + th +
+  geom_vline(xintercept = tmp$dawn,col = "orange") +
+  geom_vline(xintercept = tmp$dusk, col = "blue") + th +
   theme(legend.position = "none", strip.text.y = element_text(size = 7)) + 
   labs (y = "Signal Strength", x = NULL, title ="2018: Motus tag ID 28522")
 grid.arrange(p1, p2, p3, p4, nrow = 2)
@@ -236,9 +249,9 @@ grid.arrange(p1, p2, p3, p4, nrow = 2)
 
 [Figure 2.6](#fig:incubatingBirds) is a selection of 4 representative detection patterns of individuals; examining the signal strength it is not always clear when birds are attending the nest site and when they are foraging. For example, tag 23219 shows clear daily signal strength patterns, with low signal strength occurring overnight when the bird is likely incubating. Tag 23218 has a similar but less distinct pattern; some nights the bird is detected while other nights it is not. In other cases the tag is picked up far less consistently as in tag 28593, and in even more extreme cases as in tag 28522. For these final two tags, the bird is rarely if ever detected while incubating, and most detections likely occur as the bird is leaving or arriving at the nest site. 
 
-Furthermore, even tags with clear daily detection patterns as in tag 23219, shorter nest site attendance periods during the day are not as obviously picked up. However, based on these detections, the signal strength during incubation is generally much lower than during flight. This is to be expected as a tags detection range increases substantially when a bird is in the air as compared to on the ground (low signal strength = weaker detection). Therefore, all detections on the Exxon Fields receiver with a signal strength < 80 will be excluded from foraging analysis from this point forward to exclude likely detections on the nest during incubation. While this will invariably also remove detections on Exxon Fields that may occur when the bird is in flight, since the station is in very close proximity to the nesting site, in most cases this will only remove the tail ends of a detection streak as the bird is departing or approaching the nesting site. 
+Furthermore, even tags with clear daily detection patterns as in tag 23219, shorter nest site attendance periods during the day are not as obviously picked up. However, based on these detections, the signal strength during incubation is generally much lower than during flight. This is to be expected as a tags detection range increases substantially when a bird is in the air as compared to on the ground (low signal strength = weaker detection). Therefore, all detections on the Exxon Fields receiver with a signal strength < 70 will be excluded from foraging analysis from this point forward to exclude likely detections on the nest during incubation. While this will invariably also remove detections on Exxon Fields that may occur when the bird is in flight, since the station is in very close proximity to the nesting site, in most cases this will only remove the tail ends of a detection streak as the bird is departing or approaching the nesting site. 
 ```{r removeIncubationDetections, echo = FALSE, message = FALSE}
-foraging <- filter(inc, !(recvDeployName == "Exxon Fields" & sig <80))
+foraging <- filter(inc, !(recvDeployName == "Exxon Fields" & sig <70))
 ```
 
 ## Heavily Frequented Foraging Areas
@@ -258,8 +271,9 @@ For each station the total number of visits was calculated ([figure 2.8](#fig:vi
 
 
 ```{r visitFrequency, fig.cap = "Detection frequencies of tags at each station by year, ordered by distance from *Exxon Fields*", echo = FALSE, message = FALSE, fig.height = 4}
-levels(visits$recvDeployName) <- gsub("Wildlife Refuge", "Wildlife \n Refuge", levels(visits$recvDeployName))
-ggplot(filter(visits), aes(recvDeployName)) +
+tmp <- visits
+levels(tmp$recvDeployName) <- gsub("Wildlife Refuge", "Wildlife \n Refuge", levels(tmp$recvDeployName))
+ggplot(filter(tmp), aes(recvDeployName)) +
   geom_bar(stat = "count") + geom_text(stat= "count", aes(label = ..count..), vjust = -1, size = 3) +
   facet_grid(year~.) + th + ylim(0,2300) +
   labs(y = "Number of site visits", x = NULL)
@@ -270,10 +284,11 @@ The length of visits was consistent with the number of visits, that is, birds ge
 
 
 ```{r visitLength, fig.cap = "Mean length of foraging visits in minutes at each station for 2017 and 2018, ordered by distance from Exxon Fields. Note that the plot has been cut off due to the high number of outliers, *Exxon Fields* had a maximum visit length of 61 minutes, *Grand_Isle* 107 minutes, *East Grand Terre* 19 minutes, *Wisner* 27 minutes.", echo = FALSE, message = FALSE, fig.height = 4}
-levels(visits$recvDeployName) <- gsub("Wildlife Refuge", "Wildlife \n Refuge", levels(visits$recvDeployName))
-p <- ggplot(visits, aes(recvDeployName, visitLength)) +
+tmp <- visits
+levels(tmp$recvDeployName) <- gsub("Wildlife Refuge", "Wildlife \n Refuge", levels(tmp$recvDeployName))
+p <- ggplot(tmp, aes(recvDeployName, visitLength)) +
   geom_boxplot() + facet_grid(year~.)
-ylim1 <- boxplot.stats(visits$visitLength)$stats[c(1,5)]
+ylim1 <- boxplot.stats(tmp$visitLength)$stats[c(1,5)]
 p + coord_cartesian(ylim = ylim1*1.05) + th + 
   labs(y = "Detection time (mins)", x = NULL)
 ```
@@ -288,7 +303,7 @@ Thus birds appear to spend the majority of their time in close proximity to *Exx
 # how often are birds detected simultaneously at 2 or more stations?
 simSites <- simSiteDet(foraging)
 ```
-If stations are within close proximity of one another, it's possible to get simultaneous detections on both stations at once. During incubation there were 161 pairs of simultaneous detections, 2 of these occurred between *East Grand Terre* and *Exxon Fields*, 3 between *East Grand Terre* and *Grand_Isle*, and the other 156 between *Exxon Fields* and *Grand_Isle*. *Exxon Fields* and *Grand_Isle* are the closest two stations at 1.97 miles apart, easily within range of each other particularly when birds are in flight (see [Appendix B](#AppendixB)). *East Grand Terre* is 7.85 miles and 9.80 miles away from *Exxon Fields* and *Grand_Isle* respectively, the next closest pairs of stations.
+If stations are within close proximity of one another, it's possible to get simultaneous detections on both stations at once. During incubation there were 208 pairs of simultaneous detections, 2 of these occurred between *East Grand Terre* and *Exxon Fields*, 3 between *East Grand Terre* and *Grand_Isle*, and the other 203 between *Exxon Fields* and *Grand_Isle*. *Exxon Fields* and *Grand_Isle* are the closest two stations at 1.97 miles apart, easily within range of each other particularly when birds are in flight (see [Appendix B](#AppendixB)). *East Grand Terre* is 7.85 miles and 9.80 miles away from *Exxon Fields* and *Grand_Isle* respectively, the next closest pairs of stations.
 
 ### Detection Directions
 We can narrow down the areas visited beyond which site they were detected at by examining which antenna they were detected on. Figures \@ref(fig:detBearings2017) and \@ref(fig:detBearings2018) show the total number of detections for each antenna bearing at each site for 2017 and 2018 respectively. Orange lines indicate the antenna bearings at each site, the blue bars are coloured by the number of detections on each antenna throughout the incubation period - note that scales differ by site.
@@ -305,7 +320,7 @@ thCirc <- theme_bw() + theme(axis.title.y = element_blank(),
                              text = element_text(size = 8))
 
 # make scales for all plots
-sf <- scale_fill_gradient(low = "#3399FF", high = "#000033", limits = c(1, 7200))
+sf <- scale_fill_gradient(low = "#3399FF", high = "#000033", limits = c(1, 8300))
 cp <- coord_polar(theta = "x", start = 0)
 sx <- scale_x_continuous("",limits = c(0,360), breaks = seq(0, 360-1, 45))
 gb <- geom_bar(stat = "identity", width = 15)
@@ -346,7 +361,7 @@ headquarters17 <- ggplot(filter(for.dir, year == 2017, recvDeployName == "San Be
   geom_vline(xintercept = filter(df.antDeps, recvDeployName == "San Bernard National Wildlife Refuge Headquarters")$antBearing,col = "orange") +
   labs(title ="San Bernard NWR HQ") + sf + cp + sx + gb + thCirc
 # San Bernard NWR (Big Pond Unit)
-bigPond17 <- ggplot(filter(for.dir, year == 2017, recvDeployName == "San Bernard NWR (BPU)"), aes(antBearing, nDet, fill = nDet)) +
+bigPond17 <- ggplot(filter(for.dir, year == 2017, recvDeployName == "San Bernard NWR (Big Pond Unit)"), aes(antBearing, nDet, fill = nDet)) +
   geom_vline(xintercept = filter(df.antDeps, recvDeployName == "San Bernard NWR (Big Pond Unit)")$antBearing,col = "orange") +
   labs(title ="San Bernard NWR (Big Pond Unit)") + sf + cp + sx + gb + thCirc
 # Scenic Galveston
@@ -407,13 +422,13 @@ In 2017, birds were picked up in very small numbers outside of the immediate bre
 ```{r distanceTravelled, echo = FALSE, message = FALSE, results = "hide"}
 summary(visits$distFromExxon)
 # mean of 1670m, max of 569092m
-summary(filter(visits, year == 2017)$distFromExxon) # mean 1.57 mi, max 353.617 mi
-summary(filter(visits, year == 2018)$distFromExxon) # mean 0.5383 mi, max 288.3948 mi
+summary(filter(visits, year == 2017)$distFromExxon) # mean 1.48 mi, max 353.617 mi
+summary(filter(visits, year == 2018)$distFromExxon) # mean 0.5023 mi, max 288.3948 mi
 table(visits$year, visits$recvDeployName)
 # but in 2017 on 7 visits away from breeding area (Exxon, Grand Isle, E Grand Terre, Wisner), in 2018 only 1 visit away
-# So 4,366/4,374 = 99.8% were within 23072m from Exxon (furthest being Wisner)
+# So 4,670/4,678 = 99.8% were within 23072m from Exxon (furthest being Wisner)
 ```
-Based on detection data, in 2017 the mean distance travelled for all detection periods was 1.57 miles, with a maximum distance travelled to *San Bernard NWR (Big Pond Unit)* at 353.62 miles. In 2018 the mean distance travelled was 0.54 miles, with a maximum distance travelled of 288.39 miles to *Bolivar Flats*. However, the vast majority of detections (4,366/4,374 or 99.8%) during foraging trips occurred within 14.34 miles from the colony detected at the four closest receiver stations (*Exxon Fields*, *Grand_Isle*, *East Grand Terre*, and *Wisner*).
+Based on detection data, in 2017 the mean distance travelled for all detection periods was 1.48 miles, with a maximum distance travelled to *San Bernard NWR (Big Pond Unit)* at 353.62 miles. In 2018 the mean distance travelled was 0.50 miles, with a maximum distance travelled of 288.39 miles to *Bolivar Flats*. However, the vast majority of detections (4,670/4,678 or 99.8%) during foraging trips occurred within 14.34 miles from the colony detected at the four closest receiver stations (*Exxon Fields*, *Grand_Isle*, *East Grand Terre*, and *Wisner*).
 
 ## Time Partitioning Between Foraging and Nest Site Attendance
 

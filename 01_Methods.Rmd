@@ -56,6 +56,10 @@ lete <- left_join(tbl.alltags, tbl.filter, by = c("runID", "motusTagID")) %>%
          recvDeployName = as.factor(recvDeployName),
          mfgID = as.numeric(mfgID)) %>% # get year variable
   arrange(motusTagID, ts)
+# convert Lotek receivers to UTC time
+lete$ts <- ifelse(lete$recvProjID %in% c(31, 132), (lete$ts + 5*60*60), lete$ts)
+lete <- lete %>% mutate(ts = as_datetime(ts, tz = "UTC", origin = "1970-01-01"))
+
 ```
 
 ## Data Manipulation
@@ -314,8 +318,8 @@ df.recvDepsCombined <- left_join(df.recvDepsCombined, tmp)
 
 ```{r visits, echo = FALSE, message = FALSE, warning = FALSE}
 # Consider birds to be at the nest anytime they are detected with a 
-# signal strength below 80 at Exxon Fields (see results), thus foraging will be:
-foraging <- filter(inc, !(recvDeployName == "Exxon Fields" & sig <80))
+# signal strength below 70 at Exxon Fields (see results), thus foraging will be:
+foraging <- filter(inc, !(recvDeployName == "Exxon Fields" & sig <70))
 # rounding lat/lons
 foraging <- foraging %>% group_by(recvDeployName) %>% 
   mutate(recvLat = mean(recvLat),
