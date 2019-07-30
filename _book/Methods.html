@@ -25,7 +25,7 @@
 <meta name="author" content="Zoe Crysler">
 
 
-<meta name="date" content="2019-07-28">
+<meta name="date" content="2019-07-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -108,6 +108,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.2" data-path="Methods.html"><a href="Methods.html#data-cleaning"><i class="fa fa-check"></i><b>1.2</b> Data Cleaning</a></li>
 <li class="chapter" data-level="1.3" data-path="Methods.html"><a href="Methods.html#data-manipulation"><i class="fa fa-check"></i><b>1.3</b> Data Manipulation</a></li>
 <li class="chapter" data-level="1.4" data-path="Methods.html"><a href="Methods.html#site-visits"><i class="fa fa-check"></i><b>1.4</b> Site Visits</a></li>
+<li class="chapter" data-level="1.5" data-path="Methods.html"><a href="Methods.html#time-partitioning"><i class="fa fa-check"></i><b>1.5</b> Time Partitioning</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="Results.html"><a href="Results.html"><i class="fa fa-check"></i><b>2</b> Results</a><ul>
 <li class="chapter" data-level="2.1" data-path="Results.html"><a href="Results.html#study-area"><i class="fa fa-check"></i><b>2.1</b> Study Area</a></li>
@@ -677,6 +678,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2><span class="header-section-number">1.4</span> Site Visits</h2>
 <p>To determine the frequency at which Least Terns visited each foraging area, detections at each station were grouped into distinct ‘visits’. A visit was categorized as a period of consecutive detections (in minutes) at a single station, or multiple periods of consecutive detections at a single station where there were fewer that 10 minutes between consecutive periods of detection. Detailed visit summaries are available in Appendix <a href="AppendixC.html#AppendixC">C</a>.</p>
 <p>For each year, an ANOVA test was initially used to determine if the length of visits differed between stations, results indicated that the mean time spent at stations differed significantly between stations for 2017 (p &lt; 0.001) and 2018 (p = 0.001). A Tukey Test was then implemented to discern where the difference lay for both years.</p>
+</div>
+<div id="time-partitioning" class="section level2">
+<h2><span class="header-section-number">1.5</span> Time Partitioning</h2>
+<p>To determine time partitioning between foraging activities and nest site attendance during the incubation period, individuals that were consistently detected at the nesting site (<em>Exxon Fields</em>) were first selected. As previously shown, not all tags were consistently detected by Exxon Fields, detection patterns were visually inspected for all tags, and those that were not reliably detected at the nesting site were excluded. In total 5 and 7 tags were selected from 2017 and 2018 respectively. Periods of time during which it could not be confirmed that the bird was incubating were also excluded, for example, the nest of tag 28595 was predated sometime between May 18-21st, and the detection pattern clearly changes during this time, thus detections beyond May 18th were removed for this bird (<a href="#fig:partitioningPlot1">Figure 1.1</a>).</p>
+<p>To discern behavioural patterns during the incubation period, detections were examined at two levels using the same technique. First all detections were examined to review general <em>site</em> attendance, or more specifically, the lack of site attendance indicating foraging. Second, only detections with a signal strength below 70 were examined as an indication of <em>nest</em> attendance, as periods of prolonged low signal strength generally indicate the Least Tern is on the nest. In both cases, only detections at <em>Exxon Fields</em> were examined for this subset of tags.</p>
+<p>For both levels, detection periods at <em>Exxon Fields</em> were split into discrete periods in the same way site visits were determined; consecutive detections at <em>Exxon Fields</em>, or runs of consecutive detections with less than 10 minutes between runs, were classified as one “visit”. Furthermore, time of dawn and dusk was used to classify detections as occuring during the day or night.</p>
+An ANOVA was used to examine the effect of time of day (day or night) on signal strength and visit length during 2017 and 2018 for site attendance.
+<div class="figure"><span id="fig:siteAttendance"></span>
+<img src="LETE_Analysis_files/figure-html/siteAttendance-1.png" alt="Signal strength vs. time at Exxon Fields for tags with reliable detections during incubation." width="672" />
+<p class="caption">
+Figure 1.1: Signal strength vs. time at Exxon Fields for tags with reliable detections during incubation.
+</p>
+</div>
+<p>For <em>nest</em> attendance, visits spanning less than XX minutes were excluded as we would also expect decreasing signal strengths as the individual is flying away from the station to forage, as compared to prolonged periods of consistantly low signal strength indicative of nest attendance.</p>
 
 </div>
 </div>

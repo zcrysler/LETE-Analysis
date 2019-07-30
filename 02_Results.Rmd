@@ -120,7 +120,7 @@ insetMap <- ggplot(na.map, aes(long, lat)) +
             dist_unit = "mi", orientation = FALSE)
 
 # Create complete station map with inset
-vp_inset <- grid::viewport(width = 0.6, x = 0.65, y = 0.36)
+vp_inset <- grid::viewport(width = 0.6, x = 0.65, y = 0.37)
 print(bigMap)
 print(insetMap, vp = vp_inset)
 
@@ -207,7 +207,7 @@ ggsave("./images/2018LongitudePlot.png")
 ```
 
 ## Foraging vs Incubating
-```{r incubatingBirds, fig.cap = "Signal strength vs. time of four representative tags at select periods of incubation. Points represent individual detections coloured by Receiver, vertical blue lines indicate sunset, and vertical orange lines indicate sunrise. A higher signal strength correlates to a stronger detection. Note x and y scales vary between plots.", echo = FALSE, message = FALSE, fig.height = 5}
+```{r incubatingBirds, fig.cap = "Signal strength vs. time of four representative tags at select periods of incubation. Points represent individual detections coloured by Receiver, vertical blue lines indicate dusk, and vertical orange lines indicate dawn. A higher signal strength correlates to a stronger detection. Note x and y scales vary between plots.", echo = FALSE, message = FALSE, fig.height = 5}
 
 # do proper time conversion for the lotek receivers
 inc$ts <- (inc$ts - 5*60*60)
@@ -264,7 +264,7 @@ p <- dist %>% filter(recvDeployName1 == "Exxon Fields") %>%
 p <- rename(p, "Site Name" = "recvDeployName2", "Distance from Exxon Fields (mi)" = "distance")
 
 #knitr::kable(p, booktabs = TRUE, caption = 'Distance in miles between each receiver and Exxon Fields', longtable = TRUE)
-pander(p, booktabs = TRUE, caption = 'Distance in miles between each receiver and Exxon Fields', split.cell = 30, split.table = Inf, justify = 'left', style = "grid")
+pander(p, booktabs = TRUE, caption = '(\\#tab:distanceTable) Distance in miles between each receiver and Exxon Fields', split.cell = 30, split.table = Inf, justify = 'left', style = "grid")
 
 ```
 For each station the total number of visits was calculated ([figure 2.8](#fig:visitFrequency)), as expected *Exxon Fields* had by far the highest number of visits as it was at the nesting area. In 2017 and 2018 *Grand_Isle* had the next highest frequency of detections, this is not surprising as it is the closest station to the nesting area (see [table 2.1](#tab:distanceTable)). *East Grand Terre* and *Wisner* followed with lower numbers of site visits and are also near the nesting area. Note the lack of detections at *Wisner* in 2018, this is likely due to receiver malfunction rather than a true lack of detections. All other stations had negligible (<3) visits and are substantially farther away from the nesting grounds.
@@ -431,7 +431,40 @@ table(visits$year, visits$recvDeployName)
 Based on detection data, in 2017 the mean distance travelled for all detection periods was 1.48 miles, with a maximum distance travelled to *San Bernard NWR (Big Pond Unit)* at 353.62 miles. In 2018 the mean distance travelled was 0.50 miles, with a maximum distance travelled of 288.39 miles to *Bolivar Flats*. However, the vast majority of detections (4,670/4,678 or 99.8%) during foraging trips occurred within 14.34 miles from the colony detected at the four closest receiver stations (*Exxon Fields*, *Grand_Isle*, *East Grand Terre*, and *Wisner*).
 
 ## Time Partitioning Between Foraging and Nest Site Attendance
+Only tags detected reliably during incubation at Exxon Fields were used for the following analysis, this included 5 tags form 2017, and 7 tags from 2018. In addition, only detections at Exxon Fields are used in this section.
+
+Nocturnal site visits (all detections by *Exxon Fields* station) were on average 30.41 and 16.83 minutes for 2017 and 2018 respectively, while detections during the day were 12.85 and 10.73 minutes for 2017 and 2018 respectively, mean detection length was significantly different (p < 0.001) for both years ([table 2.2](#tab:partitioningSummary)). Signal strength was also significantly different (p < 0.001) between nocturnal and diurnal detections in both years. Mean signal strength for each visit was 65.62 and 59.01 during the night compared 89.84 and 73.58 during the day for 2017 and 2018 respectively. This indicates important daily differences in Least Tern behaviour, during the night birds are likely to be on the nest resulting in prolonged periods of detections with low signal strength, however during the day as the birds are travelling to and from the nest while foraging, they have shorter periods of nest attendance and higher signal strengths as birds in the air are more readily detected.
+```{r partitioningSummary, echo = FALSE}
+## get summaries by day
+# longer average length of visit period during night than day in both years (more obvious in 2017)
+# mean signal strength was lower during the night as the birds were on the nest
+tmp <- incPeriods %>% group_by(year, period) %>% summarize(meanLength = mean(visitLength),
+                                                           meanSig = mean(meanSig)) %>% as.data.frame()
+tmp <- rename(tmp, "Year" = "year", "Period" = "period", "Mean length of detection periods (mins)" = "meanLength", "Mean signal strength of detections" = "meanSig")
+pander(tmp, booktabs = TRUE, caption = '(\\#tab:partitioningSummary) Mean length and signal strength of visits during 2017 and 2018 split by day vs. night detections', justify = 'left', style = "grid", split.cell = 25)
+
+```
 
 
+During daylight hours (between dawn and dusk) when Least Terns are actively foraging, they were detected by Exxon Fields on average 22.22% and 16.19% of the time in 2017 and 2018 respectively. As these tags were already screened as tags that are reliably detected during nest attendance, this suggests that during the day the majority of the birds time is spent away from the nest.  
 
+By screening detections even further, and only examining detections that are below the signal strength threshold of 70 we can discern *nest* attendance. Once again detections were grouped into discrete "visits".
+```{r, nestAttendanceResults, echo = FALSE}
+#average length of visit
+tmp1 <- filter(dayPeriods, period == "day") %>% group_by(year) %>% 
+  summarize(meanLength = mean(visitLength)) %>% 
+  as.data.frame()
 
+# average number of daily visits
+tmp <- filter(dayPeriods, period == "day") %>% group_by(year, date, motusTagID) %>% 
+  summarize(totNumHits = sum(numHits),
+            totLength = sum(visitLength),
+            totVisits = length(motusTagID)) %>% as.data.frame()
+tmp2 <- tmp %>% group_by(year) %>% summarize(meanVisits = mean(totVisits)) %>% as.data.frame()
+tmp <- left_join(tmp1, tmp2, by = "year")
+tmp <- rename(tmp, "Year" = "year", 
+              "Mean length of detection periods (mins)" = "meanLength", 
+              "Mean number of daily visits" = "meanVisits")
+
+pander(tmp, booktabs = TRUE, caption = '(\\#tab:nestAttendance) Mean length and number of daylight nest attendance visits during 2017 and 2018', justify = 'left', style = "grid", split.cell = 25)
+```

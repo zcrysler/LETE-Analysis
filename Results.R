@@ -119,8 +119,6 @@ print(bigMap)
 print(insetMap, vp = vp_inset)
 
 
-
-
 ## Map of 2017 detections
 gmap <- get_map(location = c(lon = -93, lat = 29), maptype = "satellite", source = "google", zoom = 7)
 p <- ggmap(gmap)
@@ -261,7 +259,7 @@ grid.arrange(p1, p2, p3, p4, nrow = 2)
 
 # strength suggests incubation at Exxon Fields - so maybe remove those so we can include other
 # Exxon detections?
-foraging <- filter(inc, !(recvDeployName == "Exxon Fields" & sig <80))
+foraging <- filter(inc, !(recvDeployName == "Exxon Fields" & sig <70))
 
 # how often are birds detected simultaneously at 2 or more stations?
 simSites <- simSiteDet(foraging)
@@ -276,8 +274,7 @@ simSites <- simSiteDet(foraging)
 
 
 
-## 1)	Time partitioning between foraging activities and nest site attendance during incubation
-
+## Time partitioning between foraging activities and nest site attendance during incubation
 # lets look at what birds are detected while on the nest:
 unique(inc$motusTagID)
 #28523, 28607, 28526, 28605, 28608, 28593, 
@@ -295,13 +292,14 @@ ggplot(filter(inc, motusTagID %in% c(28592, 28611, 28528, 28613, 28529), recvDep
 # 23257, 23248, 23246, 23219, 23218, 28595, 28600
 ggplot(filter(inc, motusTagID %in% c(28523, 28526, 28608, 28525, 28520, 23262,23257, 23248, 
                                      23246, 23219, 23218, 28595, 28600), recvDeployName == "Exxon Fields"), aes(ts, sig)) + 
-  geom_point() + facet_wrap(~motusTagID, scales = "free")
+  geom_point() + facet_wrap(~motusTagID, scales = "free") + th + labs(x = NULL, y = "Signal Strength")
+#lets remove 23257, not consistently detected at night
 # tag 28520, first egg hatched between may 21 and may 24, 
 # pattern changes on the 21st so lets remove detections after the 21st for this bird
 # tag 28525 started hatching may 24, so lets remove detections after this
 # tag 28526 failed between may 27-28 so remove detections after 27th
 # tag 28595 failed between may 18-21st so remove detections after 18th
-nestSite <- inc %>% filter(motusTagID %in% c(28523, 28526, 28608, 28525, 28520, 23262,23257, 23248, 
+nestSite <- inc %>% filter(motusTagID %in% c(28523, 28526, 28608, 28525, 28520, 23262, 23248, 
                                     23246, 23219, 23218, 28595, 28600),
               recvDeployName == "Exxon Fields",
               !(motusTagID == 28520 & ts > as.POSIXct("2018-05-21")),
@@ -330,16 +328,12 @@ incPeriods <- incPeriods[with(incPeriods, order(motusTagID, mints)),]
 incPeriods <- incPeriods %>%
   mutate(diffsec = as.numeric(mints) - lag(as.numeric(maxts)),
          diffmin = as.numeric(diffsec/60)) %>% as.data.frame
-## assign a group number for each group of hits at a station per tag by time
-#incPeriods <- incPeriods[with(incPeriods, order(motusTagID, mints)),] ## first make sure it's ordered correctly
-#incPeriods <- incPeriods %>% group_by(motusTagID) %>% mutate(count1 = cumsum(c(1,as.numeric(diff(as.factor(runID)))!=0))) ## assign a group number each time the time difference from one runID to another is > 10
 incPeriods <- incPeriods[with(incPeriods, order(motusTagID, mints)),] ## first make sure it's ordered correctly
 incPeriods$diffmin[is.na(incPeriods$diffmin)] <- 0 ## set NA in time differences to 0
-incPeriods <- incPeriods %>% group_by(motusTagID) %>% mutate(visitID = c(cumsum(diffmin >10)),
+incPeriods <- incPeriods %>% group_by(motusTagID) %>% mutate(visitID = c(cumsum(diffmin >10)), # lump together if time dif is less than 10 mins
                                                              tagVisitID = paste(motusTagID, visitID, sep = ".")) %>% data.frame() ## now get one value to number each variable
 ## now get the total time (in minutes), and mean signal strength for each "visit"
 nestSite <- left_join(nestSite, select(incPeriods, motusTagID, runID, visitID, tagVisitID), by = c("motusTagID", "runID")) 
-
 incPeriods <- nestSite %>% group_by(motusTagID, mfgID, recvDeployName, visitID, tagVisitID, year) %>%
   summarize(mints = min(ts),
             maxts = max(ts),
@@ -356,15 +350,7 @@ dusk <- getSunlightTimes(date = days, keep = c("dawn", "dusk"),
                          lat = 29.20644, lon = -89.81102, tz = "America/Chicago")
 incPeriods <- left_join(incPeriods, dusk, by = "date")
 incPeriods$period <- ifelse(incPeriods$mints > incPeriods$dawn & incPeriods$mints < incPeriods$dusk, "day", "night")
-
-#incPeriods <- left_join(incPeriods, select(nestSite, ts, sunrise, sunset), by = c("mints" = "ts"))
-#day <- filter(incPeriods, mints > sunrise & mints < sunset)
-#day$period <- "day"
-#night <- filter(incPeriods, mints < sunrise | mints > sunset)
-#night$period <- "night"
-#incPeriods <- rbind(day, night)
-
-# get sunrise etc. info
+# get sunrise etc. info for nestSite dataframe
 days <- unique(nestSite$date)
 dusk <- getSunlightTimes(date = days, keep = c("sunrise", "sunset", "dawn", "dusk"),
                          lat = 29.20644, lon = -89.81102, tz = "America/Chicago")
@@ -372,7 +358,7 @@ nestSite <- left_join(nestSite, dusk, by = "date")
 nestSite$period <- ifelse(nestSite$ts > nestSite$dawn & nestSite$ts < nestSite$dusk, "day", "night")
 
 
-ggplot(filter(nestSite, motusTagID == 23262), aes(ts, sig, col = period)) + 
+ggplot(filter(nestSite, motusTagID == 28523), aes(ts, sig, col = period)) + 
   geom_point() +
   geom_vline(xintercept = nestSite$dawn, col = "orange") +
   geom_vline(xintercept = nestSite$dusk, col = "blue") +
@@ -385,8 +371,15 @@ ggplot(filter(nestSite, motusTagID == 23262), aes(ts, sig, col = period)) +
 incPeriods %>% group_by(year, period) %>% summarize(meanNumHits = mean(numHits),
                                                    meanLength = mean(visitLength),
                                                    meanSig = mean(meanSig)) %>% as.data.frame()
-# on average they spent 305.63 and 387.50 minutes (5.09 and 6.45 hrs) at Exxon in 2017 and 2018 respectively during the day
-# on average they spent 293.18 and 355.25 minutes (4.89 and 5.92 hrs)at Exxon in 2017 and 2018 respectively during the night
+
+tmp <- aov(data = incPeriods, visitLength ~ period) # not significant, but incredibly small sample size
+summary(tmp) # significant difference 6.6e-11 ***
+tmp <- aov(data = incPeriods, meanSig ~ period) # not significant, but incredibly small sample size
+summary(tmp) # significant difference 6.6e-11 ***
+
+# on average they spent 198.23 and 144.36 minutes at Exxon in 2017 and 2018 respectively during the day
+# on average they spent 251.15 and 133.21 minutes at Exxon in 2017 and 2018 respectively during the night
+# but not comparable because day was much longer than the night
 tmp <- incPeriods %>% group_by(year, period, date, motusTagID) %>% 
   summarize(totNumHits = sum(numHits),
             totLength = sum(visitLength),
@@ -395,10 +388,87 @@ tmp %>% group_by(year, period) %>% summarize(meanNumHits = mean(totNumHits),
                                              meanLength = mean(totLength),
                                              meanSig = mean(meanSig)) %>% as.data.frame()
 
+# detections during the day
+tmp <- incPeriods %>% filter(period == "day") %>% group_by(year, motusTagID)
 
+ggplot(filter(nestSite, year == 2017), aes(ts, sig, col = period)) + 
+  geom_point() +
+  geom_vline(xintercept = nestSite$dawn, col = "orange") +
+  geom_vline(xintercept = nestSite$dusk, col = "blue") +
+  facet_wrap(~motusTagID, scales = "free_x") + facet_wrap(~motusTagID, scales = "free_x", ncol = 2) + th
 
+ggplot(filter(nestSite, year == 2018), aes(ts, sig, col = period)) + 
+  geom_point() +
+  geom_vline(xintercept = nestSite$dawn, col = "orange") +
+  geom_vline(xintercept = nestSite$dusk, col = "blue") +
+  facet_wrap(~motusTagID, scales = "free_x") + facet_wrap(~motusTagID, scales = "free_x", ncol = 2) + th
 
+# get visit lengths for daylight detections with sig strength under 70
+dayInc <- inc %>% filter(motusTagID %in% c(28523, 28526, 28608, 28525, 28520, 23262, 23248, 
+                                             23246, 23219, 23218, 28595, 28600),
+                           recvDeployName == "Exxon Fields",
+                           !(motusTagID == 28520 & ts > as.POSIXct("2018-05-21")),
+                           !(motusTagID == 28525 & ts > as.POSIXct("2018-05-24")),
+                           !(motusTagID == 28526 & ts > as.POSIXct("2018-05-27")),
+                           !(motusTagID == 28595 & ts > as.POSIXct("2018-05-18")),
+                           sig < 70) %>% 
+  select(-sunrise, -sunset)
+# convert times to CDT since these are lotek receivers that were recording in local time instead of UTC
+dayInc$ts <- (dayInc$ts - 5*60*60)
+dayInc$ts <- force_tz(dayInc$ts, tzone = "America/Chicago")
+dayInc$date <- as.Date(dayInc$ts, tz = "America/Chicago")
 
+# so with this data, group detections into "visits" to look at mean signal strength
+dayPeriods <- dayInc %>% group_by(motusTagID, mfgID, recvDeployName, runID, year) %>%
+  summarize(mints = min(ts),
+            maxts = max(ts),
+            numHits = length(motusTagID))
+dayPeriods <- as.data.frame(dayPeriods)
+dayPeriods <- dayPeriods[with(dayPeriods, order(motusTagID, mints)),]
+dayPeriods <- dayPeriods %>%
+  mutate(diffsec = as.numeric(mints) - lag(as.numeric(maxts)),
+         diffmin = as.numeric(diffsec/60)) %>% as.data.frame
+dayPeriods <- dayPeriods[with(dayPeriods, order(motusTagID, mints)),] ## first make sure it's ordered correctly
+dayPeriods$diffmin[is.na(dayPeriods$diffmin)] <- 0 ## set NA in time differences to 0
+dayPeriods <- dayPeriods %>% group_by(motusTagID) %>% mutate(visitID = c(cumsum(diffmin >10)), # lump together if time dif is less than 10 mins
+                                                             tagVisitID = paste(motusTagID, visitID, sep = ".")) %>% data.frame() ## now get one value to number each variable
+## now get the total time (in minutes), and mean signal strength for each "visit"
+dayInc <- left_join(dayInc, select(dayPeriods, motusTagID, runID, visitID, tagVisitID), by = c("motusTagID", "runID")) 
+dayPeriods <- dayInc %>% group_by(motusTagID, mfgID, recvDeployName, visitID, tagVisitID, year) %>%
+  summarize(mints = min(ts),
+            maxts = max(ts),
+            numHits = length(motusTagID),
+            meanSig = mean(sig),
+            minSig = min(sig),
+            maxSig = max(sig)) %>% as.data.frame()
+dayPeriods <- dayPeriods %>% mutate(visitLength = as.numeric(difftime(maxts, mints), units = "mins"),
+                                    visitID = as.numeric(visitID),
+                                    date = as.Date(mints))
+# add dawn/dusk times to dayPeriods based on first detection for the run
+days <- unique(dayPeriods$date)
+dusk <- getSunlightTimes(date = days, keep = c("dawn", "dusk"),
+                         lat = 29.20644, lon = -89.81102, tz = "America/Chicago")
+dayPeriods <- left_join(dayPeriods, dusk, by = "date")
+dayPeriods$period <- ifelse(dayPeriods$mints > dayPeriods$dawn & dayPeriods$mints < dayPeriods$dusk, "day", "night")
+# get sunrise etc. info for dayInc dataframe
+days <- unique(dayInc$date)
+dusk <- getSunlightTimes(date = days, keep = c("sunrise", "sunset", "dawn", "dusk"),
+                         lat = 29.20644, lon = -89.81102, tz = "America/Chicago")
+dayInc <- left_join(dayInc, dusk, by = "date")
+dayInc$period <- ifelse(dayInc$ts > dayInc$dawn & dayInc$ts < dayInc$dusk, "day", "night")
+
+#average length of visit
+filter(dayPeriods) %>% group_by(year, period) %>% summarize(meanNumHits = mean(numHits),
+                                                            meanLength = mean(visitLength)) %>% as.data.frame()
+
+# average number of daily visits
+tmp <- dayPeriods %>% group_by(year, period, date, motusTagID) %>% 
+  summarize(totNumHits = sum(numHits),
+            totLength = sum(visitLength),
+            totVisits = length(motusTagID)) %>% as.data.frame()
+tmp %>% group_by(year, period) %>% summarize(meanNumHits = mean(totNumHits),
+                                             meanLength = mean(totLength),
+                                             meanVisits = mean(totVisits)) %>% as.data.frame()
 
 
 
