@@ -19,7 +19,7 @@ Least Tern detection data was downloaded from Motus using the motus R package, a
 ## Data Cleaning
 Strings of detections with only 2 consecutive detections at a station (run length = 2) are questionable and may indicate the tag was just barely within range of the station, or more likely, that it is a false positive produced by background radio noise which is present to varying degrees at all stations. 
 
-To begin, several tags were never detected near the breeding site and were removed (2017 Lotek tag ID's 95, 96, 97, 2018 Lotek tag ID 315). Then, detections at stations outside the tagging area with a run length of 2 were deemed to be false positives and removed. Each remaining tag was then visually inspected to examine detections that occurred at questionable latitudes far from the breeding site. Several stations had large numbers of detections with low run lengths, this is characteristic of stations with high levels of background radio noise which can often result in false positives. These stations were *Drasher*, *RTNJ*, *Koffler*, *Waggoners Gap*, *Burntpoint*, *Los Vientos Forest*, and *D'Estimauville*. Further inspection of detections at these stations showed that it would be biologically impossible for birds to make the flight between detections on the breeding ground and subsequent detections at these stations in the amount of time between consecutive detections. Therefore, all detections at these stations were deemed to be false positives due to noisy sites.
+To begin, several tags were never detected near the breeding site and were removed (2017 Lotek tag ID's 95, 96, 97, 2018 Lotek tag ID 315). Then, detections at stations outside the tagging area with a run length of 2 were deemed to be false positives and removed. Each remaining tag was then visually inspected to examine detections that occurred at questionable latitudes far from the breeding site. Several stations had large numbers of detections with low run lengths, this is characteristic of stations with high levels of background radio noise which can often result in false positives. These stations were *Drasher*, *RTNJ*, *Koffler*, *Waggoners Gap*, *Burntpoint*, *Los Vientos Forest*, and *D'Estimauville*. Further inspection of detections at these stations showed that it would be biologically impossible for birds to make the flights between detections on the breeding ground and subsequent detections at these stations in the amount of time between detections. Therefore, all detections at these stations were deemed to be false positives due to noisy sites.
 
 Remaining detections far from the tagging location were examined, many had run lengths of only 2 which are questionable at best and were deemed to be false positives. Others with run lengths of 3 or 4 were not biologically possible flights such as between the tagging area and eastern Canada. 
 
@@ -65,7 +65,7 @@ lete <- lete %>% mutate(ts = as_datetime(ts, tz = "UTC", origin = "1970-01-01"))
 ```
 
 ## Data Manipulation
-Detailed nest monitoring records were used to determine tag retention and incubation periods. To determine incubation period, each tag was assigned an end date based on the "Fate" variable, once a nest's fate was categorized as either "failed nest", "successful nest", or "eggs due to hatch but no chicks found", it was assigned an end date of that day; the "nestEnd" variable.
+Detailed nest monitoring records were used to determine tag retention and incubation periods. To determine incubation period, each tag was assigned an end date based on recorded nest fate, once a nest's fate was categorized as either "failed nest", "successful nest", or "eggs due to hatch but no chicks found", it was assigned an end date of that day.
 
 Lotek tag ID's 114 and 316 did not have any nest records, as their incubation period could therefore not be determined, they were excluded from further analysis.
 
@@ -259,11 +259,11 @@ To determine the frequency at which Least Terns visited each foraging area, dete
 fun.getpath <- function(df) 
 {
   mutate(df, ts.h = as.POSIXct(round(ts, "hours"))) %>%
-    group_by(year, motusTagID, runID, ts.h, recvDeployName, recv, 
+    group_by(year, mfgID, runID, ts.h, recvDeployName, recv, 
              tagDeployLon, tagDeployLat, recvLat, recvLon, incubate) %>%
     summarize(max.runLen = max(runLen),
               tot.runLen = sum(runLen)) %>% 
-    arrange(motusTagID, ts.h) %>%
+    arrange(mfgID, ts.h) %>%
     data.frame()
 }
 
@@ -429,13 +429,15 @@ print(tt, digits = 15) # significance of Grand_Isle-Exxon: p = 4.2e-8
 #p <- plot(TukeyHSD(tmp, conf.level = 0.95), las=1, col = "red")
 ```
 ## Time Partitioning
-To determine time partitioning between foraging activities and nest site attendance during the incubation period, individuals that were consistently detected at the nesting site (*Exxon Fields*) were selected. Detection patterns were visually inspected for all tags, and those that were not reliably detected at the nesting site were excluded. In total 5 and 7 tags were selected from 2017 and 2018 respectively. Periods of time during which it could not be confirmed that the bird was incubating were also excluded, for example, the nest of tag 28595 was predated sometime between May 18-21st, and the detection pattern clearly changes during this time, thus detections beyond May 18th were removed for this bird, [Figure 1.1](#fig:siteAttendance). 
+To determine time partitioning between foraging activities and nest site attendance during the incubation period, individuals that were consistently detected at the nesting site (*Exxon Fields*) were selected. Detection patterns were visually inspected for all tags, and those that were not reliably detected at the nesting site were excluded. In total 5 and 7 tags were selected from 2017 and 2018 respectively. Periods of time during which it could not be confirmed that the bird was incubating were also excluded, for example, the nest of tag 282 was predated sometime between May 18-21st, and the detection pattern clearly changes during this time, thus detections beyond May 18th were removed for this bird, [Figure 1.1](#fig:siteAttendance) shows the detections used for time partitioning analysis. 
 
 To discern behavioural patterns during the incubation period, detections were examined at two levels using the same technique. First, all detections were examined to review general *site* attendance. Second, only detections with a signal strength below 70 were examined as an indication of *nest* attendance, as periods of prolonged low signal strength generally indicate the individual is on the nest. In both cases, only detections at *Exxon Fields* were examined for this subset of tags. 
 
 For both levels, detection periods at *Exxon Fields* were split into discrete 'visits' in the same way site visits were determined; consecutive detections at *Exxon Fields*, or runs of consecutive detections with less than 10 minutes between runs, were classified as one 'visit'. For nest attendance, visits with < 3 detections were also excluded, as we would also expect short periods of decreasing signal strengths as the individual is flying away from the station to forage, as compared to prolonged periods of consistently low signal strength indicative of nest attendance. Furthermore, time of dawn and dusk was used to classify detections as occurring during the day or night.
 
 An ANOVA was used to examine the effect of time of day (day or night) on signal strength and visit length during 2017 and 2018 for site attendance.
+
+
 ```{r, siteAttendance, echo = FALSE, fig.height = 8, fig.cap = "Signal strength vs. time at Exxon Fields for tags with reliable detections during incubation."}
 # Create theme for plots
 th <- theme_bw() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
@@ -445,7 +447,7 @@ th <- theme_bw() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust
 # 23257, 23248, 23246, 23219, 23218, 28595, 28600
 p <- ggplot(filter(inc, motusTagID %in% c(28523, 28526, 28608, 28525, 28520, 23262, 23248, 
                                              23246, 23219, 23218, 28595, 2860), recvDeployName == "Exxon Fields"), aes(ts, sig)) + 
-  geom_point() + facet_wrap(~motusTagID, scales = "free") + th + labs(x = NULL, y = "Signal Strength")
+  geom_point() + facet_wrap(~mfgID, scales = "free") + th + labs(x = NULL, y = "Signal Strength")
 # tag 28520, first egg hatched between may 21 and may 24, 
 # pattern changes on the 21st so remove detections after the 21st for this bird
 # tag 28525 started hatching may 24, so remove detections after this
@@ -466,7 +468,7 @@ nestSite$date <- as.Date(nestSite$ts, tz = "America/Chicago")
 
 # plot of incubation periods
 ggplot(nestSite, aes(ts, sig)) + 
-  geom_point(size = 1) + facet_wrap(~motusTagID, scales = "free_x") + th + labs(x = NULL, y = "Signal Strength")
+  geom_point(size = 1) + facet_wrap(~mfgID, scales = "free_x") + th + labs(x = NULL, y = "Signal Strength")
 
 # so with this data, group detections into "visits" to look at mean signal strength
 incPeriods <- nestSite %>% group_by(motusTagID, mfgID, recvDeployName, runID, year) %>%
@@ -508,6 +510,7 @@ nestSite <- left_join(nestSite, dusk, by = "date")
 nestSite$period <- ifelse(nestSite$ts > nestSite$dawn & nestSite$ts < nestSite$dusk, "day", "night")
 
 ```
+
 
 ```{r partitioningMeans, echo = FALSE, results = "hide"}
 ## get summaries by day

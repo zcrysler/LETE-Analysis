@@ -129,10 +129,10 @@ ggsave("./images/StationMap.png")
 
 
 ## Detection Overview
-In 2017, only one individual (Motus tag ID 23270) was detected at stations outside the immediate tagging region, all other individuals and the bulk of the detections occurred at *Exxon Fields*, *East Grand Terre*, *Grand_Isle*, and *Wisner.* [Figure 2.2](#fig:2017DetectionMap) shows a map of all 2017 tagged bird detections, lines are coloured by tag ID. [Figure 2.3](#fig:2017LongitudePlots) displays the same data by plotting latitude vs. time for each tag, with points coloured by receiver site.
+In 2017, only one individual (tag ID 136) was detected at stations outside the immediate tagging region, all other individuals and the bulk of the detections occurred at *Exxon Fields*, *East Grand Terre*, *Grand_Isle*, and *Wisner.* [Figure 2.2](#fig:2017DetectionMap) shows a map of all 2017 tagged bird detections, lines are coloured by tag ID. [Figure 2.3](#fig:2017LongitudePlots) displays the same data by plotting latitude vs. time for each tag, with points coloured by receiver site.
 
 
-```{r 2017DetectionMap, fig.cap = "Map of 2017 tag detections, only tag 23270 was detected outside the immediate tagging region.", echo = FALSE, message = FALSE, warning = FALSE, fig.height = 3}
+```{r 2017DetectionMap, fig.cap = "Map of 2017 tag detections, only tag 136 was detected outside the immediate tagging region.", echo = FALSE, message = FALSE, warning = FALSE, fig.height = 3}
 
 # outline map of 2017 incubation detections
 ggplot(na.map, aes(long, lat)) +
@@ -142,9 +142,9 @@ ggplot(na.map, aes(long, lat)) +
   geom_point(data = df.recvDepsCombined,
              aes(longitude, latitude, fill = incubate), shape = 21, colour = "black", size = 4) +
   geom_path(data = filter(lete.path, year == "2017"),
-            aes(recvLon, recvLat, group = motusTagID, col = as.factor(motusTagID)),
+            aes(recvLon, recvLat, group = mfgID, col = as.factor(mfgID)),
             position = position_jitter(w=0, h = 0.05)) +
-  labs(x = NULL, y = NULL, col = "Motus Tag ID") + theme_bw() + 
+  labs(x = NULL, y = NULL, col = "Tag ID") + theme_bw() + 
   guides(fill = FALSE,
          colour = guide_legend(override.aes = list(size = 2)))
 ggsave("./images/detections2017.png")
@@ -153,10 +153,10 @@ ggsave("./images/detections2017.png")
 
 ```{r 2017LongitudePlots, fig.cap = "Individual 2017 plots by Motus tag ID showing latitudinal movements of tags over time, detection points are coloured by station location. Note that the x and y scales vary between tag plots.", echo = FALSE, message = FALSE, fig.height = 10}
 ggplot(filter(lete.path, year == "2017"),
-       aes(ts.h, recvLon, group = as.factor(motusTagID))) +
+       aes(ts.h, recvLon, group = as.factor(mfgID))) +
   geom_point(aes(colour = as.factor(recvDeployName)), size = 1) +
   geom_path(col = "grey45") +
-  th + labs(y = "what") + facet_wrap(~motusTagID, scales = "free", ncol = 4) +
+  th + labs(y = "what") + facet_wrap(~mfgID, scales = "free", ncol = 4) +
   theme(legend.direction = "horizontal",
         legend.position = c(0.61, 0.07),
         legend.title = element_blank(),
@@ -170,9 +170,9 @@ ggsave("./images/2017LongitudePlot.png")
 ```
 
 
-In 2018, again only one individual was detected outside the immediate tagging region (Motus tag ID 28520), all other individuals and the bulk of the detections occurred at *Exxon Fields*, *East Grand Terre*, and *Grand_Isle*. Note that in 2018 no birds were detected at *Wisner* despite close proximity to nesting areas. Based on receiver performance outputs, this is likely due to receiver functionality rather than a true lack of detections. [Figure 2.4](#fig:2018DetectionMap) shows a map of detection pattern of all 2018 tagged birds, while [figure 2.5](#fig:2018LongitudePlots) displays the same data as individual tag plots of latitude vs. time.
+In 2018, again only one individual was detected outside the immediate tagging region (tag ID 283), all other individuals and the bulk of the detections occurred at *Exxon Fields*, *East Grand Terre*, and *Grand_Isle*. Note that in 2018 no birds were detected at *Wisner* despite close proximity to nesting areas. Based on receiver performance outputs, this is likely due to receiver functionality rather than a true lack of detections. [Figure 2.4](#fig:2018DetectionMap) shows a map of detection pattern of all 2018 tagged birds, while [figure 2.5](#fig:2018LongitudePlots) displays the same data as individual tag plots of latitude vs. time.
 
-```{r 2018DetectionMap, fig.cap = "Map of 2018 tag detections, only tag 28520 was detected outside the immediate tagging region.", message = FALSE, echo = FALSE, warning = FALSE, fig.height = 3.5}
+```{r 2018DetectionMap, fig.cap = "Map of 2018 tag detections, only tag 283 was detected outside the immediate tagging region.", message = FALSE, echo = FALSE, warning = FALSE, fig.height = 3.5}
 ## Map of 2018 detections
 ggplot(na.map, aes(long, lat)) +
   geom_polygon(data = na.map, aes(long, lat, group = group), colour = "grey", fill = "blue") +
@@ -181,19 +181,19 @@ ggplot(na.map, aes(long, lat)) +
   geom_point(data = df.recvDepsCombined,
              aes(longitude, latitude, fill = incubate), shape = 21, colour = "black", size = 4) +
   geom_path(data = filter(lete.path, year == "2018"),
-            aes(recvLon, recvLat, group = motusTagID, col = as.factor(motusTagID)),
+            aes(recvLon, recvLat, group = mfgID, col = as.factor(mfgID)),
             position = position_jitter(w=0, h = 0.05)) +
-  labs(x = NULL, y = NULL, col = "Motus Tag ID") + theme_bw() +
+  labs(x = NULL, y = NULL, col = "Tag ID") + theme_bw() +
   guides(fill = FALSE,
          colour = guide_legend(override.aes = list(size = 2)))
 ```
 
 ```{r 2018LongitudePlots, fig.cap = "Individual 2018 plots by tag ID showing latitudinal movements of tags over time, detection points are coloured by station location. Note that the x and y scales vary between tag plots.", echo = FALSE, message = FALSE, fig.height = 10}
 ggplot(filter(lete.path, year == "2018"),
-       aes(ts.h, recvLon, group = as.factor(motusTagID))) +
+       aes(ts.h, recvLon, group = as.factor(mfgID))) +
   geom_point(aes(colour = as.factor(recvDeployName)), size = 1) +
   geom_path(col = "grey45") +
-  th + labs(y = "what") + facet_wrap(~motusTagID, scales = "free", ncol = 4) +
+  th + labs(y = "what") + facet_wrap(~mfgID, scales = "free", ncol = 4) +
   theme(legend.direction = "horizontal",
         legend.position = "bottom",
         legend.title = element_blank(),
@@ -224,17 +224,17 @@ p1 <- ggplot(filter(inc, motusTagID == 23219), aes(ts, sig, col = recvDeployName
   facet_grid(recvDeployName~.) +
   geom_vline(xintercept = inc$dawn,col = "orange") +
   geom_vline(xintercept = inc$dusk, col = "blue") + th +
-  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2017: Motus tag ID 23219")
+  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2017: Tag ID 94")
 p2 <- ggplot(filter(inc, motusTagID == 23218, ts > as.POSIXct("2017-06-15")), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
   facet_grid(recvDeployName~.) +
   geom_vline(xintercept = inc$dawn,col = "orange") +
   geom_vline(xintercept = inc$dusk, col = "blue") + th +
-  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2017: Motus tag ID 23218")
+  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2017: Tag ID 93")
 p3 <- ggplot(filter(inc, motusTagID == 28593), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
   facet_grid(recvDeployName~.) +
   geom_vline(xintercept = inc$dawn,col = "orange") +
   geom_vline(xintercept = inc$dusk, col = "blue") + th +
-  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2018: Motus tag ID 28593")
+  theme(legend.position = "none") + labs (y = "Signal Strength", x = NULL, title ="2018: Tag ID 303")
 tmp <- inc
 levels(tmp$recvDeployName) <- gsub(" ", "\n", levels(tmp$recvDeployName))
 p4 <- ggplot(filter(tmp, motusTagID == 28522), aes(ts, sig, col = recvDeployName)) + geom_point(size = 0.5) +
@@ -242,14 +242,14 @@ p4 <- ggplot(filter(tmp, motusTagID == 28522), aes(ts, sig, col = recvDeployName
   geom_vline(xintercept = tmp$dawn,col = "orange") +
   geom_vline(xintercept = tmp$dusk, col = "blue") + th +
   theme(legend.position = "none", strip.text.y = element_text(size = 7)) + 
-  labs (y = "Signal Strength", x = NULL, title ="2018: Motus tag ID 28522")
+  labs (y = "Signal Strength", x = NULL, title ="2018: Tag ID 289")
 grid.arrange(p1, p2, p3, p4, nrow = 2)
 
 ```
 
-[Figure 2.6](#fig:incubatingBirds) is a selection of 4 representative detection patterns of individuals; examining the signal strength it is not always clear when birds are attending the nest site and when they are foraging. For example, tag 23219 shows clear daily signal strength patterns, with low signal strength occurring overnight when the bird is likely incubating. Tag 23218 has a similar but less distinct pattern; some nights the bird is detected while other nights it is not. In other cases the tag is picked up far less consistently as in tag 28593, and in even more extreme cases as in tag 28522. For these final two tags, the bird is rarely if ever detected while incubating, and most detections likely occur as the bird is leaving or arriving at the nest site. 
+[Figure 2.6](#fig:incubatingBirds) is a selection of 4 representative detection patterns of individuals; examining the signal strength it is not always clear when birds are attending the nest site and when they are foraging. For example, tag 94 shows clear daily signal strength patterns, with low signal strength occurring overnight when the bird is likely incubating. Tag 93 has a similar but less distinct pattern; some nights the bird is detected while other nights it is not. In other cases the tag is picked up far less consistently as in tag 303, and in even more extreme cases as in tag 289 For these final two tags, the bird is rarely if ever detected while incubating, and most detections likely occur as the bird is leaving or arriving at the nest site. 
 
-Furthermore, even tags with clear daily detection patterns as in tag 23219, shorter nest site attendance periods during the day are not as obviously picked up. However, based on these detections, the signal strength during incubation is generally much lower than during flight. This is to be expected as a tags detection range increases substantially when a bird is in the air as compared to on the ground (low signal strength = weaker detection). Therefore, all detections on the Exxon Fields receiver with a signal strength < 70 will be excluded from foraging analysis from this point forward to exclude likely detections on the nest during incubation. While this will invariably also remove detections on Exxon Fields that may occur when the bird is in flight, since the station is in very close proximity to the nesting site, in most cases this will only remove the tail ends of a detection streak as the bird is departing or approaching the nesting site. 
+Furthermore, even tags with clear daily detection patterns as in tag 94, shorter nest site attendance periods during the day are not as obviously picked up. However, based on these detections, the signal strength during incubation is generally much lower than during flight. This is to be expected as a tags detection range increases substantially when a bird is in the air as compared to on the ground (low signal strength = weaker detection). Therefore, all detections on the Exxon Fields receiver with a signal strength < 70 will be excluded from foraging analysis from this point forward to exclude likely detections on the nest during incubation. While this will invariably also remove detections on Exxon Fields that may occur when the bird is in flight, since the station is in very close proximity to the nesting site, in most cases this will only remove the tail ends of a detection streak as the bird is departing or approaching the nesting site. 
 ```{r removeIncubationDetections, echo = FALSE, message = FALSE}
 foraging <- filter(inc, !(recvDeployName == "Exxon Fields" & sig <70))
 ```
@@ -432,29 +432,33 @@ Based on detection data, in 2017 the mean distance travelled for all detection p
 
 ## Time Partitioning Between Foraging and Nest Site Attendance
 Only tags detected reliably during incubation at Exxon Fields were used for the following analysis, this included 5 tags form 2017, and 7 tags from 2018. In addition, only detections at Exxon Fields are used in this section.
+
+
 ```{r, partitionFig17, fig.cap = "Signal strength vs. time of 2017 tag detections during incubation at nesting site (Exxon Fields), each plot is one individual, red points are detections during the day, and blue points are detections during the night. Orange and blue vertical lines indicate dawn and dusk respectively.", echo = FALSE, fig.height = 7}
 tmp1 <- ggplot(filter(nestSite, motusTagID == 23218), aes(ts, sig, col = period)) + 
   geom_point(size = 1) +
   geom_vline(xintercept = nestSite$dawn, col = "orange") +
   geom_vline(xintercept = nestSite$dusk, col = "blue") +
-  facet_wrap(~motusTagID) + th + labs(x = NULL, y = " ") +
+  facet_wrap(~mfgID) + th + labs(x = NULL, y = " ") +
   theme(legend.position = "none")
 tmp2 <- ggplot(filter(nestSite, year == 2017, motusTagID != 23218), aes(ts, sig, col = period)) + 
   geom_point(size = 1) +
   geom_vline(xintercept = nestSite$dawn, col = "orange") +
   geom_vline(xintercept = nestSite$dusk, col = "blue") +
-  facet_wrap(motusTagID~., scales = "free_x", ncol = 2) + th + labs(x = NULL, y = "Signal Strength") +
+  facet_wrap(mfgID~., scales = "free_x", ncol = 2) + th + labs(x = NULL, y = "Signal Strength") +
   scale_color_discrete(labels = c("Day", "Night"), name = NULL) +
   theme(legend.position = "bottom", legend.direction = "horizontal")
 
 grid.arrange(tmp1, tmp2, nrow = 2, heights = c(1, 3))
 ```
+
+
 ```{r, partitionFig18, fig.cap = "Signal strength vs. time of 2018 tag detections during incubation at nesting site (Exxon Fields), each plot is one individual, red points are detections during the day, and blue points are detections during the night. Orange and blue vertical lines indicate dawn and dusk respectively.", echo = FALSE, fig.height = 7}
 ggplot(filter(nestSite, year == 2018), aes(ts, sig, col = period)) + 
   geom_point(size = 1) +
   geom_vline(xintercept = nestSite$dawn, col = "orange") +
   geom_vline(xintercept = nestSite$dusk, col = "blue") +
-  facet_wrap(motusTagID~., scales = "free_x", ncol = 2) + th + labs(x = NULL, y = "Signal Strength") +
+  facet_wrap(mfgID~., scales = "free_x", ncol = 2) + th + labs(x = NULL, y = "Signal Strength") +
   scale_color_discrete(labels = c("Day", "Night"), name = NULL)
 ```
 
