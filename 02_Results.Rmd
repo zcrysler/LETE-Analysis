@@ -432,8 +432,34 @@ Based on detection data, in 2017 the mean distance travelled for all detection p
 
 ## Time Partitioning Between Foraging and Nest Site Attendance
 Only tags detected reliably during incubation at Exxon Fields were used for the following analysis, this included 5 tags form 2017, and 7 tags from 2018. In addition, only detections at Exxon Fields are used in this section.
+```{r, partitionFig17, fig.cap = "Signal strength vs. time of 2017 tag detections during incubation at nesting site (Exxon Fields), each plot is one individual, red points are detections during the day, and blue points are detections during the night. Orange and blue vertical lines indicate dawn and dusk respectively.", echo = FALSE, fig.height = 7}
+tmp1 <- ggplot(filter(nestSite, motusTagID == 23218), aes(ts, sig, col = period)) + 
+  geom_point(size = 1) +
+  geom_vline(xintercept = nestSite$dawn, col = "orange") +
+  geom_vline(xintercept = nestSite$dusk, col = "blue") +
+  facet_wrap(~motusTagID) + th + labs(x = NULL, y = " ") +
+  theme(legend.position = "none")
+tmp2 <- ggplot(filter(nestSite, year == 2017, motusTagID != 23218), aes(ts, sig, col = period)) + 
+  geom_point(size = 1) +
+  geom_vline(xintercept = nestSite$dawn, col = "orange") +
+  geom_vline(xintercept = nestSite$dusk, col = "blue") +
+  facet_wrap(motusTagID~., scales = "free_x", ncol = 2) + th + labs(x = NULL, y = "Signal Strength") +
+  scale_color_discrete(labels = c("Day", "Night"), name = NULL) +
+  theme(legend.position = "bottom", legend.direction = "horizontal")
 
-Nocturnal site visits (all detections by *Exxon Fields* station) were on average 30.41 and 16.83 minutes for 2017 and 2018 respectively, while detections during the day were 12.85 and 10.73 minutes for 2017 and 2018 respectively, mean detection length was significantly different (p < 0.001) for both years ([table 2.2](#tab:partitioningSummary)). Signal strength was also significantly different (p < 0.001) between nocturnal and diurnal detections in both years. Mean signal strength for each visit was 65.62 and 59.01 during the night compared 89.84 and 73.58 during the day for 2017 and 2018 respectively. This indicates important daily differences in Least Tern behaviour, during the night birds are likely to be on the nest resulting in prolonged periods of detections with low signal strength, however during the day as the birds are travelling to and from the nest while foraging, they have shorter periods of nest attendance and higher signal strengths as birds in the air are more readily detected.
+grid.arrange(tmp1, tmp2, nrow = 2, heights = c(1, 3))
+```
+```{r, partitionFig18, fig.cap = "Signal strength vs. time of 2018 tag detections during incubation at nesting site (Exxon Fields), each plot is one individual, red points are detections during the day, and blue points are detections during the night. Orange and blue vertical lines indicate dawn and dusk respectively.", echo = FALSE, fig.height = 7}
+ggplot(filter(nestSite, year == 2018), aes(ts, sig, col = period)) + 
+  geom_point(size = 1) +
+  geom_vline(xintercept = nestSite$dawn, col = "orange") +
+  geom_vline(xintercept = nestSite$dusk, col = "blue") +
+  facet_wrap(motusTagID~., scales = "free_x", ncol = 2) + th + labs(x = NULL, y = "Signal Strength") +
+  scale_color_discrete(labels = c("Day", "Night"), name = NULL)
+```
+
+
+Detection plots in figures [2.11](#fig:partitionFig17) and [2.12](#fig:partitionFig18) show a clear difference between nocturnal and diurnal behaviours reflected in detection patterns. Nocturnal site visits were on average 30.41 and 16.83 minutes for 2017 and 2018 respectively, while detections during the day were 12.85 and 10.73 minutes for 2017 and 2018 respectively, mean detection length was significantly different (p < 0.001) for both years ([table 2.2](#tab:partitioningSummary)). Signal strength was also significantly different (p < 0.001) between nocturnal and diurnal detections in both years. Mean signal strength for each visit was 65.62 and 59.01 during the night compared 89.84 and 73.58 during the day for 2017 and 2018 respectively. This indicates important daily differences in Least Tern behaviour, during the night birds are likely to be on the nest resulting in prolonged periods of detections with low signal strength, however during the day as the birds are travelling to and from the nest while foraging, they have shorter periods of nest attendance and higher signal strengths as birds in the air are more readily detected.
 ```{r partitioningSummary, echo = FALSE}
 ## get summaries by day
 # longer average length of visit period during night than day in both years (more obvious in 2017)
@@ -448,15 +474,15 @@ pander(tmp, booktabs = TRUE, caption = '(\\#tab:partitioningSummary) Mean length
 
 During daylight hours (between dawn and dusk) when Least Terns are actively foraging, they were detected by Exxon Fields on average 22.22% and 16.19% of the time in 2017 and 2018 respectively. As these tags were already screened as tags that are reliably detected during nest attendance, this suggests that during the day the majority of the birds time is spent away from the nest.  
 
-By screening detections even further, and only examining detections that are below the signal strength threshold of 70 we can discern *nest* attendance. Once again detections were grouped into discrete "visits".
+By filtering detections even further, and only examining visits that were below the signal strength threshold of 70 with at least 3 detections, we can discern *nest* attendance. Least Terns had a mean visit length of 13.88 and 13.42 minutes, and on average had 6.7 and 7.3 visits to the nest during daylight hours in 2017 and 2018 respectively. Note that this should be treated as anecdotal information due to the small sample size.
 ```{r, nestAttendanceResults, echo = FALSE}
 #average length of visit
-tmp1 <- filter(dayPeriods, period == "day") %>% group_by(year) %>% 
+tmp1 <- filter(dayPeriods, period == "day", numHits > 2) %>% group_by(year) %>% 
   summarize(meanLength = mean(visitLength)) %>% 
   as.data.frame()
 
 # average number of daily visits
-tmp <- filter(dayPeriods, period == "day") %>% group_by(year, date, motusTagID) %>% 
+tmp <- filter(dayPeriods, period == "day", numHits > 2) %>% group_by(year, date, motusTagID) %>% 
   summarize(totNumHits = sum(numHits),
             totLength = sum(visitLength),
             totVisits = length(motusTagID)) %>% as.data.frame()
@@ -466,5 +492,7 @@ tmp <- rename(tmp, "Year" = "year",
               "Mean length of detection periods (mins)" = "meanLength", 
               "Mean number of daily visits" = "meanVisits")
 
-pander(tmp, booktabs = TRUE, caption = '(\\#tab:nestAttendance) Mean length and number of daylight nest attendance visits during 2017 and 2018', justify = 'left', style = "grid", split.cell = 25)
+pander(tmp, booktabs = TRUE, caption = '(\\#tab:nestAttendance) Mean length and number of daylight nest attendance (signal strength < 70 for visits with at least 3 detections) during 2017 and 2018', justify = 'left', style = "grid", split.cell = 25)
 ```
+
+## Summary

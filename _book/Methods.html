@@ -25,7 +25,7 @@
 <meta name="author" content="Zoe Crysler">
 
 
-<meta name="date" content="2019-07-29">
+<meta name="date" content="2019-07-30">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -120,6 +120,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="Results.html"><a href="Results.html#mean-distances-travelled-for-foraging"><i class="fa fa-check"></i><b>2.5</b> Mean Distances Travelled for Foraging</a></li>
 <li class="chapter" data-level="2.6" data-path="Results.html"><a href="Results.html#time-partitioning-between-foraging-and-nest-site-attendance"><i class="fa fa-check"></i><b>2.6</b> Time Partitioning Between Foraging and Nest Site Attendance</a></li>
+<li class="chapter" data-level="2.7" data-path="Results.html"><a href="Results.html#summary"><i class="fa fa-check"></i><b>2.7</b> Summary</a></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="AppendixA.html"><a href="AppendixA.html"><i class="fa fa-check"></i><b>A</b> Appendix - Downloading and Cleaning Data</a><ul>
@@ -681,9 +682,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="time-partitioning" class="section level2">
 <h2><span class="header-section-number">1.5</span> Time Partitioning</h2>
-<p>To determine time partitioning between foraging activities and nest site attendance during the incubation period, individuals that were consistently detected at the nesting site (<em>Exxon Fields</em>) were first selected. As previously shown, not all tags were consistently detected by Exxon Fields, detection patterns were visually inspected for all tags, and those that were not reliably detected at the nesting site were excluded. In total 5 and 7 tags were selected from 2017 and 2018 respectively. Periods of time during which it could not be confirmed that the bird was incubating were also excluded, for example, the nest of tag 28595 was predated sometime between May 18-21st, and the detection pattern clearly changes during this time, thus detections beyond May 18th were removed for this bird (<a href="#fig:partitioningPlot1">Figure 1.1</a>).</p>
-<p>To discern behavioural patterns during the incubation period, detections were examined at two levels using the same technique. First all detections were examined to review general <em>site</em> attendance, or more specifically, the lack of site attendance indicating foraging. Second, only detections with a signal strength below 70 were examined as an indication of <em>nest</em> attendance, as periods of prolonged low signal strength generally indicate the Least Tern is on the nest. In both cases, only detections at <em>Exxon Fields</em> were examined for this subset of tags.</p>
-<p>For both levels, detection periods at <em>Exxon Fields</em> were split into discrete periods in the same way site visits were determined; consecutive detections at <em>Exxon Fields</em>, or runs of consecutive detections with less than 10 minutes between runs, were classified as one “visit”. Furthermore, time of dawn and dusk was used to classify detections as occuring during the day or night.</p>
+<p>To determine time partitioning between foraging activities and nest site attendance during the incubation period, individuals that were consistently detected at the nesting site (<em>Exxon Fields</em>) were selected. Detection patterns were visually inspected for all tags, and those that were not reliably detected at the nesting site were excluded. In total 5 and 7 tags were selected from 2017 and 2018 respectively. Periods of time during which it could not be confirmed that the bird was incubating were also excluded, for example, the nest of tag 28595 was predated sometime between May 18-21st, and the detection pattern clearly changes during this time, thus detections beyond May 18th were removed for this bird, <a href="#fig:partitioningPlot1">Figure 1.1</a>.</p>
+<p>To discern behavioural patterns during the incubation period, detections were examined at two levels using the same technique. First, all detections were examined to review general <em>site</em> attendance. Second, only detections with a signal strength below 70 were examined as an indication of <em>nest</em> attendance, as periods of prolonged low signal strength generally indicate the individual is on the nest. In both cases, only detections at <em>Exxon Fields</em> were examined for this subset of tags.</p>
+<p>For both levels, detection periods at <em>Exxon Fields</em> were split into discrete ‘visits’ in the same way site visits were determined; consecutive detections at <em>Exxon Fields</em>, or runs of consecutive detections with less than 10 minutes between runs, were classified as one ‘visit’. For nest attendance, visits with &lt; 3 detections were also excluded, as we would also expect short periods of decreasing signal strengths as the individual is flying away from the station to forage, as compared to prolonged periods of consistently low signal strength indicative of nest attendance. Furthermore, time of dawn and dusk was used to classify detections as occurring during the day or night.</p>
 An ANOVA was used to examine the effect of time of day (day or night) on signal strength and visit length during 2017 and 2018 for site attendance.
 <div class="figure"><span id="fig:siteAttendance"></span>
 <img src="LETE_Analysis_files/figure-html/siteAttendance-1.png" alt="Signal strength vs. time at Exxon Fields for tags with reliable detections during incubation." width="672" />
@@ -691,7 +692,6 @@ An ANOVA was used to examine the effect of time of day (day or night) on signal 
 Figure 1.1: Signal strength vs. time at Exxon Fields for tags with reliable detections during incubation.
 </p>
 </div>
-<p>For <em>nest</em> attendance, visits spanning less than XX minutes were excluded as we would also expect decreasing signal strengths as the individual is flying away from the station to forage, as compared to prolonged periods of consistantly low signal strength indicative of nest attendance.</p>
 
 </div>
 </div>

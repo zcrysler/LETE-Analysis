@@ -45,7 +45,7 @@ lete <- left_join(tbl.alltags, tbl.filter, by = c("runID", "motusTagID")) %>%
          recvLon = if_else((is.na(gpsLon)|gpsLon == 0), 
                            recvDeployLon, gpsLon)) %>% 
   filter(probability > 0) %>%
-  #remove unecessary columns
+  #remove unnecessary columns
   select(-ambigID, -tagProjID, -sigsd, -noise, -freq, -freqsd, -slop, -burstSlop, -done, -bootnum, -tagType, -codeSet, -mfg, -tagModel, -tagLifespan, -nomFreq, -pulseLen, -markerNumber, -markerType, -tagDeployAlt, -tagDeployComments, -fullID, -recvDeployAlt, -antHeight, -speciesFR, -speciesSci, -speciesGroup, -tagProjName, -gpsAlt, -recvSiteName, -tagBI, -speciesID, -deviceID, -tagDeployID) %>%  
   filter(speciesEN == "Least Tern") %>% # keep only LETE
   collect() %>% 
@@ -429,11 +429,11 @@ print(tt, digits = 15) # significance of Grand_Isle-Exxon: p = 4.2e-8
 #p <- plot(TukeyHSD(tmp, conf.level = 0.95), las=1, col = "red")
 ```
 ## Time Partitioning
-To determine time partitioning between foraging activities and nest site attendance during the incubation period, individuals that were consistently detected at the nesting site (*Exxon Fields*) were first selected. As previously shown, not all tags were consistently detected by Exxon Fields, detection patterns were visually inspected for all tags, and those that were not reliably detected at the nesting site were excluded. In total 5 and 7 tags were selected from 2017 and 2018 respectively. Periods of time during which it could not be confirmed that the bird was incubating were also excluded, for example, the nest of tag 28595 was predated sometime between May 18-21st, and the detection pattern clearly changes during this time, thus detections beyond May 18th were removed for this bird ([Figure 1.1](#fig:partitioningPlot1)). 
+To determine time partitioning between foraging activities and nest site attendance during the incubation period, individuals that were consistently detected at the nesting site (*Exxon Fields*) were selected. Detection patterns were visually inspected for all tags, and those that were not reliably detected at the nesting site were excluded. In total 5 and 7 tags were selected from 2017 and 2018 respectively. Periods of time during which it could not be confirmed that the bird was incubating were also excluded, for example, the nest of tag 28595 was predated sometime between May 18-21st, and the detection pattern clearly changes during this time, thus detections beyond May 18th were removed for this bird, [Figure 1.1](#fig:siteAttendance). 
 
-To discern behavioural patterns during the incubation period, detections were examined at two levels using the same technique. First all detections were examined to review general *site* attendance, or more specifically, the lack of site attendance indicating foraging. Second, only detections with a signal strength below 70 were examined as an indication of *nest* attendance, as periods of prolonged low signal strength generally indicate the Least Tern is on the nest. In both cases, only detections at *Exxon Fields* were examined for this subset of tags. 
+To discern behavioural patterns during the incubation period, detections were examined at two levels using the same technique. First, all detections were examined to review general *site* attendance. Second, only detections with a signal strength below 70 were examined as an indication of *nest* attendance, as periods of prolonged low signal strength generally indicate the individual is on the nest. In both cases, only detections at *Exxon Fields* were examined for this subset of tags. 
 
-For both levels, detection periods at *Exxon Fields* were split into discrete periods in the same way site visits were determined; consecutive detections at *Exxon Fields*, or runs of consecutive detections with less than 10 minutes between runs, were classified as one "visit". Furthermore, time of dawn and dusk was used to classify detections as occuring during the day or night.
+For both levels, detection periods at *Exxon Fields* were split into discrete 'visits' in the same way site visits were determined; consecutive detections at *Exxon Fields*, or runs of consecutive detections with less than 10 minutes between runs, were classified as one 'visit'. For nest attendance, visits with < 3 detections were also excluded, as we would also expect short periods of decreasing signal strengths as the individual is flying away from the station to forage, as compared to prolonged periods of consistently low signal strength indicative of nest attendance. Furthermore, time of dawn and dusk was used to classify detections as occurring during the day or night.
 
 An ANOVA was used to examine the effect of time of day (day or night) on signal strength and visit length during 2017 and 2018 for site attendance.
 ```{r, siteAttendance, echo = FALSE, fig.height = 8, fig.cap = "Signal strength vs. time at Exxon Fields for tags with reliable detections during incubation."}
@@ -459,7 +459,7 @@ nestSite <- inc %>% filter(motusTagID %in% c(28523, 28526, 28608, 28525, 28520, 
               !(motusTagID == 28526 & ts > as.POSIXct("2018-05-27")),
               !(motusTagID == 28595 & ts > as.POSIXct("2018-05-18"))) %>% 
   select(-sunrise, -sunset)
-# convert times to CDT since these are lotek receivers that were recording in local time instead of UTC
+# convert times to CDT since these are Lotek receivers that were recording in local time instead of UTC
 nestSite$ts <- (nestSite$ts - 5*60*60)
 nestSite$ts <- force_tz(nestSite$ts, tzone = "America/Chicago")
 nestSite$date <- as.Date(nestSite$ts, tz = "America/Chicago")
@@ -517,13 +517,13 @@ incPeriods %>% group_by(year, period) %>% summarize(meanNumHits = mean(numHits),
                                                    meanLength = mean(visitLength),
                                                    meanSig = mean(meanSig)) %>% as.data.frame()
 # Visit Length vs Period ANOVA
-tmp <- aov(data = filter(incPeriods, year == 2017), visitLength ~ period) # not significant, but incredibly small sample size
-tmp <- aov(data = filter(incPeriods, year == 2018), visitLength ~ period) # not significant, but incredibly small sample size
+tmp <- aov(data = filter(incPeriods, year == 2017), visitLength ~ period) # significant, but incredibly small sample size
+tmp <- aov(data = filter(incPeriods, year == 2018), visitLength ~ period) # significant, but incredibly small sample size
 summary(tmp) # significant difference 6.6e-11 ***
 
 # Signal Strength vs Period ANOVA
-tmp <- aov(data = filter(incPeriods, year == 2017), meanSig ~ period) # not significant, but incredibly small sample size
-tmp <- aov(data = filter(incPeriods, year == 2018), meanSig ~ period) # not significant, but incredibly small sample size
+tmp <- aov(data = filter(incPeriods, year == 2017), meanSig ~ period) # significant, but incredibly small sample size
+tmp <- aov(data = filter(incPeriods, year == 2018), meanSig ~ period) # significant, but incredibly small sample size
 summary(tmp) # significant difference 6.6e-11 ***
 
 # cumulative time spent at station
@@ -541,7 +541,7 @@ tmp %>% group_by(year, period) %>% summarize(meanNumHits = mean(totNumHits),
                                              meanSig = mean(meanSig)) %>% as.data.frame()
 
 ```
-For *nest* attendance, visits spanning less than XX minutes were excluded as we would also expect decreasing signal strengths as the individual is flying away from the station to forage, as compared to prolonged periods of consistantly low signal strength indicative of nest attendance.
+
 ```{r nestAttendanceMethods, echo = FALSE, results = "hide"}
 # get visit lengths for daylight detections with sig strength under 70
 dayInc <- inc %>% filter(motusTagID %in% c(28523, 28526, 28608, 28525, 28520, 23262, 23248, 
@@ -553,7 +553,7 @@ dayInc <- inc %>% filter(motusTagID %in% c(28523, 28526, 28608, 28525, 28520, 23
                            !(motusTagID == 28595 & ts > as.POSIXct("2018-05-18")),
                            sig < 70) %>% 
   select(-sunrise, -sunset)
-# convert times to CDT since these are lotek receivers that were recording in local time instead of UTC
+# convert times to CDT since these are Lotek receivers that were recording in local time instead of UTC
 dayInc$ts <- (dayInc$ts - 5*60*60)
 dayInc$ts <- force_tz(dayInc$ts, tzone = "America/Chicago")
 dayInc$date <- as.Date(dayInc$ts, tz = "America/Chicago")
@@ -597,20 +597,21 @@ dusk <- getSunlightTimes(date = days, keep = c("sunrise", "sunset", "dawn", "dus
 dayInc <- left_join(dayInc, dusk, by = "date")
 dayInc$period <- ifelse(dayInc$ts > dayInc$dawn & dayInc$ts < dayInc$dusk, "day", "night")
 
-#average length of visit
-tmp1 <- dayPeriods %>% group_by(year, period) %>% 
+# average length of visit
+tmp1 <- filter(dayPeriods, period == "day", numHits > 2) %>% group_by(year) %>% 
   summarize(meanLength = mean(visitLength)) %>% 
   as.data.frame()
 
 # average number of daily visits
-tmp <- dayPeriods %>% group_by(year, period, date, motusTagID) %>% 
+tmp <- filter(dayPeriods, period == "day", numHits > 2) %>% group_by(year, date, motusTagID) %>% 
   summarize(totNumHits = sum(numHits),
             totLength = sum(visitLength),
             totVisits = length(motusTagID)) %>% as.data.frame()
-tmp2 <- tmp %>% group_by(year, period) %>% summarize(meanVisits = mean(totVisits)) %>% as.data.frame()
-tmp <- left_join(tmp1, tmp2, by = c("year", "period"))
-tmp <- rename(tmp, "Year" = "year", "Period" = "period", 
+tmp2 <- tmp %>% group_by(year) %>% summarize(meanVisits = mean(totVisits)) %>% as.data.frame()
+tmp <- left_join(tmp1, tmp2, by = "year")
+tmp <- rename(tmp, "Year" = "year", 
               "Mean length of detection periods (mins)" = "meanLength", 
               "Mean number of daily visits" = "meanVisits")
+
 ```
 

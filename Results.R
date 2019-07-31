@@ -391,17 +391,28 @@ tmp %>% group_by(year, period) %>% summarize(meanNumHits = mean(totNumHits),
 # detections during the day
 tmp <- incPeriods %>% filter(period == "day") %>% group_by(year, motusTagID)
 
-ggplot(filter(nestSite, year == 2017), aes(ts, sig, col = period)) + 
-  geom_point() +
+tmp1 <- ggplot(filter(nestSite, motusTagID == 23218), aes(ts, sig, col = period)) + 
+  geom_point(size = 1) +
   geom_vline(xintercept = nestSite$dawn, col = "orange") +
   geom_vline(xintercept = nestSite$dusk, col = "blue") +
-  facet_wrap(~motusTagID, scales = "free_x") + facet_wrap(~motusTagID, scales = "free_x", ncol = 2) + th
+  facet_wrap(~motusTagID) + th + labs(x = NULL, y = " ") +
+  theme(legend.position = "none")
+tmp2 <- ggplot(filter(nestSite, year == 2017, motusTagID != 23218), aes(ts, sig, col = period)) + 
+  geom_point(size = 1) +
+  geom_vline(xintercept = nestSite$dawn, col = "orange") +
+  geom_vline(xintercept = nestSite$dusk, col = "blue") +
+  facet_wrap(motusTagID~., scales = "free_x", ncol = 2) + th + labs(x = NULL, y = "Signal Strength") +
+  scale_color_discrete(labels = c("Day", "Night"), name = NULL) +
+  theme(legend.position = "bottom", legend.direction = "horizontal")
+
+grid.arrange(tmp1, tmp2, nrow = 2, heights = c(1, 3))
 
 ggplot(filter(nestSite, year == 2018), aes(ts, sig, col = period)) + 
-  geom_point() +
+  geom_point(size = 1) +
   geom_vline(xintercept = nestSite$dawn, col = "orange") +
   geom_vline(xintercept = nestSite$dusk, col = "blue") +
-  facet_wrap(~motusTagID, scales = "free_x") + facet_wrap(~motusTagID, scales = "free_x", ncol = 2) + th
+  facet_wrap(~motusTagID, scales = "free_x", ncol = 2) + th + labs(x = NULL, y = "Signal Strength") +
+  scale_color_discrete(labels = c("Day", "Night"), name = "Period")
 
 # get visit lengths for daylight detections with sig strength under 70
 dayInc <- inc %>% filter(motusTagID %in% c(28523, 28526, 28608, 28525, 28520, 23262, 23248, 
