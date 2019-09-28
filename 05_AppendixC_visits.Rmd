@@ -35,18 +35,20 @@ pander(select(param.table, "Motus Tag ID", "Lotek ID", Receiver, Location,
 ## Visits by tag and station
 For each year and tag, the following table shows the total number and mean length (mins) of visits at each station:
 ```{r parameterTableVisitsTag, echo = FALSE, out.extra='angle=90'}
-param.table <- dplyr::select(read.csv("./data/visits_tag.csv", stringsAsFactors=FALSE), 2:7)
-param.table <- param.table %>% mutate(meanLength = round(meanLength, digits = 2))
+param.table <- dplyr::select(read.csv("./data/visits_tag.csv", stringsAsFactors=FALSE), 2:7, 10)
+param.table <- param.table %>% mutate(meanLength = round(meanLength, digits = 2),
+                                      seVisits = round(seVisits), digits = 2)
 param.table <- arrange(param.table, motusTagID, recvDeployName)
 param.table <- rename(param.table,  "Motus Tag ID" = motusTagID, "Lotek ID" = mfgID,
                       Receiver = recvDeployName, Year = year, 
                       "Mean Length of Visits (mins)" = meanLength, 
-                      "Total Number of Visits" = totVisits)
+                      "Total Number of Visits" = totVisits,
+                      "Standard Error Visits" = seVisits)
 #kable(select(param.table, Year, "Motus Tag ID", "Lotek ID", Receiver, 
 #             "Total Number of Visits", "Mean Length of Visits (mins)"), 
 #      booktabs = TRUE, caption = 'Total number and mean length of visits (mins) for each tag by receiver', longtable = TRUE)
 pander(select(param.table, Year, "Motus Tag ID", "Lotek ID", Receiver, 
-             "Total Number of Visits", "Mean Length of Visits (mins)"), 
+             "Total Number of Visits", "Mean Length of Visits (mins)", "Standard Error Visits"), 
       booktabs = TRUE, caption = '(\\#tab:parameterTableVisitsTag) Total number and mean length of visits (mins) for each tag by receiver', split.cell = 20, split.table = Inf, justify = 'left')
 ```
 
@@ -55,12 +57,16 @@ pander(select(param.table, Year, "Motus Tag ID", "Lotek ID", Receiver,
 For each year and receiver, the following table shows the mean number and length (mins) of visits of all tags.
 
 ```{r parameterTableVisitsRecv, echo = FALSE, out.extra='angle=90'}
-param.table <- dplyr::select(read.csv("./data/visits_recv.csv", stringsAsFactors=FALSE), 2:5)
-param.table <- param.table %>% mutate(meanLength = round(meanLength, digits = 2),
-                                      meanVisits = round(meanVisits, digits = 2))
+param.table <- dplyr::select(read.csv("./data/visits_recv.csv", stringsAsFactors=FALSE), 2:4,7,8,11)
+param.table <- param.table %>% mutate(meanlength = round(meanlength, digits = 2),
+                                      seLength = round(seLength, digits = 2),
+                                      meanVisits = round(meanVisits, digits = 2),
+                                      seVisits = round(seVisits), digits = 2)
 param.table <- rename(param.table, Year = year, Receiver = recvDeployName, 
-                      "Mean Length of Visits (mins)" = meanLength, 
-                      "Mean Number of Visits" = meanVisits)
+                      "Mean Length of Visits (mins)" = meanlength, 
+                      "Standard Error Length of Visits" = seLength,
+                      "Mean Number of Visits" = meanVisits,
+                      "Standard Error Number of Visits" = seVisits)
 #kable(param.table, 
 #      booktabs = TRUE, caption = 'Mean length (mins) and number of visits of all tags at each receiver by year', longtable = TRUE) 
 pander(param.table, 

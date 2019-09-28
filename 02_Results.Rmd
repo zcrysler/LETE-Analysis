@@ -17,6 +17,7 @@ library(viridis)
 library(motus)
 library(legendMap)
 library(suncalc)
+library(pastecs)
 ```
 ## Study Area
 Stations within the study region are presented in [Figure 2.1](#fig:2017StationMap), stations with red outlines had no detections, while coloured stations had at least one tag detected during the study period from 2017 to 2018. Triangles represent receivers that were active during 2017 *and* 2018, circles represent stations that were only active in 2017 (*Quintana* and *East Grand Terre*). The blue lines indicate the direction of antennas during the study period and span 15 miles from the receiver. All receivers maintained the same bearings throughout the study period with the exception of *Bolivar_Flats*, here the solid blue lines are the 2017 bearings, while the dashed blue lines are the 2018 bearings.
@@ -422,13 +423,13 @@ In 2017, birds were picked up in very small numbers outside of the immediate bre
 ```{r distanceTravelled, echo = FALSE, message = FALSE, results = "hide"}
 summary(visits$distFromExxon)
 # mean of 1670m, max of 569092m
-summary(filter(visits, year == 2017)$distFromExxon) # mean 1.48 mi, max 353.617 mi
-summary(filter(visits, year == 2018)$distFromExxon) # mean 0.5023 mi, max 288.3948 mi
+stat.desc(filter(visits, year == 2017)$distFromExxon) # mean 1.47 mi, max 353.617 mi, SE 0.38
+stat.desc(filter(visits, year == 2018)$distFromExxon) # mean 0.5044 mi, max 288.3948 mi, SE 0.121
 table(visits$year, visits$recvDeployName)
 # but in 2017 on 7 visits away from breeding area (Exxon, Grand Isle, E Grand Terre, Wisner), in 2018 only 1 visit away
 # So 4,670/4,678 = 99.8% were within 23072m from Exxon (furthest being Wisner)
 ```
-Based on detection data, in 2017 the mean distance travelled for all detection periods was 1.48 miles, with a maximum distance travelled to *San Bernard NWR (Big Pond Unit)* at 353.62 miles. In 2018 the mean distance travelled was 0.50 miles, with a maximum distance travelled of 288.39 miles to *Bolivar Flats*. However, the vast majority of detections (4,670/4,678 or 99.8%) during foraging trips occurred within 14.34 miles from the colony detected at the four closest receiver stations (*Exxon Fields*, *Grand_Isle*, *East Grand Terre*, and *Wisner*).
+Based on detection data, in 2017 the mean distance travelled for all detection periods was 1.47 miles (SE = 0.38), with a maximum distance travelled to *San Bernard NWR (Big Pond Unit)* at 353.62 miles. In 2018 the mean distance travelled was 0.50 miles (SE = 0.12), with a maximum distance travelled of 288.39 miles to *Bolivar Flats*. However, the vast majority of detections (4,670/4,678 or 99.8%) during foraging trips occurred within 14.34 miles from the colony detected at the four closest receiver stations (*Exxon Fields*, *Grand_Isle*, *East Grand Terre*, and *Wisner*).
 
 ## Time Partitioning Between Foraging and Nest Site Attendance
 Only tags detected reliably during incubation at Exxon Fields were used for the following analysis, this included 5 tags form 2017, and 7 tags from 2018. In addition, only detections at Exxon Fields are used in this section.
@@ -463,26 +464,38 @@ ggplot(filter(nestSite, year == 2018), aes(ts, sig, col = period)) +
 ```
 
 
-Detection plots in figures [2.11](#fig:partitionFig17) and [2.12](#fig:partitionFig18) show a clear difference between nocturnal and diurnal behaviours reflected in detection patterns. Nocturnal site visits were on average 30.41 and 16.83 minutes for 2017 and 2018 respectively, while detections during the day were 12.85 and 10.73 minutes for 2017 and 2018 respectively, mean detection length was significantly different (p < 0.001) for both years ([table 2.2](#tab:partitioningSummary)). Signal strength was also significantly different (p < 0.001) between nocturnal and diurnal detections in both years. Mean signal strength for each visit was 65.62 and 59.01 during the night compared 89.84 and 73.58 during the day for 2017 and 2018 respectively. This indicates important daily differences in Least Tern behaviour, during the night birds are likely to be on the nest resulting in prolonged periods of detections with low signal strength, however during the day as the birds are travelling to and from the nest while foraging, they have shorter periods of nest attendance and higher signal strengths as birds in the air are more readily detected.
+Detection plots in figures [2.11](#fig:partitionFig17) and [2.12](#fig:partitionFig18) show a clear difference between nocturnal and diurnal behaviours reflected in detection patterns. Nocturnal site visits were on average 30.41 (SE = 4.33) and 16.83 (SE = 1.88) minutes for 2017 and 2018 respectively, while detections during the day were 12.85  (SE = 0.81) and 10.73 (SE = 0.57) minutes for 2017 and 2018 respectively, mean detection length was significantly different (p < 0.001) for both years ([table 2.2](#tab:partitioningSummary)). Signal strength was also significantly different (p < 0.001) between nocturnal and diurnal detections in both years. Mean signal strength for each visit was 65.62 (SE = 1.12) and 59.01 (SE = 1.17) during the night compared 89.84 (SE = 0.73) and 73.58 (SE = 0.84) during the day for 2017 and 2018 respectively. This indicates important daily differences in Least Tern behaviour, during the night birds are likely to be on the nest resulting in prolonged periods of detections with low signal strength, however during the day as the birds are travelling to and from the nest while foraging, they have shorter periods of nest attendance and higher signal strengths as birds in the air are more readily detected.
 ```{r partitioningSummary, echo = FALSE}
 ## get summaries by day
 # longer average length of visit period during night than day in both years (more obvious in 2017)
 # mean signal strength was lower during the night as the birds were on the nest
 tmp <- incPeriods %>% group_by(year, period) %>% summarize(meanLength = mean(visitLength),
-                                                           meanSig = mean(meanSig)) %>% as.data.frame()
-tmp <- rename(tmp, "Year" = "year", "Period" = "period", "Mean length of detection periods (mins)" = "meanLength", "Mean signal strength of detections" = "meanSig")
-pander(tmp, booktabs = TRUE, caption = '(\\#tab:partitioningSummary) Mean length and signal strength of visits during 2017 and 2018 split by day vs. night detections', justify = 'left', style = "grid", split.cell = 25)
+                                                           nVisitLength = n(),
+                                                           sdVisitLength=sd(visitLength),
+                                                           seVisitLength=sdVisitLength/sqrt(nVisitLength),
+                                                           meansig = mean(meanSig),
+                                                           nSig = n(),
+                                                           sdSig=sd(meanSig),
+                                                           seSig=sdSig/sqrt(nSig)) %>% as.data.frame()
+tmp <- tmp %>% mutate(seVisitLength = round(seVisitLength, digits = 2),
+                                      seSig = round(seSig, digits = 2))
+
+tmp <- rename(tmp, "Year" = "year", "Period" = "period", "Mean length of detection periods (mins)" = "meanLength", "Standard error of detection periods" = "seVisitLength", "Mean signal strength of detections" = "meansig", "Standard error signal strength" = "seSig")
+pander(select(tmp, -nVisitLength, -sdVisitLength, -nSig, -sdSig), booktabs = TRUE, caption = '(\\#tab:partitioningSummary) Mean length and signal strength of visits during 2017 and 2018 split by day vs. night detections', justify = 'left', style = "grid", split.cell = 25)
 
 ```
 
 
 During daylight hours (between dawn and dusk) when Least Terns are actively foraging, they were detected by Exxon Fields on average 22.22% and 16.19% of the time in 2017 and 2018 respectively. As these tags were already screened as tags that are reliably detected during nest attendance, this suggests that during the day the majority of the birds time is spent away from the nest.  
 
-By filtering detections even further, and only examining visits that were below the signal strength threshold of 70 with at least 3 detections, we can discern *nest* attendance. Least Terns had a mean visit length of 13.88 and 13.42 minutes, and on average had 6.7 and 7.3 visits to the nest during daylight hours in 2017 and 2018 respectively. Note that this should be treated as anecdotal information due to the small sample size.
+By filtering detections even further, and only examining visits that were below the signal strength threshold of 70 with at least 3 detections, we can discern *nest* attendance. Least Terns had a mean visit length of 13.88 (SE = 1.28) and 13.42 (SE = 0.75) minutes, and on average had 6.7 (SE = 0.79) and 7.3 (SE = 0.62) visits to the nest during daylight hours in 2017 and 2018 respectively. Note that this should be treated as anecdotal information due to the small sample size.
 ```{r, nestAttendanceResults, echo = FALSE}
 #average length of visit
 tmp1 <- filter(dayPeriods, period == "day", numHits > 2) %>% group_by(year) %>% 
-  summarize(meanLength = mean(visitLength)) %>% 
+  summarize(meanLength = mean(visitLength),
+            nLength = n(),
+            sdLength=sd(visitLength),
+            seLength=sdLength/sqrt(nLength)) %>% 
   as.data.frame()
 
 # average number of daily visits
@@ -490,13 +503,19 @@ tmp <- filter(dayPeriods, period == "day", numHits > 2) %>% group_by(year, date,
   summarize(totNumHits = sum(numHits),
             totLength = sum(visitLength),
             totVisits = length(motusTagID)) %>% as.data.frame()
-tmp2 <- tmp %>% group_by(year) %>% summarize(meanVisits = mean(totVisits)) %>% as.data.frame()
+tmp2 <- tmp %>% group_by(year) %>% summarize(meanVisits = mean(totVisits),
+                                             nVisits = n(),
+                                             sdVisits=sd(totVisits),
+                                             seVisits=sdVisits/sqrt(nVisits)) %>% as.data.frame()
 tmp <- left_join(tmp1, tmp2, by = "year")
+tmp <- tmp %>% mutate(seLength = round(seLength, digits = 2),
+                      seVisits = round(seVisits, digits = 2))
 tmp <- rename(tmp, "Year" = "year", 
-              "Mean length of detection periods (mins)" = "meanLength", 
-              "Mean number of daily visits" = "meanVisits")
+              "Mean length of detection periods (mins)" = "meanLength",
+              "Standard error detection periods" = "seLength",
+              "Mean number of daily visits" = "meanVisits",
+              "Standard error number of daily visits" = "seVisits",)
 
-pander(tmp, booktabs = TRUE, caption = '(\\#tab:nestAttendance) Mean length and number of daylight nest attendance (signal strength < 70 for visits with at least 3 detections) during 2017 and 2018', justify = 'left', style = "grid", split.cell = 25)
+pander(select(tmp, -nVisits, -sdVisits, -nLength, -sdLength), booktabs = TRUE, caption = '(\\#tab:nestAttendance) Mean length and number of daylight nest attendance (signal strength < 70 for visits with at least 3 detections) during 2017 and 2018', justify = 'left', style = "grid", split.cell = 25)
 ```
 
-## Summary

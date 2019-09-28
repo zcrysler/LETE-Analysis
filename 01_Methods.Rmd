@@ -10,6 +10,7 @@ output:
 library(knitr)
 library(pander)
 library(suncalc)
+library(pastecs)
 
 opts_chunk$set(tidy.opts=list(width.cutoff=50), tidy = TRUE)
 ```
@@ -380,14 +381,23 @@ write.csv(visits, "./data/visits.csv")
 # visit length summarized by tagID and receiver
 visits.tag <- visits %>% group_by(year, recvDeployName, motusTagID, mfgID) %>%
   summarize(meanLength = mean(visitLength),
-            totVisits = length(visitLength)) %>% 
+            totVisits = length(visitLength),
+            nVisits = n(),
+            sdVisitLength=sd(visitLength),
+            seVisits=sdVisitLength/sqrt(nVisits)) %>% 
   arrange(year, recvDeployName, motusTagID, totVisits)
 write.csv(visits.tag, "./data/visits_tag.csv")
 
 #visit length summarized by receiver
 visits.recv <- filter(visits.tag) %>% group_by(year, recvDeployName) %>%
-  summarize(meanLength = mean(meanLength),
-            meanVisits = mean(totVisits)) %>% 
+  summarize(meanlength = mean(meanLength),
+            nLength = n(),
+            sdLength=sd(meanLength),
+            seLength=sdLength/sqrt(nLength),
+            meanVisits = mean(totVisits),
+            nVisits = n(),
+            sdVisits=sd(totVisits),
+            seVisits=sdVisits/sqrt(nVisits)) %>% 
   arrange(year, recvDeployName)
 write.csv(visits.recv, "./data/visits_recv.csv")
 
