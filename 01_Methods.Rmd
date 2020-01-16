@@ -439,9 +439,9 @@ print(tt, digits = 15) # significance of Grand_Isle-Exxon: p = 4.2e-8
 #p <- plot(TukeyHSD(tmp, conf.level = 0.95), las=1, col = "red")
 ```
 ## Time Partitioning
-To determine time partitioning between foraging activities and nest site attendance during the incubation period, individuals that were consistently detected at the nesting site (*Exxon Fields*) were selected. Detection patterns were visually inspected for all tags, and those that were not reliably detected at the nesting site were excluded. In total 5 and 7 tags were selected from 2017 and 2018 respectively. Periods of time during which it could not be confirmed that the bird was incubating were also excluded, for example, the nest of tag 282 was predated sometime between May 18-21st, and the detection pattern clearly changes during this time, thus detections beyond May 18th were removed for this bird, [Figure 1.1](#fig:siteAttendance) shows the detections used for time partitioning analysis. 
+To determine time partitioning between foraging activities and nest site attendance during the incubation period, individuals that were consistently detected at the nesting site (*Exxon Fields*) were selected. Detection patterns were visually inspected for all tags, and those that were not reliably detected at the nesting site were excluded. In total 5 and 7 tags were selected from 2017 and 2018 respectively. Periods of time during which it could not be confirmed that the bird was incubating were also excluded, for example, the nest of tag 282 was predated sometime between May 18-21st, and the detection pattern clearly changes during this time, thus detections beyond May 18th were removed for this bird, Figure \@ref(fig:siteAttendance) shows the detections used for time partitioning analysis. 
 
-To discern behavioural patterns during the incubation period, detections were examined at two levels using the same technique. First, all detections were examined to review general *site* attendance. Second, only detections with a signal strength below 70 were examined as an indication of *nest* attendance, as periods of prolonged low signal strength generally indicate the individual is on the nest. In both cases, only detections at *Exxon Fields* were examined for this subset of tags. 
+To discern behavioural patterns during the incubation period, detections were examined at two levels using the same technique. First, all detections were examined to review general *colony* attendance. Second, only detections with a signal strength below 70 were examined as an indication of *nest* attendance, as periods of prolonged low signal strength generally indicate the individual is on the nest. In both cases, only detections at *Exxon Fields* were examined for this subset of tags. 
 
 For both levels, detection periods at *Exxon Fields* were split into discrete 'visits' in the same way site visits were determined; consecutive detections at *Exxon Fields*, or runs of consecutive detections with less than 10 minutes between runs, were classified as one 'visit'. For nest attendance, visits with < 3 detections were also excluded, as we would also expect short periods of decreasing signal strengths as the individual is flying away from the station to forage, as compared to prolonged periods of consistently low signal strength indicative of nest attendance. Furthermore, time of dawn and dusk was used to classify detections as occurring during the day or night.
 
@@ -480,7 +480,7 @@ nestSite$date <- as.Date(nestSite$ts, tz = "America/Chicago")
 ggplot(nestSite, aes(ts, sig)) + 
   geom_point(size = 1) + facet_wrap(~mfgID, scales = "free_x") + th + labs(x = NULL, y = "Signal Strength")
 
-# so with this data, group detections into "visits" to look at mean signal strength
+# Group detections into "visits" to look at mean signal strength
 incPeriods <- nestSite %>% group_by(motusTagID, mfgID, recvDeployName, runID, year) %>%
   summarize(mints = min(ts),
             maxts = max(ts),
@@ -571,7 +571,7 @@ dayInc$ts <- (dayInc$ts - 5*60*60)
 dayInc$ts <- force_tz(dayInc$ts, tzone = "America/Chicago")
 dayInc$date <- as.Date(dayInc$ts, tz = "America/Chicago")
 
-# so with this data, group detections into "visits" to look at mean signal strength
+# Group detections into "visits" to look at mean signal strength
 dayPeriods <- dayInc %>% group_by(motusTagID, mfgID, recvDeployName, runID, year) %>%
   summarize(mints = min(ts),
             maxts = max(ts),

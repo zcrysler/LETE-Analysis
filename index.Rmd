@@ -1,6 +1,6 @@
 ---
 title: "Spatial and temporal requirements of breeding Least Terns in the Barataria-Terrebonne National Estuary through the use of Motus automated radio-telemetry data"
-author: "Zoe Crysler"
+author: "Zoe Crysler, Stuart Mackenzie, Adam Smith"
 date: "`r Sys.Date()`"
 output: bookdown::gitbook
 documentclass: book
@@ -9,7 +9,3 @@ site: bookdown::bookdown_site
 #cover-image: BSC_Motus_Logo.png
 
 ---
-
-# Statistical analysis in Support of Barataria-Terrebonne National Estuary Program Automated VHF Telemetry Network Project {-}
-
-
