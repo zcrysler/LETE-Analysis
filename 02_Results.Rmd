@@ -208,6 +208,8 @@ ggplot(na.map, aes(long, lat)) +
   labs(x = NULL, y = NULL, col = "Tag ID") + theme_bw() +
   guides(fill = FALSE,
          colour = guide_legend(override.aes = list(size = 2)))
+ggsave("./images/detections2018.png")
+
 ```
 
 ```{r 2018LongitudePlots, fig.cap = "Individual 2018 plots by tag ID showing latitudinal movements of tags over time, detection points are coloured by station location. Note that the x and y scales vary between tag plots.", echo = FALSE, message = FALSE, fig.height = 10}
@@ -266,7 +268,7 @@ p4 <- ggplot(filter(tmp, motusTagID == 28522), aes(ts, sig, col = recvDeployName
   theme(legend.position = "none", strip.text.y = element_text(size = 7)) + 
   labs (y = "Signal Strength", x = NULL, title ="2018: Tag ID 289")
 grid.arrange(p1, p2, p3, p4, nrow = 2)
-
+ggsave("./images/foragingExamples.png")
 ```
 
 Figure \@ref(fig:incubatingBirds) is a selection of 4 representative detection patterns of individuals; examining the signal strength it is not always clear when birds are attending the nest site and when they are foraging. For example, tag 94 shows clear daily signal strength patterns, with low signal strength occurring overnight when the bird is likely incubating. Tag 93 has a similar but less distinct pattern; some nights the bird is detected while other nights it is not. In other cases the tag is picked up far less consistently as in tag 303, and in even more extreme cases as in tag 289. For these final two tags, the bird is rarely if ever detected while incubating, and most detections likely occur as the bird is leaving or arriving at the nest site. 
@@ -299,6 +301,7 @@ ggplot(filter(tmp), aes(recvDeployName)) +
   geom_bar(stat = "count") + geom_text(stat= "count", aes(label = ..count..), vjust = -1, size = 3) +
   facet_grid(year~.) + th + ylim(0,2300) +
   labs(y = "Number of site visits", x = NULL)
+ggsave("./images/StationDetectionFrequencies.png")
 ```
 
 
@@ -313,6 +316,8 @@ p <- ggplot(tmp, aes(recvDeployName, visitLength)) +
 ylim1 <- boxplot.stats(tmp$visitLength)$stats[c(1,5)]
 p + coord_cartesian(ylim = ylim1*1.05) + th + 
   labs(y = "Detection time (mins)", x = NULL)
+ggsave("./images/ForagingLength.png")
+
 ```
 
 
@@ -602,6 +607,8 @@ tmp2 <- ggplot(filter(nestSite, year == 2017, motusTagID != 23218), aes(ts, sig,
   theme(legend.position = "bottom", legend.direction = "horizontal")
 
 grid.arrange(tmp1, tmp2, nrow = 2, heights = c(1, 3))
+ggsave("./images/SignalStrengthVSTime2017.png")
+
 ```
 
 
@@ -612,6 +619,7 @@ ggplot(filter(nestSite, year == 2018), aes(ts, sig, col = period)) +
   geom_vline(xintercept = nestSite$dusk, col = "blue") +
   facet_wrap(mfgID~., scales = "free_x", ncol = 2) + th + labs(x = NULL, y = "Signal Strength") +
   scale_color_discrete(labels = c("Day", "Night"), name = NULL)
+ggsave("./images/SignalStrengthVSTime2018.png")
 ```
 
 
