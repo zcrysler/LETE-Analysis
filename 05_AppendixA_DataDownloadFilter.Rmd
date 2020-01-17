@@ -1,6 +1,6 @@
 # (APPENDIX) Appendix {-} 
 
-# Appendix - Downloading and Cleaning Data {#AppendixA}
+# Appendix A - Downloading and Cleaning Data {#AppendixA}
 
 ```{r tidyr1, echo = FALSE, message = FALSE, warning = FALSE}
 

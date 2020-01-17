@@ -6,14 +6,14 @@ Foraging detections of Least Terns during 2017 and 2018 were concentrated around
 Length of foraging visit followed the same pattern, that is visits were longest at *Exxon Fields*, followed by *East Grand Terre, Grand_Isle* and *Wisner*; only *Exxon Fields* and *Grand_Isle* differed significantly in foraging visit length. 
 
 ## Mean Distances Travelled for Foraging
-Mean distance travelled in 2017 and 2018 was 1.47 miles and 0.50 miles respectively. While the maximum distances travelled in each year was 353.62 and 288.39 miles, the vast majority of foraging detections occurred within 14.34 miles of the colony.
+Mean distance travelled in 2017 and 2018 was 1.47 miles and 0.50 miles respectively. While the maximum distances travelled in each year was 353.62 and 288.39 miles, the overwhelming majority of foraging detections occurred within 14.34 miles of the colony.
 
 ## Time Partitioning Between Foraging and Nest Site Attendance
 Due to the limited number of birds consistently detected while on the nest (5 in 2017 and 7 in 2018), the following conclusions should be taken as anecdotal information. 
 
 Time partitioning between foraging and colony site attendance at *Exxon Fields*  differed between nocturnal vs diurnal detections with the latter being nearly half as long. Signal strength was also significantly lower during nocturnal detections for both years. Together this indicates daily differences in behaviour, it is likely that during the nights birds are spending longer periods on the nest resulting in prolonged periods of low signal strength, compared to the day where nest site attendance periods are short with potentially more movement resulting in higher overall signal strengths at *Exxon Fields*. Further to this point, Least Terns were detected by the colony receiver between 16-22% of the time during the day when they are actively foraging, indicating that birds spend the majority of their time away from their nests.
 
-Assuming that birds are on their nests when there is a prolonged singal strength below 70, it appears that Least Terns spend on average 14 minutes at the nest during daylight nest attendance periods.
+Assuming that birds are on their nests when there is a prolonged signal strength below 70, it appears that Least Terns spend on average 14 minutes at the nest during daylight nest attendance periods.
 
 
 Finally, while it appears that birds spend the majority of their time in close proximity to *Exxon Fields*, it is important to note that this may be a function of birds being obligated to return to their nest site, nor does it preclude other important foraging areas that may be out of range of the current receiver station setup.

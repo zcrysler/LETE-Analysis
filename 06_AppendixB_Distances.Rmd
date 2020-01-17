@@ -1,4 +1,4 @@
-# Appendix - Distances Between Receivers {#AppendixB}
+# Appendix B - Distances Between Receivers {#AppendixB}
 
 ```{r tidyr4, echo = FALSE, message = FALSE, warning = FALSE}
 library(knitr)

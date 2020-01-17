@@ -1,4 +1,4 @@
-# Appendix - Site Visits {#AppendixC}
+# Appendix C - Site Visits {#AppendixC}
 
 ```{r tidyr5, echo = FALSE, message = FALSE, warning = FALSE}
 library(knitr)
