@@ -489,6 +489,9 @@ complete(ant_avail, fill = list(tot_det_len = 0.005, n_ind = 0))
 ```
 
 ```{r CumulativeDetectionTimeMap17, fig.cap = "Cumulative 2017 detections of 21 foraging birds by each antenna at the colony site. Solid Blue lines indicate antenna bearings extending outward 10km from the receiver, numbers associated with each antenna indicate the number of tags detected, and the circles surrounding each number are coloured by cumulative detection time.", echo = FALSE, message = FALSE, warning = FALSE, fig.width = 5}
+
+# Code for plot (CumulativeDetectionTimeMap17 and CumulativeDetectionTimeMap18) and associated dataframes courtesy of Adam Smith
+
 gmap <-  get_map(location = c(lon = -90, lat = 29.2),
                        maptype = "terrain",
                        zoom = 10) 
@@ -498,7 +501,7 @@ ggmap(gmap) +
                aes(x = longitude, xend = longitude +
                      (sin(rad(antBearing)) *.1), y = latitude, yend = latitude +
                      (cos(rad(antBearing)) *.1)), colour = "blue") +
-  geom_segment(data = filter(df.antDeps, recvDeployID == 4616), # Create dashed lines for Bolicvar 2018 antenna bearings
+  geom_segment(data = filter(df.antDeps, recvDeployID == 4616), # Create dashed lines for Bolivar 2018 antenna bearings
                aes(x = longitude, xend = longitude +
                      (sin(rad(antBearing)) *.1), y = latitude, yend = latitude +
                      (cos(rad(antBearing)) *.1)), colour = "blue", linetype = "dashed") +
@@ -532,6 +535,8 @@ ggsave("./images/AntennaBearingMap2017.png")
 ```
 
 ```{r CumulativeDetectionTimeMap18, fig.cap = "Cumulative 2018 detections of 24 foraging birds by each antenna at the colony site. Solid Blue lines indicate antenna bearings extending outward 10km from the receiver, numbers associated with each antenna indicate the number of tags detected, and the circles surrounding each number are coloured by cumulative detection time.", echo = FALSE, message = FALSE, warning = FALSE, fig.width = 5}
+
+# Code for plot (CumulativeDetectionTimeMap17 and CumulativeDetectionTimeMap18) and associated dataframes courtesy of Adam Smith
 
 gmap <-  get_map(location = c(lon = -90, lat = 29.2),
                        maptype = "terrain", # select maptype
